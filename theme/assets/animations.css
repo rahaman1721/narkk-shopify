@@ -1,0 +1,102 @@
+/* ─────────────────────────────────────────
+   NARKK Shopify Theme — animations.css
+   All micro-animations and transitions
+   ───────────────────────────────────────── */
+
+/* Fade In Up — used for section entries */
+@keyframes fadeInUp {
+  from { opacity:0; transform:translateY(24px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+
+/* Fade In — used for overlays */
+@keyframes fadeIn {
+  from { opacity:0; }
+  to   { opacity:1; }
+}
+
+/* Slide In Right — cart drawer */
+@keyframes slideInRight {
+  from { transform:translateX(100%); }
+  to   { transform:translateX(0); }
+}
+
+/* Scale Up — badges and pills */
+@keyframes scaleUp {
+  from { transform:scale(0.92); opacity:0; }
+  to   { transform:scale(1); opacity:1; }
+}
+
+/* Shimmer — skeleton loading */
+@keyframes shimmer {
+  0%   { background-position:-200% 0; }
+  100% { background-position:200% 0; }
+}
+
+/* ─── Intersection Observer classes ─── */
+.js-anim {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.55s ease, transform 0.55s ease;
+}
+.js-anim.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Delay helpers */
+.js-anim-d1 { transition-delay: 0.1s; }
+.js-anim-d2 { transition-delay: 0.2s; }
+.js-anim-d3 { transition-delay: 0.3s; }
+.js-anim-d4 { transition-delay: 0.4s; }
+
+/* ─── Hover effects ─── */
+.hp-col-tile-img,
+.sp-card-img img,
+.pdp-main-img img,
+.hp-hero-img img {
+  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* ─── Button pulse on add to cart ─── */
+@keyframes btnPulse {
+  0%   { box-shadow:0 0 0 0 rgba(216,90,48,0.4); }
+  70%  { box-shadow:0 0 0 10px rgba(216,90,48,0); }
+  100% { box-shadow:0 0 0 0 rgba(216,90,48,0); }
+}
+.pdp-atc-btn.added {
+  animation: btnPulse 0.6s ease;
+}
+
+/* ─── Cart badge bounce ─── */
+@keyframes badgeBounce {
+  0%,100% { transform:scale(1); }
+  30%      { transform:scale(1.35); }
+  60%      { transform:scale(0.9); }
+}
+.cart-badge.bounce {
+  animation: badgeBounce 0.4s ease;
+}
+
+/* ─── Skeleton loading ─── */
+.skeleton {
+  background: linear-gradient(90deg, var(--cream-d) 25%, var(--cream) 50%, var(--cream-d) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 4px;
+}
+
+/* ─── Nav underline smooth ─── */
+.nav-link::after {
+  transition: transform 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ─── Accordion smooth ─── */
+details[open] .pdp-accordion-body {
+  animation: fadeInUp 0.2s ease;
+}
+
+/* ─── Page transition ─── */
+.page-transition {
+  animation: fadeIn 0.3s ease;
+}
