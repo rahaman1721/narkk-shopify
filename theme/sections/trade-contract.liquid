@@ -1,0 +1,51 @@
+<style>
+.sp-trade { background:#F5F0EA; border-bottom:1px solid rgba(143,168,168,0.22); }
+.sp-trade-inner { display:grid; grid-template-columns:1fr 1fr; min-height:400px; }
+.sp-trade-left { padding:64px 56px; border-right:1px solid rgba(143,168,168,0.22); display:flex; flex-direction:column; justify-content:center; }
+/* Change #6 (Xiamen updation): explicit bounded height so the image can never grow taller than its own section and bleed into the next one. */
+.sp-trade-right { overflow:hidden; background:#EDE7DE; height:480px; }
+.sp-trade-right img { width:100%; height:100%; object-fit:cover; object-position:center; display:block; }
+.sp-trade-ey { display:flex; align-items:center; gap:10px; font-size:var(--fs-lbl); font-weight:300; letter-spacing:2.5px; text-transform:uppercase; color:#C16B45; margin-bottom:16px; }
+.sp-trade-ey-line { width:24px; height:1px; background:#C16B45; flex-shrink:0; }
+.sp-trade-title { font-size:var(--fs-h2); font-weight:200; letter-spacing:-0.5px; color:#334155; line-height:1.2; margin-bottom:20px; }
+.sp-trade-body { font-size:var(--fs-body); font-weight:300; color:#64748B; line-height:1.85; margin-bottom:32px; }
+.sp-trade-cta { display:inline-flex; align-items:center; gap:8px; font-size:var(--fs-lbl); font-weight:300; letter-spacing:1.8px; text-transform:uppercase; color:#C16B45; text-decoration:none; border-bottom:1px solid rgba(193,107,69,0.4); padding-bottom:2px; transition:opacity 0.15s; }
+.sp-trade-cta:hover { opacity:0.65; }
+.sp-trade-cta svg { width:11px; height:11px; stroke:#C16B45; fill:none; stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round; }
+@media(max-width:768px) { .sp-trade-inner { grid-template-columns:1fr; } .sp-trade-left { padding:44px 20px; border-right:none; border-bottom:1px solid rgba(143,168,168,0.22); } .sp-trade-right { height:auto; aspect-ratio:4/3; } }
+
+</style>
+  <div class="sp-trade">
+    <div class="sp-trade-inner">
+      <div class="sp-trade-left">
+        <div class="sp-trade-ey"><span class="sp-trade-ey-line"></span>{{ section.settings.eyebrow | default: 'Trade &amp; Contract' }}</div>
+        <div class="sp-trade-title">{{ section.settings.title | default: "The best furniture doesn't make the job harder.<br>It makes the client happier." }}</div>
+        <div class="sp-trade-body">{{ section.settings.body | default: "If you specify furniture for living then you know that the best furniture beautifully made, fairly priced doesn't make the job harder, it makes the client happier. Reasonable benefits for architects, interior designers, contractors, builders who want to recommend narkk products to their client." }}</div>
+        <a href="{{ section.settings.link_url | default: '/pages/trade' }}" class="sp-trade-cta" >{{ section.settings.link_text | default: 'Apply for the trade program' }} <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></a>
+      </div>
+      <div class="sp-trade-right">
+        {% if section.settings.image != blank %}
+          <img src="{{ section.settings.image | image_url: width: 900 }}" alt="{{ section.settings.eyebrow | escape }}" loading="lazy">
+        {% else %}
+          <img src="{{ 'trade-program.jpg' | asset_url }}" alt="narkk trade">
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+{% schema %}
+{
+  "name": "Trade Contract",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Trade & Contract" },
+    { "type": "text", "id": "title", "label": "Title", "default": "The best furniture doesn't make the job harder.<br>It makes the client happier." },
+    { "type": "textarea", "id": "body", "label": "Body", "default": "If you specify furniture for living then you know that the best furniture beautifully made, fairly priced doesn't make the job harder, it makes the client happier. Reasonable benefits for architects, interior designers, contractors, builders who want to recommend narkk products to their client." },
+    { "type": "url", "id": "link_url", "label": "Link URL" },
+    { "type": "text", "id": "link_text", "label": "Link Text", "default": "Apply for the trade program" },
+    { "type": "image_picker", "id": "image", "label": "Image" }
+  ],
+  "presets": [
+    { "name": "Trade Contract" }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="{{ request.locale.iso_code }}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <title>
+    {%- if page_title == blank -%}
+      {{ shop.name }} &mdash; Mindful Furniture, Made in Chennai
+    {%- else -%}
+      {{ page_title }} | {{ shop.name }}
+    {%- endif -%}
+  </title>
+
+  {%- if page_description -%}
+    <meta name="description" content="{{ page_description | escape }}">
+  {%- endif -%}
+
+  <link rel="canonical" href="{{ canonical_url }}">
+
+  <meta property="og:site_name" content="{{ shop.name }}">
+  <meta property="og:url" content="{{ canonical_url }}">
+  <meta property="og:title" content="{{ page_title | default: shop.name }}">
+  <meta property="og:type" content="{% if template.name == 'product' %}product{% elsif template.name == 'article' %}article{% else %}website{% endif %}">
+  {%- if page_description -%}
+    <meta property="og:description" content="{{ page_description | escape }}">
+  {%- else -%}
+    <meta property="og:description" content="Mindful furniture designed and made in Chennai, India. Modular, repairable, built to last.">
+  {%- endif -%}
+  {%- if product.featured_image -%}
+    <meta property="og:image" content="{{ product.featured_image | image_url: width: 1200 }}">
+    <meta property="og:image:width" content="1200">
+  {%- elsif collection.image -%}
+    <meta property="og:image" content="{{ collection.image | image_url: width: 1200 }}">
+  {%- elsif article.image -%}
+    <meta property="og:image" content="{{ article.image | image_url: width: 1200 }}">
+  {%- elsif settings.logo -%}
+    <meta property="og:image" content="{{ settings.logo | image_url: width: 1200 }}">
+  {%- endif -%}
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{ page_title | default: shop.name }}">
+  {%- if page_description -%}
+    <meta name="twitter:description" content="{{ page_description | escape }}">
+  {%- endif -%}
+
+  {%- if settings.favicon != blank -%}
+    <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+  {%- endif -%}
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+
+  {{ 'base.css' | asset_url | stylesheet_tag }}
+  {{ 'animations.css' | asset_url | stylesheet_tag }}
+
+  {{ content_for_header }}
+
+  <!-- noindex for non-public pages -->
+  {%- if template.name == 'cart' or template.name == 'login' or template.name == 'register' or template.name == 'account' or template.name == 'search' or request.path contains '/policies/' -%}
+    <meta name="robots" content="noindex, nofollow">
+  {%- endif -%}
+
+  <!-- Global JSON-LD: Organization + WebSite -->
+  <script type="application/ld+json">
+  [
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "{{ shop.url }}/#organization",
+      "name": "NARKK",
+      "url": "{{ shop.url }}",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "{{ settings.logo | image_url: width: 400 }}",
+        "width": 400
+      },
+      "description": "Mindful furniture designed and made in Chennai, India. Modular, repairable, built to last.",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Chennai",
+        "addressRegion": "Tamil Nadu",
+        "addressCountry": "IN"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "email": "hello@narkk.in",
+        "contactType": "customer service"
+      }
+      {%- if settings.social_instagram != blank or settings.social_facebook != blank -%}
+      ,"sameAs": [
+        {%- assign sameAs_list = '' -%}
+        {%- if settings.social_instagram != blank -%}{%- assign sameAs_list = sameAs_list | append: '"' | append: settings.social_instagram | append: '",' -%}{%- endif -%}
+        {%- if settings.social_facebook != blank -%}{%- assign sameAs_list = sameAs_list | append: '"' | append: settings.social_facebook | append: '",' -%}{%- endif -%}
+        {%- if settings.social_whatsapp != blank -%}{%- assign sameAs_list = sameAs_list | append: '"' | append: settings.social_whatsapp | append: '",' -%}{%- endif -%}
+        {{ sameAs_list | remove_last: ',' }}
+      ]
+      {%- endif -%}
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "{{ shop.url }}/#website",
+      "name": "{{ shop.name }}",
+      "url": "{{ shop.url }}",
+      "publisher": { "@id": "{{ shop.url }}/#organization" }
+    }
+  ]
+  </script>
+
+</head>
+
+<body class="{% if template.name %}page-{{ template.name }}{% endif %}">
+<style>
+  html, body { overflow-x: clip; }
+</style>
+<div class="narkk-site-wrapper" style="width: 100%; position: relative;">
+
+  <!-- Announcement Bar &mdash; editable in theme customizer -->
+  {% section 'announcement-bar' %}
+
+  <!-- Header -->
+  {% section 'header' %}
+
+  <!-- Trust Strip removed &mdash; content merged into top announcement bar -->
+
+  <!-- Main Content -->
+  <main id="MainContent" role="main" tabindex="-1">
+    {{ content_for_layout }}
+  </main>
+
+
+  <!-- Footer -->
+  {% section 'footer' %}
+
+  <!-- Cart Drawer -->
+  {%- render 'cart-drawer' -%}
+
+  <!-- Global inquiry modal (Join The Inner Loop / Chat With Us) -->
+  {%- render 'inquiry-modal' -%}
+
+  <!-- Video Modal -->
+  <div class="video-modal" id="videoModal" role="dialog" aria-modal="true" aria-label="Video player">
+    <div class="video-inner">
+      <button class="video-close" id="videoClose" aria-label="Close video">
+        <svg viewBox="0 0 14 14"><line x1="1" y1="1" x2="13" y2="13"/><line x1="13" y1="1" x2="1" y2="13"/></svg>
+      </button>
+      <div class="video-ph">
+        <div class="video-play">
+          <svg viewBox="0 0 24 24"><polygon points="5,3 19,2 5,21"/></svg>
+        </div>
+        <span class="video-lbl">Thogai &mdash; Product Video Coming Soon</span>
+      </div>
+    </div>
+  </div>
+
+  <script src="{{ 'global.js' | asset_url }}" defer></script>
+  <script src="{{ 'cart.js' | asset_url }}" defer></script>
+
+</div><!-- /.narkk-site-wrapper -->
+</body>
+</html>

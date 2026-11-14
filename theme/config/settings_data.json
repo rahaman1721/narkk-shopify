@@ -1,0 +1,12 @@
+{
+  "current": {
+    "color_cream": "#F5F0EA",
+    "color_coral": "#D85A30",
+    "color_teal": "#4A9B8E",
+    "color_slate": "#334155",
+    "font_weight": "300",
+    "announcement_show": true,
+    "cart_type": "drawer"
+  },
+  "presets": {}
+}

@@ -1,0 +1,9 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-loop-article",
+      "settings": {}
+    }
+  },
+  "order": ["main"]
+}

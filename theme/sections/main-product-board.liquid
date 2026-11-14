@@ -1,0 +1,652 @@
+<div class="crumb">
+  <a href="/">Home</a> <span class="sep">/</span>
+  <a href="/collections/tulai">Shop</a> <span class="sep">/</span>
+  <span>{{ product.title }}</span>
+</div>
+
+<!-- In-page anchor nav — jumps to Accessories / Specifications / Craft sections below -->
+<nav class="pd-subnav" aria-label="Product page sections">
+  <a href="#pd-accessories" class="pd-subnav-link">Accessories</a>
+  <a href="#pd-specifications" class="pd-subnav-link">Specifications</a>
+  <a href="#pd-craft" class="pd-subnav-link">Material &amp; Craft</a>
+</nav>
+
+<div class="pd">
+  <div class="pd-media">
+    <div class="pb-gallery">
+      <div class="pb-thumbs">
+        {%- comment -%}
+          Match each image to a variant using, in priority order:
+          1) Shopify's native variant-image association (variant.image) —
+             if the admin has a "Variant image" assigned, that always wins.
+          2) The FIRST WORD of the image's alt text, compared to the variant
+             title (case-insensitive, exact word match — not a substring, so
+             "Small" alt text never falsely matches an "XL" or "Extra Small"
+             variant). This is the tagging convention actually in use here:
+             alt text like "Tiny pegboard - A hand holds..." — first word
+             "Tiny" identifies the variant.
+          Images that match neither are treated as shared (data-variant="")
+          and shown regardless of which variant is selected, rather than
+          being force-guessed into one.
+          Compare images by .id, not by direct object equality — Liquid
+          doesn't reliably resolve `==` between two image objects.
+
+          This is computed once, up front, so both the thumbnail strip and
+          the main image (which needs the default variant's own first image)
+          can use the result — the main image must NOT rely on
+          variant.featured_image alone, since that's only populated when a
+          native "Variant image" is set in admin, which isn't the case here.
+        {%- endcomment -%}
+        {%- assign default_variant = product.selected_or_first_available_variant -%}
+        {%- assign default_variant_image = default_variant.featured_image | default: product.featured_image -%}
+        {% for image in product.images %}
+          {% assign matched_variant = '' %}
+
+          {% if image.attached_to_variant? %}
+            {% for v in product.variants %}
+              {% if v.image.id == image.id %}
+                {% assign matched_variant = v.title %}
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+
+          {% if matched_variant == '' %}
+            {% assign alt_first_word = image.alt | strip | split: ' ' | first | downcase | strip_newlines %}
+            {% assign alt_first_word = alt_first_word | remove: ',' | remove: '.' | remove: ':' | remove: '-' %}
+            {% for v in product.variants %}
+              {% assign v_dc = v.title | strip | downcase %}
+              {% if matched_variant == '' and alt_first_word == v_dc %}
+                {% assign matched_variant = v.title %}
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+
+          {%- if matched_variant == default_variant.title and default_variant_matched_image == blank -%}
+            {%- assign default_variant_matched_image = image -%}
+          {%- endif -%}
+
+          <div class="pb-thumb{% if forloop.first %} active{% endif %}" data-variant="{{ matched_variant }}" data-img-url="{{ image | image_url: width: 1000 }}" onclick="switchImage(this, '{{ image | image_url: width: 1000 }}')">
+            <img src="{{ image | image_url: width: 200 }}" alt="{{ image.alt | escape }}" width="200" height="200" loading="lazy">
+          </div>
+        {% endfor %}
+        {%- if default_variant_matched_image != blank -%}
+          {%- assign default_variant_image = default_variant_matched_image -%}
+        {%- endif -%}
+      </div>
+      <div class="pb-main-img">
+        <img id="main-product-image" src="{{ default_variant_image | image_url: width: 1000 }}" alt="{{ default_variant_image.alt | escape }}" width="1000" height="1000">
+      </div>
+    </div>
+  </div>
+  
+  <div class="buy">
+    <div class="buy-ey">
+      <div class="buy-ey-line"></div>
+      {{ product.vendor }} &middot; {{ product.type }}
+    </div>
+    
+    {%- for block in section.blocks -%}
+      {%- case block.type -%}
+        {%- when '@app' -%}
+          {% render block %}
+        {%- when 'title' -%}
+          <h1 class="buy-title" {{ block.shopify_attributes }}>{{ product.title }}</h1>
+        {%- when 'description' -%}
+          <div class="buy-lede" {{ block.shopify_attributes }}>{{ product.description | strip_html | truncatewords: 30 }}</div>
+        {%- when 'price' -%}
+          <div class="buy-price-row" {{ block.shopify_attributes }}>
+            <div class="buy-price" id="product-price">{{ product.selected_or_first_available_variant.price | money }}</div>
+            <div class="buy-price-note">Incl. of all taxes &middot; accessories sold separately</div>
+          </div>
+        {%- when 'buy_buttons' -%}
+          {% form 'product', product, id: 'add-to-cart-form', class: 'buy-form', block: block %}
+            <input type="hidden" name="id" id="variant-id" value="{{ product.selected_or_first_available_variant.id }}">
+            
+            {%- comment -%}Count real (non-default) variants to decide whether to show size picker{%- endcomment -%}
+            {%- assign real_variant_count = 0 -%}
+            {%- for v in product.variants -%}
+              {%- unless v.title == 'Default Title' -%}
+                {%- assign real_variant_count = real_variant_count | plus: 1 -%}
+              {%- endunless -%}
+            {%- endfor -%}
+
+            {%- if real_variant_count > 1 -%}
+              <!-- Per-variant dimension + slot count bar (pre-filled from selected variant) -->
+              {%- assign sel = product.selected_or_first_available_variant -%}
+              {%- assign sel_slots = 33 -%}
+              {%- assign sel_dim   = '275 × 275 × 16 MM' -%}
+              {%- if sel.title == 'Small' -%}{%- assign sel_slots = 121 -%}{%- assign sel_dim = '550 × 550 × 16 MM' -%}{%- endif -%}
+              {%- if sel.title == 'Standard' -%}{%- assign sel_slots = 253 -%}{%- assign sel_dim = '550 × 1100 × 16 MM' -%}{%- endif -%}
+              <div class="var-spec-bar" id="varSpecBar">
+                <span class="var-spec-dim" id="varDim">{{ sel_dim }}</span>
+                <span class="var-spec-dot">·</span>
+                <span class="var-spec-slots" id="varSlots">{{ sel_slots }} slots</span>
+              </div>
+
+              <div class="sizes">
+                {% for variant in product.variants %}
+                  {%- unless variant.title == 'Default Title' -%}
+                    {%- assign slot_count = 33 -%}
+                    {%- assign dim_label = '275 × 275 × 16 MM' -%}
+                    {%- if variant.title == 'Small' -%}
+                      {%- assign slot_count = 121 -%}
+                      {%- assign dim_label = '550 × 550 × 16 MM' -%}
+                    {%- elsif variant.title == 'Standard' -%}
+                      {%- assign slot_count = 253 -%}
+                      {%- assign dim_label = '550 × 1100 × 16 MM' -%}
+                    {%- endif -%}
+                    {%- assign variant_image = variant.featured_image | default: product.featured_image -%}
+                    <button type="button"
+                      class="size-btn {% if product.selected_or_first_available_variant.id == variant.id %}active{% endif %}"
+                      data-variant-id="{{ variant.id }}"
+                      data-variant-title="{{ variant.title | escape }}"
+                      data-variant-price="{{ variant.price | money }}"
+                      data-dim="{{ dim_label }}"
+                      data-slots="{{ slot_count }} slots"
+                      data-img-url="{{ variant_image | image_url: width: 1000 }}"
+                      onclick="selectVariant(this)">
+                      <span class="sizeopt-name">{{ variant.title }}</span>
+                      <span class="sizeopt-price">{{ variant.price | money }}</span>
+                    </button>
+                  {%- endunless -%}
+                {% endfor %}
+              </div>
+            {%- endif -%}
+            
+            <div class="field-lbl">Quantity</div>
+            <div class="qty-row">
+              <div class="stepper">
+                <button type="button" onclick="updateQty(-1)">-</button>
+                <input type="number" class="q" name="quantity" id="quantity-input" value="1" min="1" readonly>
+                <button type="button" onclick="updateQty(1)">+</button>
+              </div>
+              <button type="submit" class="buy-btn" id="add-to-cart-btn" {% unless product.selected_or_first_available_variant.available %}disabled{% endunless %}>
+                {% if product.selected_or_first_available_variant.available %}
+                  Add to Cart &mdash; <span id="btn-price">{{ product.selected_or_first_available_variant.price | money }}</span>
+                {% else %}
+                  Sold Out
+                {% endif %}
+              </button>
+            </div>
+          {% endform %}
+      {%- endcase -%}
+    {%- endfor -%}
+
+    
+    <div class="re-row">
+      <div class="re-item">
+        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        360-day return
+      </div>
+      <div class="re-item">
+        <svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+        Repairable not disposable
+      </div>
+      <div class="re-item">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+        Made in Chennai
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="acc-sec" id="pd-accessories">
+  <div class="sec-hdr">
+    <div class="sec-ey">
+      <div class="sec-ey-line"></div>
+      Accessories
+    </div>
+    <div class="sec-title">Complete your board</div>
+    <div class="sec-sub">Add a few accessories to personalize your setup.</div>
+  </div>
+  
+  <div class="acc-grid">
+    {% assign acc_count = 0 %}
+    {% assign accessories = collections['tulai-accessories'].products %}
+    {% if accessories.size > 0 %}
+      {% for item in accessories limit: 4 %}
+        <div class="acc">
+          <a href="{{ item.url }}">
+            <div class="acc-img">
+              <img src="{{ item.featured_image | image_url: width: 400 }}" alt="{{ item.title | escape }}" width="400" height="400" loading="lazy">
+            </div>
+          </a>
+          <div class="acc-body">
+            <div class="acc-name">{{ item.title }}</div>
+            <div class="acc-subl">{{ item.type }}</div>
+            <div class="acc-foot">
+              <div class="acc-price">{{ item.price | money }}</div>
+              <form method="post" action="/cart/add">
+                <input type="hidden" name="id" value="{{ item.variants.first.id }}">
+                <button type="submit" class="acc-btn">Add</button>
+              </form>
+            </div>
+          </div>
+        </div>
+        {% assign acc_count = acc_count | plus: 1 %}
+      {% endfor %}
+    {% endif %}
+
+    {% if acc_count == 0 %}
+      {% for item in collections.all.products limit: 4 %}
+        {% if item.handle != product.handle %}
+          <div class="acc">
+            <a href="{{ item.url }}">
+              <div class="acc-img">
+                {% if item.featured_image %}
+                  <img src="{{ item.featured_image | image_url: width: 400 }}" alt="{{ item.title | escape }}" width="400" height="400" loading="lazy">
+                {% else %}
+                  <div class="acc-ph">No Image</div>
+                {% endif %}
+              </div>
+            </a>
+            <div class="acc-body">
+              <div class="acc-name">{{ item.title }}</div>
+              <div class="acc-subl">{{ item.type }}</div>
+              <div class="acc-foot">
+                <div class="acc-price">{{ item.price | money }}</div>
+                <form method="post" action="/cart/add">
+                  <input type="hidden" name="id" value="{{ item.variants.first.id }}">
+                  <button type="submit" class="acc-btn">Add</button>
+                </form>
+              </div>
+            </div>
+          </div>
+          {% assign acc_count = acc_count | plus: 1 %}
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+
+    {% if acc_count == 0 %}
+      <div class="acc">
+        <div class="acc-img"><div class="acc-ph">Shelf</div></div>
+        <div class="acc-body">
+          <div class="acc-name">Pegboard Shelf</div>
+          <div class="acc-subl">Accessory</div>
+          <div class="acc-foot">
+            <div class="acc-price">$45.00</div>
+            <button class="acc-btn">Add</button>
+          </div>
+        </div>
+      </div>
+      <div class="acc">
+        <div class="acc-img"><div class="acc-ph">Hooks</div></div>
+        <div class="acc-body">
+          <div class="acc-name">Steel Hooks (Set of 3)</div>
+          <div class="acc-subl">Accessory</div>
+          <div class="acc-foot">
+            <div class="acc-price">$15.00</div>
+            <button class="acc-btn">Add</button>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+<div class="specs" id="pd-specifications">
+  <div class="sec-hdr">
+    <div class="sec-ey">
+      <div class="sec-ey-line"></div>
+      Specifications
+    </div>
+    <div class="sec-title">The details</div>
+  </div>
+  <div class="spec-grid">
+    <div class="spec">
+      <div class="spec-k">Dimensions</div>
+      <div class="spec-v">{{ product.metafields.custom.dimensions }}</div>
+    </div>
+    <div class="spec">
+      <div class="spec-k">Peg slots</div>
+      <div class="spec-v">{{ product.metafields.custom.peg_slots | default: "108 slots (12x9 grid)" }}</div>
+    </div>
+    <div class="spec">
+      <div class="spec-k">Material</div>
+      <div class="spec-v">{{ product.metafields.custom.product_filter_materials }}</div>
+    </div>
+    <div class="spec">
+      <div class="spec-k">Finish</div>
+      <div class="spec-v">{{ product.metafields.custom.finish | default: "Matte Water-based PU" }}</div>
+    </div>
+    <div class="spec">
+      <div class="spec-k">Mounting</div>
+      <div class="spec-v">{{ product.metafields.custom.mounting | default: "French cleat system (hardware included)" }}</div>
+    </div>
+    <div class="spec">
+      <div class="spec-k">Origin</div>
+      <div class="spec-v">Designed and made in Chennai, India</div>
+    </div>
+    <div class="spec">
+      <div class="spec-k">Care</div>
+      <div class="spec-v">Wipe clean with a damp cloth. Avoid harsh chemicals.</div>
+    </div>
+    <div class="spec">
+      <div class="spec-k">Warranty</div>
+      <div class="spec-v">5 years against manufacturing defects.</div>
+    </div>
+    <div class="spec">
+      <div class="spec-k">Returns</div>
+      <div class="spec-v">360-day return policy. No questions asked.</div>
+    </div>
+  </div>
+</div>
+
+<div class="craft" id="pd-craft">
+  <div class="craft-txt">
+    <div class="sec-ey">
+      <div class="sec-ey-line"></div>
+      Material & craft
+    </div>
+    <div class="craft-title">One board. Cut once, kept for decades.</div>
+    <div class="craft-body">We source premium Baltic Birch known for its structural integrity and beautiful edge grain. Each board is precision CNC routed for perfect hole alignment, then hand-sanded to ensure every edge is soft to the touch.</div>
+    <div class="craft-body">Finished with a durable, low-VOC water-based clear coat that protects against moisture and daily wear while letting the natural wood character shine through.</div>
+  </div>
+  <div class="craft-img">
+  {%- if section.settings.craft_image != blank -%}
+    <img src="{{ section.settings.craft_image | image_url: width: 800 }}" alt="Craftsmanship" width="800" height="600" loading="lazy">
+  {%- else -%}
+    <img src="{{ 'tulai-board-standard.jpg' | asset_url }}" alt="Craftsmanship" width="800" height="600" loading="lazy">
+  {%- endif -%}
+  </div>
+</div>
+
+<style>
+/* CRUMB */
+.crumb{padding:12px 56px;border-bottom:1px solid var(--border);font-size:var(--fs-sm);font-weight:300;color:var(--text-secondary);display:flex;gap:8px;align-items:center;}
+.crumb a{color:var(--text-secondary);text-decoration:none;}
+.crumb a:hover{color:var(--slate);}
+.sep{color:var(--border-m);}
+
+/* PD - product section */
+.pd{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--border);align-items:start;}
+.pd-media{border-right:1px solid var(--border);background:var(--cream-d);padding:20px;overflow:visible;}
+.pb-gallery{display:flex;flex-direction:column;gap:12px;height:auto;}
+.pb-main-img{order:0;overflow:hidden;display:flex;align-items:center;justify-content:center;background:var(--cream-d);width:100%;aspect-ratio:1/1;}
+.pb-thumbs{order:1;}
+.pb-main-img img{width:100%;height:100%;object-fit:cover;display:block;}
+.pb-thumbs{display:flex;flex-direction:row;flex-wrap:wrap;gap:1px;border:none;background:var(--border);overflow-y:visible;max-height:none;scrollbar-width:none;width:100%;}
+.pb-thumbs::-webkit-scrollbar{display:none;}
+.pb-thumb{background:var(--cream-d);cursor:pointer;overflow:hidden;aspect-ratio:1/1;flex:1 1 0;min-width:56px;}
+.pb-thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:opacity 0.2s;}
+.pb-thumb.active{outline:2px solid var(--coral);outline-offset:-2px;}
+
+/* BUY PANEL */
+.buy{padding:48px 52px;display:flex;flex-direction:column;gap:0;background:var(--cream);}
+.buy-ey{display:flex;align-items:center;gap:10px;font-size:var(--fs-lbl);font-weight:300;letter-spacing:2.5px;text-transform:uppercase;color:var(--coral);margin-bottom:16px;}
+.buy-ey-line{width:20px;height:1px;background:var(--coral);flex-shrink:0;}
+.buy-title{font-size:var(--fs-h1);font-weight:200;letter-spacing:-0.5px;color:var(--slate);margin-bottom:16px;line-height:1.1;}
+.buy-lede{font-size:var(--fs-body);font-weight:300;color:var(--text-secondary);line-height:1.85;margin-bottom:24px;}
+.buy-price-row{display:flex;align-items:baseline;gap:12px;margin-bottom:28px;}
+.buy-price{font-size:var(--fs-h2);font-weight:300;color:var(--slate);}
+.buy-price-note{font-size:var(--fs-meta);font-weight:300;color:var(--text-secondary);}
+.field-lbl{display:flex;align-items:center;justify-content:space-between;font-size:var(--fs-lbl);font-weight:400;letter-spacing:2px;text-transform:uppercase;color:var(--slate);margin-bottom:12px;}
+.field-meta{color:var(--text-secondary);font-weight:300;letter-spacing:0;text-transform:none;}
+/* VAR SPEC BAR — dimension + slot count shown above variant buttons */
+.var-spec-bar{display:flex;align-items:center;gap:8px;font-size:var(--fs-sm);font-weight:300;color:var(--slate-l);letter-spacing:0.5px;margin-bottom:14px;min-height:20px;}
+.var-spec-dim{font-size:var(--fs-body);font-weight:300;color:var(--slate);letter-spacing:0.3px;}
+.var-spec-dot{color:var(--border-m);}
+.var-spec-slots{font-size:var(--fs-sm);font-weight:300;color:var(--slate-l);letter-spacing:1px;text-transform:uppercase;}
+/* SIZES — horizontal single-row compact like standalone */
+.sizes{display:flex;flex-direction:row;gap:0;margin-bottom:28px;border:1px solid var(--border-m);border-radius:4px;overflow:hidden;}
+.size-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:16px 12px;border:none;border-right:1px solid var(--border-m);background:transparent;font-family:'Outfit',sans-serif;cursor:pointer;transition:all 0.15s;text-align:center;}
+.size-btn:last-child{border-right:none;}
+.size-btn:hover{background:var(--cream-d);}
+.size-btn.active{background:rgba(193,107,69,0.06);box-shadow:inset 0 0 0 2px var(--coral);}
+.sizeopt-name{font-size:var(--fs-sm);font-weight:400;letter-spacing:1.5px;text-transform:uppercase;color:var(--slate);}
+.sizeopt-price{font-size:var(--fs-sm);font-weight:300;color:var(--text-secondary);}
+.qty-row{display:flex;gap:12px;margin-bottom:28px;}
+.stepper{display:flex;align-items:center;border:1px solid var(--border-m);border-radius:4px;overflow:hidden;}
+.stepper button{width:40px;height:48px;background:none;border:none;font-family:'Outfit',sans-serif;font-size:18px;color:var(--slate);cursor:pointer;transition:background 0.15s;}
+.stepper button:hover{background:var(--cream-d);}
+.stepper .q{width:44px;text-align:center;font-size:var(--fs-body);font-weight:300;color:var(--slate);background:transparent;border:none;}
+.buy-btn{flex:1;height:48px;background:var(--coral);color:white;border:none;border-radius:4px;font-family:'Outfit',sans-serif;font-size:var(--fs-lbl);font-weight:400;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:background 0.25s, opacity 0.15s;}
+.buy-btn:hover{opacity:0.88;}
+.buy-btn:disabled{opacity:0.4;cursor:not-allowed;}
+.buy-btn.added{background:var(--teal);}
+.re-row{display:flex;flex-wrap:wrap;gap:20px;padding-top:24px;border-top:1px solid var(--border);}
+.re-item{display:flex;align-items:center;gap:8px;font-size:var(--fs-meta);font-weight:300;color:var(--text-secondary);}
+.re-item svg{width:14px;height:14px;stroke:var(--coral);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;}
+
+/* SECTION HEADER */
+.sec-hdr{padding:48px 56px 32px;border-bottom:1px solid var(--border);}
+.sec-ey{display:flex;align-items:center;gap:10px;font-size:var(--fs-lbl);font-weight:300;letter-spacing:2.5px;text-transform:uppercase;color:var(--burnt-clay);margin-bottom:10px;}
+.sec-ey-line{width:20px;height:1px;background:var(--burnt-clay);flex-shrink:0;}
+.sec-title{font-size:var(--fs-h1);font-weight:200;letter-spacing:-0.5px;color:var(--slate);}
+.sec-sub{font-size:var(--fs-body);font-weight:300;color:var(--text-secondary);line-height:1.85;margin-top:10px;}
+
+/* SPECS */
+.specs{border-bottom:1px solid var(--border);background:var(--cream-d);}
+.spec-grid{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--border);}
+.spec{padding:24px 28px;border-right:1px solid var(--border);border-bottom:1px solid var(--border);}
+.spec:nth-child(3n){border-right:none;}
+.spec-k{font-size:var(--fs-lbl);font-weight:400;letter-spacing:2px;text-transform:uppercase;color:var(--sage);margin-bottom:8px;}
+.spec-v{font-size:var(--fs-body);font-weight:300;color:var(--slate);line-height:1.6;}
+
+/* CRAFT */
+.craft{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--border);}
+.craft-txt{padding:56px 52px;border-right:1px solid var(--border);display:flex;flex-direction:column;justify-content:center;}
+.craft-title{font-size:var(--fs-h2);font-weight:200;letter-spacing:-0.5px;color:var(--slate);line-height:1.2;margin-bottom:24px;margin-top:16px;}
+.craft-body{font-size:var(--fs-body);font-weight:300;color:var(--text-secondary);line-height:1.85;margin-bottom:14px;}
+.craft-img{overflow:hidden;background:var(--cream-d);}
+.craft-img img{width:100%;height:100%;object-fit:contain;display:block;}
+
+/* ACCESSORIES */
+.acc-sec{border-bottom:1px solid var(--border);background:var(--cream);}
+.acc-grid{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--border);}
+.acc{border-right:1px solid var(--border);border-bottom:1px solid var(--border);overflow:hidden;}
+.acc:nth-child(4n){border-right:none;}
+.acc-img{aspect-ratio:1/1;background:var(--cream-d);overflow:hidden;}
+.acc-img img{width:100%;height:100%;object-fit:contain;display:block;transition:transform 0.4s;}
+.acc:hover .acc-img img{transform:scale(1.03);}
+.acc-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:var(--fs-lbl);color:var(--text-secondary);letter-spacing:1.5px;text-transform:uppercase;}
+.acc-body{padding:14px 16px 18px;}
+.acc-name{font-size:var(--fs-body);font-weight:300;color:var(--slate);margin-bottom:4px;}
+.acc-subl{font-size:var(--fs-meta);font-weight:300;color:var(--text-secondary);margin-bottom:12px;}
+.acc-foot{display:flex;align-items:center;justify-content:space-between;}
+.acc-price{font-size:var(--fs-body);font-weight:300;color:var(--slate);}
+.acc-btn{font-size:var(--fs-micro);font-weight:300;letter-spacing:1.5px;text-transform:uppercase;color:var(--burnt-clay);background:none;border:1px solid rgba(193,107,69,0.4);border-radius:3px;padding:5px 12px;cursor:pointer;font-family:'Outfit',sans-serif;transition:all 0.15s;}
+.acc-btn:hover{background:var(--burnt-clay);color:white;}
+
+@media(max-width:900px){.pd,.craft{grid-template-columns:1fr;}.pd-media,.craft-txt{border-right:none;border-bottom:1px solid var(--border);}.pb-main-img{max-width:420px;margin:0 auto;}.pb-thumbs{max-width:420px;margin:0 auto;}.pb-thumb{min-width:56px;}.buy{padding:36px 20px;}.spec-grid{grid-template-columns:repeat(2,1fr);}.spec:nth-child(3n){border-right:1px solid var(--border);}.spec:nth-child(2n){border-right:none;}.acc-grid{grid-template-columns:repeat(2,1fr);}.acc:nth-child(4n){border-right:1px solid var(--border);}.acc:nth-child(2n){border-right:none;}.craft-txt{padding:40px 20px;}.sec-hdr{padding:36px 20px 24px;}.qty-row{flex-wrap:wrap;}.stepper,.buy-btn{min-width:0;}.buy-btn{flex-basis:100%;}.buy-lede{overflow-wrap:break-word;word-break:break-word;}}
+@media(max-width:768px){.pd-media{padding:32px 20px;}.buy{padding:32px 20px;}.crumb{padding:0 20px;}.sec-hdr{padding:32px 20px 8px;}.spec{padding:20px 20px;}.craft-txt{padding:32px 20px;}}
+</style>
+
+<script>
+function switchImage(thumbElem, imgUrl) {
+  document.querySelectorAll('.pb-thumb').forEach(function(t) {
+    t.classList.remove('active');
+  });
+  thumbElem.classList.add('active');
+  document.getElementById('main-product-image').src = imgUrl;
+}
+
+  function selectVariant(btnElem) {
+    document.querySelectorAll('.size-btn').forEach(function(btn) {
+      btn.classList.remove('active');
+    });
+    btnElem.classList.add('active');
+    
+    var variantId = btnElem.getAttribute('data-variant-id');
+    var variantTitle = btnElem.getAttribute('data-variant-title');
+    var variantPrice = btnElem.getAttribute('data-variant-price');
+    var variantImage = btnElem.getAttribute('data-img-url');
+    var dim = btnElem.getAttribute('data-dim');
+    var slots = btnElem.getAttribute('data-slots');
+    
+    // Update hidden form ID
+    var idInput = document.getElementById('variant-id');
+    if (idInput) idInput.value = variantId;
+
+    // Update prices
+    var priceEl = document.getElementById('product-price');
+    var btnPriceEl = document.getElementById('btn-price');
+    if (priceEl) priceEl.textContent = variantPrice;
+    if (btnPriceEl) btnPriceEl.textContent = variantPrice;
+
+    // Update spec bar
+    var dimEl = document.getElementById('varDim');
+    var slotsEl = document.getElementById('varSlots');
+    if (dimEl) dimEl.textContent = dim || '';
+    if (slotsEl) slotsEl.textContent = slots || '';
+
+    // Filter Thumbnails: show this variant's own images plus any shared
+    // (unassigned, data-variant="") images, capped at 5 total.
+    var allThumbs = document.querySelectorAll('.pb-thumb');
+    var matchCount = 0;
+    allThumbs.forEach(function(t) {
+      if (t.getAttribute('data-variant') === variantTitle) matchCount++;
+    });
+    // Safety net: if somehow nothing is tagged for this variant, show every
+    // thumbnail instead of hiding the whole gallery.
+    var noMatches = matchCount === 0;
+    var firstMatchingThumb = null;
+    var shownCount = 0;
+    var MAX_THUMBS = 5;
+    allThumbs.forEach(function(t) {
+      var tVariant = t.getAttribute('data-variant');
+      t.classList.remove('active');
+      if ((noMatches || tVariant === variantTitle || tVariant === '') && shownCount < MAX_THUMBS) {
+        t.style.display = 'block';
+        if (!firstMatchingThumb) firstMatchingThumb = t;
+        shownCount++;
+      } else {
+        t.style.display = 'none';
+      }
+    });
+
+    // Update Main Image
+    if (firstMatchingThumb) {
+      firstMatchingThumb.classList.add('active');
+      var mainImg = document.getElementById('main-product-image');
+      if (mainImg) mainImg.src = firstMatchingThumb.getAttribute('data-img-url');
+    } else if (variantImage) {
+      var mainImg = document.getElementById('main-product-image');
+      if (mainImg) mainImg.src = variantImage;
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    var urlHasVariant = window.location.search.indexOf('variant=') !== -1;
+
+    if (!urlHasVariant) {
+      var allBtns = document.querySelectorAll('.size-btn');
+      var targetBtn = null;
+      allBtns.forEach(function(btn) {
+        var name = btn.querySelector('.sizeopt-name');
+        if (name && name.textContent.trim() === 'Standard') targetBtn = btn;
+      });
+      if (!targetBtn) {
+        allBtns.forEach(function(btn) {
+          var name = btn.querySelector('.sizeopt-name');
+          if (name && name.textContent.trim() === 'Small') targetBtn = btn;
+        });
+      }
+      if (!targetBtn && allBtns.length) targetBtn = allBtns[allBtns.length - 1];
+
+      if (targetBtn) {
+        selectVariant(targetBtn);
+      }
+    } else {
+      var activeBtn = document.querySelector('.size-btn.active');
+      if (activeBtn) selectVariant(activeBtn);
+    }
+  });
+
+function updateQty(change) {
+  var input = document.getElementById('quantity-input');
+  var currentVal = parseInt(input.value) || 1;
+  var newVal = currentVal + change;
+  if (newVal < 1) newVal = 1;
+  input.value = newVal;
+}
+</script>
+
+<!-- Product JSON-LD + BreadcrumbList -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "{{ shop.url }}" },
+    { "@type": "ListItem", "position": 2, "name": "Shop", "item": "{{ shop.url }}/collections/tulai" },
+    { "@type": "ListItem", "position": 3, "name": "{{ product.title | escape }}", "item": "{{ shop.url }}{{ product.url }}" }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": "{{ product.title | escape }}",
+  "description": "{{ product.description | strip_html | strip_newlines | replace: '"', '\\"' | truncate: 500 }}",
+  "url": "{{ shop.url }}{{ product.url }}",
+  "image": [{% for image in product.images %}"{{ image | image_url: width: 1200 }}"{% unless forloop.last %},{% endunless %}{% endfor %}],
+  "brand": { "@type": "Brand", "name": "NARKK" },
+  "material": "{{ product.metafields.custom.product_filter_materials | default: 'Birch Plywood' }}",
+  "offers": [
+    {% for variant in product.variants %}
+    {
+      "@type": "Offer",
+      "name": "{{ variant.title | escape }}",
+      "sku": "{{ variant.sku | default: variant.id }}",
+      "price": "{{ variant.price | money_without_currency | remove: ',' }}",
+      "priceCurrency": "INR",
+      "availability": "{% if variant.available %}https://schema.org/InStock{% else %}https://schema.org/OutOfStock{% endif %}",
+      "url": "{{ shop.url }}{{ product.url }}?variant={{ variant.id }}",
+      "itemCondition": "https://schema.org/NewCondition",
+      "seller": { "@type": "Organization", "name": "NARKK" }
+    }{% unless forloop.last %},{% endunless %}
+    {% endfor %}
+  ]
+}
+</script>
+
+{% schema %}
+{
+  "name": "Main Product Board",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "craft_image",
+      "label": "Craftsmanship Image"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "@app"
+    },
+    {
+      "type": "title",
+      "name": "Title",
+      "limit": 1
+    },
+    {
+      "type": "price",
+      "name": "Price",
+      "limit": 1
+    },
+    {
+      "type": "description",
+      "name": "Description",
+      "limit": 1
+    },
+    {
+      "type": "buy_buttons",
+      "name": "Buy Buttons",
+      "limit": 1
+    }
+  ],
+  "presets": [
+    {
+      "name": "Main Product Board",
+      "blocks": [
+        { "type": "title" },
+        { "type": "description" },
+        { "type": "price" },
+        { "type": "buy_buttons" }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,1004 @@
+<style>
+/* 
+   LOOP PAGE
+ */
+
+/* filter strip */
+.lp-strip-scope { position:relative; }
+.lp-strip { position:sticky; top:var(--nav-h); z-index:100; background:rgba(245,240,234,0.97); backdrop-filter:blur(12px); border-bottom:1px solid var(--border); display:flex; align-items:center; padding:0 56px; height:48px; overflow-x:auto; scrollbar-width:none; }
+.lp-strip::-webkit-scrollbar { display:none; }
+.lp-tab { font-size:var(--fs-lbl); font-weight:300; letter-spacing:1.8px; text-transform:uppercase; color:var(--sage); padding:0 20px; height:100%; display:flex; align-items:center; border-right:1px solid var(--border); cursor:pointer; white-space:nowrap; transition:color 0.15s; position:relative; }
+.lp-tab::after { content:''; position:absolute; bottom:0; left:0; right:0; height:2px; background:var(--teal); transform:scaleX(0); transition:transform 0.2s; }
+.lp-tab:hover { color:var(--slate); }
+.lp-tab.active { color:var(--teal); }
+.lp-tab.active::after { transform:scaleX(1); }
+.lp-count { margin-left:auto; padding-left:20px; font-size:var(--fs-lbl); font-weight:300; color:var(--sage); border-left:1px solid var(--border); height:100%; display:flex; align-items:center; white-space:nowrap; }
+@media(max-width:768px) { .lp-strip { padding:0 20px; } .lp-count { display:none; } }
+
+/* section heads */
+.lp-sec-head { padding:48px 56px 32px; display:flex; align-items:flex-end; justify-content:space-between; background:var(--cream); }
+.lp-sec-ey { display:flex; align-items:center; gap:10px; font-size:var(--fs-lbl); font-weight:300; letter-spacing:2.5px; text-transform:uppercase; color:var(--teal); margin-bottom:8px; }
+.lp-sec-ey-line { width:24px; height:1px; background:var(--teal); flex-shrink:0; }
+.lp-sec-title { font-size:var(--fs-h2); font-weight:200; letter-spacing:-0.5px; color:var(--slate); }
+.lp-sec-link { font-size:var(--fs-lbl); font-weight:300; letter-spacing:1.5px; text-transform:uppercase; color:var(--teal); text-decoration:none; border-bottom:1px solid rgba(74,155,142,0.3); padding-bottom:1px; white-space:nowrap; }
+@media(max-width:768px) { .lp-sec-head { padding:32px 20px; flex-direction:column; align-items:flex-start; gap:12px; } }
+
+/* masonry article grid — standalone grid approach */
+.lp-masonry-wrap { background:var(--cream); border-bottom:1px solid var(--border); overflow:hidden; }
+.lp-masonry-wrap { margin:0 !important; padding:0 !important; }
+.lp-masonry { display:grid; grid-template-columns:repeat(3,1fr); grid-gap:0 !important; gap:0 !important; border-top:1px solid var(--border); margin:0 !important; margin-right:-1px !important; padding:0 !important; }
+.lp-m-card { background:var(--cream); border-right:1px solid var(--border); border-bottom:1px solid var(--border); margin:0 !important; overflow:hidden; cursor:pointer; transition:background 0.15s; display:flex; flex-direction:column; color:inherit; text-decoration:none; }
+.lp-m-card:hover { background:var(--cream-d); }
+.lp-m-img { width:100%; overflow:hidden; background:var(--cream-d); position:relative; aspect-ratio:4/3; }
+.lp-m-img img { width:100%; height:100%; display:block; object-fit:cover; transition:transform 0.4s; }
+.lp-m-card:hover .lp-m-img img { transform:scale(1.03); }
+/* hide floating image tag badges — category shown in body meta row */
+.lp-m-tag { display:none; }
+.lp-m-body { padding:18px 20px 20px; display:flex; flex-direction:column; flex:1; }
+.lp-m-meta { display:flex; align-items:center; gap:7px; margin-bottom:8px; flex-wrap:nowrap; overflow:hidden; }
+.lp-m-meta-tag { font-size:var(--fs-micro); font-weight:300; letter-spacing:1.5px; text-transform:uppercase; color:var(--teal); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.lp-m-dot { width:3px; height:3px; border-radius:50%; background:var(--border-m); flex-shrink:0; }
+.lp-m-time { font-size:var(--fs-lbl); font-weight:300; color:var(--sage); }
+.lp-m-title { font-size:var(--fs-body); font-weight:300; color:var(--slate); line-height:1.45; margin-bottom:8px; }
+.lp-m-card.hero .lp-m-title { font-size:clamp(15px, 3.5vw, var(--fs-h3)); }
+.lp-m-excerpt { font-size:var(--fs-sm); font-weight:300; color:var(--slate-l); line-height:1.65; margin-bottom:14px; }
+.lp-m-footer { display:flex; align-items:center; justify-content:space-between; padding-top:12px; margin-top:auto; border-top:1px solid var(--border); }
+.lp-m-author { display:flex; align-items:center; gap:7px; }
+.lp-avatar { width:22px; height:22px; border-radius:50%; background:var(--cream-d); display:flex; align-items:center; justify-content:center; font-size:8px; font-weight:400; color:var(--slate-l); flex-shrink:0; }
+.lp-m-author span { font-size:var(--fs-meta); font-weight:300; color:var(--slate-l); }
+.lp-m-read { font-size:var(--fs-micro); font-weight:300; letter-spacing:1.5px; text-transform:uppercase; color:var(--teal); border-bottom:1px solid rgba(74,155,142,0.3); padding-bottom:1px; }
+.lp-see-more { padding:24px 56px; background:var(--cream); border-bottom:1px solid var(--border); display:flex; justify-content:center; }
+.lp-see-more-btn { font-size:var(--fs-lbl); font-weight:300; letter-spacing:2px; text-transform:uppercase; color:var(--teal); text-decoration:none; border:1px solid rgba(74,155,142,0.35); padding:12px 28px; border-radius:3px; transition:background 0.15s; }
+.lp-see-more-btn:hover { background:rgba(74,155,142,0.06); }
+@media(max-width:900px) { .lp-masonry { grid-template-columns:repeat(2,1fr); } }
+@media(max-width:640px) {
+  .lp-masonry-wrap { padding: 0 16px; background: var(--cream); border-bottom: none; }
+  .lp-masonry { grid-template-columns: 1fr; border-top: 1px solid var(--border); border-left: 1px solid var(--border); margin-right: 0; margin-bottom: 16px; }
+  .lp-see-more { padding: 0 16px 20px; }
+  .lp-m-card { flex-direction:column; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .lp-m-card .lp-m-img { width:100%; aspect-ratio:4/3; height:auto; }
+  .lp-m-body { padding: 20px; }
+  .lp-m-meta { margin-bottom: 8px; }
+  .lp-m-meta-tag { font-size: 10px; }
+  .lp-m-time { font-size: 10px; }
+  .lp-m-title { font-size: 18px; line-height: 1.4; margin-bottom: 8px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+  .lp-m-card.hero .lp-m-title { font-size: 18px; }
+  .lp-m-excerpt { display:none; }
+  .lp-m-footer { padding-top: 12px; }
+}
+
+/* community &mdash; teal, shrunk 1:2 ratio feel */
+.lp-community { background:var(--teal); border-bottom:1px solid rgba(255,255,255,0.12); }
+.lp-comm-head { padding:36px 56px 28px; }
+.lp-comm-ey { display:flex; align-items:center; gap:10px; font-size:var(--fs-lbl); font-weight:300; letter-spacing:2.5px; text-transform:uppercase; color:rgba(245,240,234,0.65); margin-bottom:10px; }
+.lp-comm-ey-line { width:24px; height:1px; background:rgba(245,240,234,0.4); flex-shrink:0; }
+.lp-comm-title { font-size:var(--fs-h2); font-weight:200; letter-spacing:-0.5px; color:white; margin-bottom:8px; }
+.lp-comm-sub { font-size:var(--fs-sm); font-weight:300; color:rgba(245,240,234,0.75); max-width:480px; line-height:1.7; }
+.lp-channels { display:grid; grid-template-columns:repeat(3,1fr); border-top:1px solid rgba(255,255,255,0.12); }
+.lp-channel { padding:28px 32px 32px; border-right:1px solid rgba(255,255,255,0.12); display:flex; flex-direction:column; text-decoration:none; transition:background 0.15s; cursor:pointer; }
+.lp-channel:last-child { border-right:none; }
+.lp-channel:hover { background:rgba(255,255,255,0.06); }
+.lp-ch-icon { width:32px; height:32px; margin-bottom:18px; }
+.lp-ch-icon svg { width:100%; height:100%; stroke:rgba(245,240,234,0.7); fill:none; stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round; }
+.lp-ch-name { font-size:var(--fs-h3); font-weight:200; color:white; margin-bottom:5px; }
+.lp-ch-handle { font-size:var(--fs-meta); font-weight:300; color:rgba(245,240,234,0.5); margin-bottom:12px; }
+.lp-ch-desc { font-size:var(--fs-sm); font-weight:300; color:rgba(245,240,234,0.7); line-height:1.65; margin-bottom:20px; flex:1; }
+.lp-ch-cta { font-size:var(--fs-lbl); font-weight:300; letter-spacing:1.8px; text-transform:uppercase; color:rgba(245,240,234,0.85); border-bottom:1px solid rgba(245,240,234,0.3); padding-bottom:1px; width:fit-content; }
+.lp-ch-soon { opacity:0.6; cursor:default; }
+.lp-ch-cta-dim { color:rgba(245,240,234,0.35); border-color:rgba(245,240,234,0.15); }
+
+/* Swipe dots hidden */
+.lp-ch-dots { display:none !important; }
+
+@media(max-width:900px) {
+  .lp-comm-head { padding:28px 20px 16px; }
+  /* Single column — each card is a square, stacked one by one */
+  .lp-channels {
+    display:flex;
+    flex-direction:column;
+    border-top:1px solid rgba(255,255,255,0.12);
+  }
+  .lp-channel {
+    width:100%;
+    border-right:none;
+    border-bottom:1px solid rgba(255,255,255,0.12);
+    padding:28px 24px;
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-start; /* keep items grouped at top */
+    overflow:hidden;
+  }
+  .lp-channel:last-child { border-bottom:none; }
+  .lp-ch-desc {
+    flex:none; /* overrides flex:1 from desktop so CTA is not pushed to the bottom */
+    margin-bottom: 24px;
+    overflow:hidden;
+    display:-webkit-box;
+    -webkit-line-clamp:4;
+    -webkit-box-orient:vertical;
+  }
+}
+
+/* chapter break &mdash; beige */
+.lp-chapter { background:var(--cream-d); padding:56px; border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
+.lp-ch-label { font-size:var(--fs-micro); font-weight:300; letter-spacing:3px; text-transform:uppercase; color:var(--sage); margin-bottom:12px; }
+.lp-ch-title { font-size:var(--fs-h1); font-weight:200; letter-spacing:-1px; color:var(--teal); line-height:1.1; margin-bottom:12px; }
+.lp-ch-sub { font-size:var(--fs-body); font-weight:300; color:var(--slate-l); max-width:440px; line-height:1.75; }
+@media(max-width:768px) { .lp-chapter { padding:32px 20px; } }
+
+/* inner loop &mdash; beige background */
+.lp-inner { background:var(--cream-d); }
+.lp-inner-intro { padding:64px 56px 56px; border-bottom:1px solid var(--border); max-width:700px; }
+.lp-inner-ey { display:flex; align-items:center; gap:10px; font-size:var(--fs-lbl); font-weight:300; letter-spacing:2.5px; text-transform:uppercase; color:var(--teal); margin-bottom:0; }
+.lp-inner-ey-line { width:24px; height:1px; background:var(--teal); flex-shrink:0; }
+.lp-inner-title { font-size:var(--fs-disp); font-weight:200; letter-spacing:-2px; line-height:1; color:var(--teal); margin-top:24px; margin-bottom:28px; }
+.lp-inner-desc { font-size:var(--fs-body); font-weight:300; color:var(--slate-l); line-height:1.9; }
+/* person cards grid */
+.lp-inner-who-section { padding:52px 56px; border-bottom:1px solid var(--border); }
+.lp-inner-who-lbl { font-size:var(--fs-micro); font-weight:300; letter-spacing:2.5px; text-transform:uppercase; color:var(--sage); margin-bottom:28px; }
+.lp-person-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:12px; }
+.lp-person-card { background:var(--cream); border:1px solid var(--border-m); border-radius:4px; padding:24px 20px; }
+.lp-person-num { font-size:var(--fs-micro); font-weight:300; letter-spacing:1px; color:var(--teal); margin-bottom:12px; opacity:0.7; }
+.lp-person-name { font-size:var(--fs-body); font-weight:300; color:var(--slate); margin-bottom:8px; line-height:1.3; }
+.lp-person-desc { font-size:var(--fs-sm); font-weight:300; color:var(--slate-l); line-height:1.6; }
+.lp-inner-cta-row { padding:52px 56px; display:flex; align-items:center; justify-content:space-between; gap:40px; border-top:1px solid var(--border); }
+.lp-inner-cta-title { font-size:var(--fs-h2); font-weight:200; color:var(--slate); margin-bottom:8px; letter-spacing:-0.3px; }
+.lp-inner-cta-sub { font-size:var(--fs-sm); font-weight:300; color:var(--slate-l); line-height:1.6; max-width:400px; }
+.lp-inner-cta-btn { font-family:'Outfit',sans-serif; font-size:var(--fs-lbl); font-weight:300; letter-spacing:2px; text-transform:uppercase; background:var(--teal); color:white; border:none; padding:14px 28px; border-radius:3px; cursor:pointer; text-decoration:none; white-space:nowrap; transition:opacity 0.15s; flex-shrink:0; }
+.lp-inner-cta-btn:hover { opacity:0.85; }
+@media(max-width:900px) { .lp-person-grid { grid-template-columns:repeat(2,1fr); } }
+@media(max-width:768px) { 
+  .lp-inner-intro { padding:32px 20px 28px; } 
+  .lp-inner-title { font-size:clamp(32px,10vw,52px); letter-spacing:-1px; margin-top:16px; margin-bottom:20px; }
+  .lp-inner-desc { font-size:var(--fs-sm); line-height:1.8; }
+  .lp-inner-who-section { padding:28px 20px; } 
+  .lp-inner-cta-row { flex-direction:column; align-items:flex-start; padding:28px 20px; } 
+  .lp-inner-cta-title { font-size:clamp(22px,6vw,32px); }
+  .lp-person-grid { grid-template-columns:1fr; } 
+}
+
+/* write for loop &mdash; pre-footer, content left, image right */
+.lp-writers { background:var(--slate); border-top:1px solid rgba(143,168,168,0.15); }
+.lp-writers-inner { display:grid; grid-template-columns:1fr 1fr; min-height:400px; }
+.lp-writers-left { padding:64px 56px; display:flex; flex-direction:column; justify-content:center; border-right:1px solid rgba(143,168,168,0.15); }
+.lp-writers-right { overflow:hidden; background:rgba(255,255,255,0.04); }
+.lp-writers-right img { width:100%; height:100%; object-fit:contain; display:block; }
+.lp-writers-ey { font-size:var(--fs-micro); font-weight:300; letter-spacing:2.5px; text-transform:uppercase; color:var(--slate); margin-bottom:16px; }
+.lp-writers-title { font-size:clamp(22px,2.5vw,32px); font-weight:200; color:var(--slate); margin-bottom:16px; line-height:1.2; }
+.lp-writers-desc { font-size:var(--fs-sm); font-weight:300; color:rgba(51,65,85,0.75); line-height:1.75; max-width:440px; margin-bottom:36px; flex:1; }
+.lp-writers-btn { display:inline-flex; align-items:center; gap:10px; font-family:inherit; font-size:var(--fs-lbl); font-weight:300; letter-spacing:2px; text-transform:uppercase; color:var(--cream); text-decoration:none; background:var(--slate); border:1px solid rgba(51,65,85,0.8); padding:14px 28px; border-radius:3px; white-space:nowrap; width:fit-content; cursor:pointer; transition:opacity 0.15s; }
+.lp-writers-btn:hover { opacity:0.85; }
+@media(max-width:768px) { 
+  .lp-writers-inner { grid-template-columns:1fr; } 
+  .lp-writers-left { padding:32px 20px 36px; border-right:none; border-bottom:1px solid rgba(143,168,168,0.15); } 
+  .lp-writers-right { aspect-ratio:4/3; min-height:unset; } 
+  .lp-writers-title { font-size:clamp(22px,6vw,32px); }
+}
+
+/* end-of-loop centered divider */
+.lp-loop-endline { display:flex; align-items:center; width:100%; max-width:100%; padding:44px 56px; background:var(--cream); overflow:hidden; box-sizing:border-box; }
+.lp-loop-endline-bar { flex:1 1 0; min-width:0; height:1px; background:var(--border); }
+.lp-loop-endline-word { flex:0 0 auto; padding:0 22px; font-size:var(--fs-lbl); font-weight:300; letter-spacing:3px; text-transform:uppercase; color:var(--sage); white-space:nowrap; }
+@media(max-width:500px) { .lp-loop-endline { padding:32px 20px; } .lp-loop-endline-word { padding:0 14px; letter-spacing:2.5px; } }
+
+/* 
+   PHILOSOPHY PAGE
+ */
+
+/* founder letter */
+.ph-founder { position:relative; width:100%; min-height:90vh; overflow:hidden; border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
+.ph-founder-img { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; object-position:right center; display:block; }
+.ph-founder-grad { position:absolute; inset:0; background:linear-gradient(to right, rgba(245,240,234,0.97) 0%, rgba(245,240,234,0.93) 28%, rgba(245,240,234,0.6) 48%, rgba(245,240,234,0) 65%); }
+.ph-founder-content { position:relative; z-index:2; max-width:520px; padding:72px 0 72px 56px; }
+.ph-founder-ey { display:flex; align-items:center; gap:10px; font-size:var(--fs-lbl); font-weight:300; letter-spacing:2.5px; text-transform:uppercase; color:var(--sage); margin-bottom:28px; }
+.ph-founder-ey-line { width:24px; height:1px; background:var(--sage); flex-shrink:0; }
+.ph-founder-sal { font-size:var(--fs-sm); font-weight:300; color:var(--coral); letter-spacing:0.5px; margin-bottom:20px; }
+.ph-founder-body { font-size:var(--fs-body); font-weight:300; color:var(--slate); line-height:1.9; margin-bottom:16px; max-width:440px; }
+.ph-founder-more { display:none; }
+.ph-founder-more.open { display:block; }
+.ph-founder-more p { font-size:var(--fs-body); font-weight:300; color:var(--slate); line-height:1.9; margin-bottom:16px; max-width:440px; }
+.ph-founder-toggle { display:inline-flex; align-items:center; gap:8px; font-size:var(--fs-lbl); font-weight:300; letter-spacing:2px; text-transform:uppercase; color:var(--coral); cursor:pointer; border-bottom:1px solid rgba(193,107,69,0.3); padding-bottom:2px; margin-top:8px; background:none; border-top:none; border-left:none; border-right:none; font-family:'Outfit',sans-serif; }
+.ph-founder-toggle svg { width:11px; height:11px; stroke:var(--coral); fill:none; stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round; transition:transform 0.2s; }
+.ph-founder-toggle.open svg { transform:rotate(180deg); }
+.ph-founder-sig { margin-top:36px; padding-top:24px; border-top:1px solid var(--border); }
+.ph-founder-sig-name { font-size:var(--fs-body); font-weight:400; color:var(--slate); margin-bottom:2px; }
+.ph-founder-sig-title { font-size:var(--fs-meta); font-weight:300; color:var(--sage); }
+@media(max-width:768px) { .ph-founder { min-height:auto; } .ph-founder-img { position:relative; width:100%; height:320px; object-position:center top; display:block; } .ph-founder-grad { background:linear-gradient(to bottom, rgba(245,240,234,0) 40%, rgba(245,240,234,1) 90%); } .ph-founder-content { padding:32px 20px 48px; max-width:100%; } }
+
+/* aim mission vision &mdash; 3 cards */
+.ph-amv { background:var(--slate); border-bottom:1px solid rgba(143,168,168,0.2); padding:64px 56px; }
+.ph-amv-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
+.ph-amv-card { background:rgba(255,255,255,0.04); border:1px solid rgba(143,168,168,0.15); border-radius:4px; padding:32px 28px; }
+.ph-amv-label { font-size:var(--fs-lbl); font-weight:300; letter-spacing:2px; text-transform:uppercase; margin-bottom:14px; }
+.ph-amv-label.coral { color:var(--coral); }
+.ph-amv-label.teal { color:var(--teal); }
+.ph-amv-label.sage { color:var(--sage); }
+.ph-amv-text { font-size:var(--fs-body); font-weight:200; color:var(--cream); line-height:1.75; }
+@media(max-width:768px) { .ph-amv { padding:52px 20px; } .ph-amv-grid { grid-template-columns:1fr; gap:16px; } }
+
+/* RE manifesto intro */
+.ph-re-intro { padding:72px 56px 48px; max-width:760px; border-bottom:1px solid var(--border); background:var(--cream); }
+.ph-re-ey { display:flex; align-items:center; gap:10px; font-size:var(--fs-lbl); font-weight:300; letter-spacing:2.5px; text-transform:uppercase; color:var(--coral); margin-bottom:20px; }
+.ph-re-ey-line { width:24px; height:1px; background:var(--coral); flex-shrink:0; }
+.ph-re-title { font-size:var(--fs-h1); font-weight:200; letter-spacing:-1px; color:var(--slate); line-height:1.15; margin-bottom:20px; }
+.ph-re-sub { font-size:var(--fs-body); font-weight:300; color:var(--slate-l); line-height:1.85; }
+@media(max-width:768px) { .ph-re-intro { padding:48px 20px 40px; } }
+
+/* pillar strip */
+.ph-pillars-wrap { background:var(--cream); border-bottom:1px solid var(--border); }
+.ph-strip { position:sticky; top:var(--nav-h); z-index:50; display:flex; align-items:center; border-bottom:1px solid var(--border); background:rgba(245,240,234,0.97); backdrop-filter:blur(10px); overflow-x:auto; scrollbar-width:none; padding:0 44px; height:44px; gap:0; }
+.ph-strip::-webkit-scrollbar { display:none; }
+.ph-strip-item { font-size:var(--fs-micro); font-weight:300; letter-spacing:2px; text-transform:uppercase; color:var(--sage); padding:0 20px; white-space:nowrap; border-right:1px solid var(--border); height:100%; display:flex; align-items:center; transition:color 0.15s; cursor:pointer; text-decoration:none; }
+.ph-strip-item:first-child { padding-left:0; }
+.ph-strip-item:last-child { border-right:none; }
+.ph-strip-item.active { color:var(--coral); }
+.ph-strip-item:hover { color:var(--slate); }
+.ph-pillar { display:grid; grid-template-columns:1fr 1fr; border-bottom:1px solid var(--border); }
+.ph-pillar:last-child { border-bottom:none; }
+.ph-pillar-img { overflow:hidden; background:var(--cream-d); aspect-ratio:4/3; }
+.ph-pillar-img img { width:100%; height:100%; object-fit:contain; display:block; transition:transform 0.6s; }
+.ph-pillar:hover .ph-pillar-img img { transform:scale(1.03); }
+.ph-pillar-content { padding:56px 52px; display:flex; flex-direction:column; justify-content:center; border-left:1px solid var(--border); background:var(--cream); }
+.ph-pillar:nth-child(even) { direction:rtl; }
+.ph-pillar:nth-child(even)>* { direction:ltr; }
+.ph-pillar:nth-child(even) .ph-pillar-content { border-left:none; border-right:1px solid var(--border); background:var(--cream-d); }
+.ph-pillar-num { font-size:var(--fs-lbl); font-weight:300; letter-spacing:2.5px; text-transform:uppercase; color:var(--coral); margin-bottom:16px; display:flex; align-items:center; gap:10px; }
+.ph-pillar-num::after { content:''; flex:1; height:1px; background:rgba(193,107,69,0.2); max-width:40px; }
+.ph-pillar-title { font-size:var(--fs-h2); font-weight:200; letter-spacing:-0.5px; color:var(--slate); line-height:1.2; margin-bottom:20px; }
+.ph-pillar-body { font-size:var(--fs-body); font-weight:300; color:var(--slate-l); line-height:1.85; max-width:380px; }
+@media(max-width:768px) { .ph-strip { padding:0 20px; } .ph-pillar { grid-template-columns:1fr; direction:ltr; } .ph-pillar:nth-child(even) { direction:ltr; } .ph-pillar-img { aspect-ratio:16/9; } .ph-pillar-content { padding:32px 20px; border-left:none!important; border-right:none!important; border-top:1px solid var(--border); } }
+
+/* what we believe */
+.ph-beliefs { background:var(--cream-d); border-bottom:1px solid var(--border); }
+.ph-beliefs-head { padding:64px 56px 0; margin-bottom:0; }
+.ph-beliefs-ey { display:flex; align-items:center; gap:10px; font-size:var(--fs-lbl); font-weight:300; letter-spacing:2.5px; text-transform:uppercase; color:var(--teal); margin-bottom:16px; }
+.ph-beliefs-ey-line { width:24px; height:1px; background:var(--teal); flex-shrink:0; }
+.ph-beliefs-title { font-size:var(--fs-h1); font-weight:200; letter-spacing:-0.5px; color:var(--slate); line-height:1.2; margin-bottom:20px; }
+.ph-beliefs-sub { font-size:var(--fs-body); font-weight:300; color:var(--slate-l); line-height:1.8; max-width:520px; margin-bottom:0; padding-bottom:40px; }
+.ph-beliefs-grid { display:grid; grid-template-columns:repeat(5,1fr); border-top:1px solid var(--border); }
+.ph-belief { padding:36px 28px 40px; border-right:1px solid var(--border); }
+.ph-belief:last-child { border-right:none; }
+.ph-belief-num { font-size:var(--fs-lbl); font-weight:300; letter-spacing:2px; text-transform:uppercase; color:var(--teal); margin-bottom:16px; display:block; }
+.ph-belief-title { font-size:var(--fs-body); font-weight:300; color:var(--slate); line-height:1.35; margin-bottom:12px; }
+.ph-belief-body { font-size:var(--fs-sm); font-weight:300; color:var(--slate-l); line-height:1.7; }
+@media(max-width:900px) { .ph-beliefs-grid { grid-template-columns:repeat(2,1fr); } .ph-belief:nth-child(2n) { border-right:none; } .ph-beliefs-head { padding:44px 20px 0; } }
+@media(max-width:600px) { .ph-beliefs-grid { grid-template-columns:1fr; } .ph-belief { border-right:none; border-bottom:1px solid var(--border); padding:28px 20px; } .ph-belief:last-child { border-bottom:none; } }
+
+/* collab &mdash; teal bg, content left, image right */
+.ph-collab { background:var(--teal); border-bottom:1px solid rgba(255,255,255,0.12); }
+.ph-collab-inner { display:grid; grid-template-columns:1fr 1fr; min-height:480px; }
+.ph-collab-inner > div:first-child { padding:72px 56px; display:flex; flex-direction:column; justify-content:center; border-right:1px solid rgba(255,255,255,0.12); }
+.ph-collab-right-img { overflow:hidden; background:rgba(255,255,255,0.06); }
+.ph-collab-right-img img { width:100%; height:100%; object-fit:contain; display:block; }
+.ph-collab-ey { display:flex; align-items:center; gap:10px; font-size:var(--fs-lbl); font-weight:300; letter-spacing:2.5px; text-transform:uppercase; color:rgba(245,240,234,0.65); margin-bottom:20px; }
+.ph-collab-ey-line { width:24px; height:1px; background:rgba(245,240,234,0.4); flex-shrink:0; }
+.ph-collab-title { font-size:var(--fs-h1); font-weight:200; letter-spacing:-1px; color:white; line-height:1.15; margin-bottom:20px; }
+.ph-collab-em { color:rgba(245,240,234,0.75); font-style:normal; }
+.ph-collab-body { font-size:var(--fs-body); font-weight:300; color:rgba(245,240,234,0.8); line-height:1.8; margin-bottom:28px; max-width:400px; }
+.ph-collab-who-lbl { font-size:var(--fs-lbl); font-weight:300; letter-spacing:2px; text-transform:uppercase; color:rgba(245,240,234,0.5); margin-bottom:12px; margin-top:28px; }
+.ph-collab-pills { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:32px; }
+.ph-collab-pill { font-size:var(--fs-meta); font-weight:300; color:rgba(245,240,234,0.8); border:1px solid rgba(245,240,234,0.25); padding:5px 14px; border-radius:20px; }
+.ph-collab-btn { display:inline-flex; align-items:center; gap:10px; font-size:var(--fs-lbl); font-weight:300; letter-spacing:2px; text-transform:uppercase; background:rgba(255,255,255,0.15); color:white; border:1px solid rgba(255,255,255,0.3); padding:14px 28px; border-radius:3px; cursor:pointer; font-family:'Outfit',sans-serif; text-decoration:none; transition:background 0.15s; }
+.ph-collab-btn:hover { background:rgba(255,255,255,0.22); }
+.ph-collab-btn svg { width:12px; height:12px; stroke:white; fill:none; stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round; }
+.ph-collab-right { display:flex; flex-direction:column; gap:16px; }
+.ph-collab-right .ph-collab-tag { padding:20px 24px; border:1px solid rgba(245,240,234,0.15); border-radius:4px; background:rgba(255,255,255,0.06); }
+.ph-collab-right .ph-collab-tag-title { font-size:var(--fs-sm); font-weight:300; color:white; margin-bottom:4px; }
+.ph-collab-right .ph-collab-tag-desc { font-size:var(--fs-meta); font-weight:300; color:rgba(245,240,234,0.65); line-height:1.5; }
+@media(max-width:768px) { .ph-collab { padding:52px 20px; } .ph-collab-inner { grid-template-columns:1fr; gap:36px; } }
+
+
+.crumb{position:sticky;top:var(--nav-h);z-index:100;background:rgba(245,240,234,0.97);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;padding:0 44px;height:44px;font-size:var(--fs-lbl);font-weight:300;letter-spacing:1.8px;text-transform:uppercase;color:var(--slate-l);}
+.crumb a{color:var(--slate-l);cursor:pointer;}
+.crumb a:hover{color:var(--slate);}
+.crumb .cur{color:var(--coral);}
+.crumb .sep{opacity:0.5;}
+.sec-hdr{padding:44px 44px 8px;}
+.sec-ey{display:flex;align-items:center;gap:10px;font-size:var(--fs-lbl);font-weight:300;letter-spacing:2.5px;text-transform:uppercase;color:var(--coral);margin-bottom:12px;}
+.sec-ey-line{width:24px;height:1px;background:var(--coral);flex-shrink:0;}
+.sec-title{font-size:var(--fs-h1);font-weight:200;letter-spacing:-0.8px;color:var(--slate);margin-bottom:6px;}
+.sec-sub{font-size:var(--fs-sm);font-weight:300;color:var(--slate-l);max-width:560px;line-height:1.7;}
+/* PRODUCT PAGE */
+.pd{display:grid;grid-template-columns:1.15fr 1fr;border-bottom:1px solid var(--border);}
+.pd-media{border-right:1px solid var(--border);padding:44px;}
+.gallery{display:flex;gap:14px;}
+.thumbs{display:flex;flex-direction:column;gap:10px;width:74px;flex-shrink:0;}
+.thumb{width:74px;height:74px;border:1px solid var(--border);overflow:hidden;cursor:pointer;background:var(--cream-d);transition:border-color 0.15s;padding:0;}
+.thumb img{width:100%;height:100%;object-fit:contain;display:block;transition:opacity 0.15s;}
+.thumb:hover img{opacity:0.85;}
+.thumb.on{border-color:var(--coral);}
+.main-img{flex:1;aspect-ratio:1/1;border:1px solid var(--border);overflow:hidden;background:var(--cream-d);}
+.main-img img{width:100%;height:100%;object-fit:contain;display:block;}
+.buy{padding:56px 56px 48px;display:flex;flex-direction:column;}
+.buy-ey{display:flex;align-items:center;gap:10px;font-size:var(--fs-lbl);font-weight:300;letter-spacing:2.5px;text-transform:uppercase;color:var(--coral);margin-bottom:18px;}
+.buy-ey-line{width:24px;height:1px;background:var(--coral);flex-shrink:0;}
+.buy-title{font-size:var(--fs-disp);font-weight:200;letter-spacing:-2px;line-height:1;color:var(--slate);margin-bottom:16px;}
+.buy-lede{font-size:var(--fs-body);font-weight:300;color:var(--slate-l);line-height:1.85;max-width:420px;margin-bottom:26px;}
+.buy-price-row{display:flex;align-items:baseline;gap:12px;padding-bottom:24px;border-bottom:1px solid var(--border);margin-bottom:26px;}
+.buy-price{font-size:30px;font-weight:200;letter-spacing:-1px;color:var(--slate);}
+.buy-price-note{font-size:var(--fs-meta);font-weight:300;color:var(--sage);}
+.field-lbl{display:flex;align-items:center;justify-content:space-between;font-size:var(--fs-lbl);font-weight:400;letter-spacing:2px;text-transform:uppercase;color:var(--slate);margin-bottom:12px;}
+.field-lbl .field-meta{font-weight:300;letter-spacing:1.5px;color:var(--sage);}
+.sizes{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:28px;}
+.sizeopt{border:1px solid var(--border-m);background:transparent;border-radius:3px;padding:12px 8px;cursor:pointer;text-align:center;transition:border-color 0.15s,background 0.15s;font-family:'Outfit',sans-serif;}
+.sizeopt:hover{background:var(--cream-d);}
+.sizeopt-name{display:block;font-size:var(--fs-sm);font-weight:300;color:var(--slate);}
+.sizeopt-price{display:block;font-size:var(--fs-micro);font-weight:300;color:var(--sage);margin-top:3px;}
+.sizeopt.on{border-color:var(--coral);background:var(--clay-tint);}
+.sizeopt.on .sizeopt-price{color:var(--coral);}
+.qty-row{display:flex;align-items:center;gap:16px;margin-bottom:14px;}
+.stepper{display:flex;align-items:center;border:1px solid var(--border-m);border-radius:3px;overflow:hidden;}
+.stepper button{width:42px;height:46px;border:none;background:transparent;font-size:18px;font-weight:300;color:var(--slate);cursor:pointer;font-family:'Outfit',sans-serif;transition:background 0.12s;}
+.stepper button:hover{background:var(--cream-d);}
+.stepper .q{width:44px;text-align:center;font-size:var(--fs-body);font-weight:400;color:var(--slate);}
+.buybtn{flex:1;height:48px;border:none;border-radius:3px;background:var(--coral);color:#fff;font-family:'Outfit',sans-serif;font-size:var(--fs-lbl);font-weight:400;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:opacity 0.15s,background 0.2s;}
+.buybtn:hover{opacity:0.88;}
+.buybtn.done{background:var(--teal);}
+.re-row{display:flex;gap:22px;margin-top:22px;padding-top:22px;border-top:1px solid var(--border);flex-wrap:wrap;}
+.re-item{display:flex;align-items:center;gap:8px;font-size:var(--fs-meta);font-weight:300;color:var(--slate-l);}
+.re-item svg{width:15px;height:15px;stroke:var(--coral);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;}
+.acc-sec{border-bottom:1px solid var(--border);background:var(--cream-d);}
+.acc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin-top:36px;}
+.acc{background:var(--cream-d);padding:0;display:flex;flex-direction:column;transition:background 0.15s;}
+.acc.on{background:var(--cream);}
+.acc-img{aspect-ratio:1/1;overflow:hidden;background:var(--cream);}
+.acc-img img{width:100%;height:100%;object-fit:contain;display:block;}
+.acc-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:var(--fs-lbl);font-weight:300;letter-spacing:1.5px;text-transform:uppercase;color:var(--sage);}
+.acc-body{padding:16px 18px 18px;display:flex;flex-direction:column;flex:1;}
+.acc-name{font-size:var(--fs-body);font-weight:300;color:var(--slate);margin-bottom:3px;}
+.acc-subl{font-size:var(--fs-meta);font-weight:300;color:var(--sage);margin-bottom:14px;flex:1;}
+.acc-foot{display:flex;align-items:center;justify-content:space-between;}
+.acc-price{font-size:var(--fs-body);font-weight:300;color:var(--slate);}
+.acc-btn{font-family:'Outfit',sans-serif;font-size:var(--fs-micro);font-weight:400;letter-spacing:1.5px;text-transform:uppercase;color:var(--coral);background:transparent;border:1px solid var(--clay-line,rgba(193,107,69,0.32));border-radius:3px;padding:7px 14px;cursor:pointer;transition:all 0.15s;}
+</style>
+
+  {%- assign loop_blog = blogs[section.settings.blog_top] -%}
+  {%- assign loop_articles = loop_blog.articles -%}
+  {%- assign loop_limit = section.settings.blog_top_limit | default: 6 -%}
+  {%- assign loop_total_count = loop_blog.articles_count | default: 0 -%}
+
+  <!-- FILTER STRIP (sticky scoped to From the Loop section only) -->
+  <div class="lp-strip-scope">
+  <div class="lp-strip" id="lp-filter-strip">
+    <span class="lp-tab active" data-tag="all">All</span><span class="lp-tab" data-tag="il">Intentional Living</span><span class="lp-tab" data-tag="do">Declutter &amp; Organise</span><span class="lp-tab" data-tag="cm">Craft &amp; Material</span><span class="lp-tab" data-tag="ss">Stories That Stayed</span><span class="lp-tab" data-tag="iu">In Use</span>
+    <span class="lp-count" id="lp-count">{{ loop_total_count }} articles</span>
+  </div>
+
+  <!-- FROM THE LOOP -->
+  <div class="lp-sec-head">
+    <div>
+      <div class="lp-sec-ey"><span class="lp-sec-ey-line"></span>Living with Intentions</div>
+      <div class="lp-sec-title">From the Loop</div>
+    </div>
+    <a href="{{ loop_blog.url | default: '#' }}" class="lp-sec-link">See all articles &rarr;</a>
+  </div>
+
+  <!-- MASONRY GRID &mdash; bordered container -->
+  <div class="lp-masonry-wrap">
+    <div class="lp-masonry" id="lp-article-grid">
+
+      {%- if loop_articles.size > 0 -%}
+        {%- for article in loop_articles limit: loop_limit -%}
+          {%- assign tag_lower = article.tags.first | downcase -%}
+          {%- case tag_lower -%}
+            {%- when 'intentional living' -%}{%- assign tag_slug = 'il' -%}
+            {%- when 'declutter & organise' or 'declutter and organise' -%}{%- assign tag_slug = 'do' -%}
+            {%- when 'craft & material' or 'craft and material' -%}{%- assign tag_slug = 'cm' -%}
+            {%- when 'stories that stayed' -%}{%- assign tag_slug = 'ss' -%}
+            {%- when 'in use' -%}{%- assign tag_slug = 'iu' -%}
+            {%- else -%}{%- assign tag_slug = 'il' -%}
+          {%- endcase -%}
+          <a href="{{ article.url }}" class="lp-m-card {% if forloop.first %}hero{% endif %}" data-tag="{{ tag_slug }}">
+            <div class="lp-m-img">
+              {%- if article.image -%}
+                <img src="{{ article.image | image_url: width: 800 }}" alt="{{ article.title | escape }}" loading="lazy">
+              {%- else -%}
+                <div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; color:var(--text-secondary); font-size:11px;">No image</div>
+              {%- endif -%}
+              <span class="lp-m-tag lp-tag-{{ tag_slug }}">{{ article.tags.first | default: 'Article' }}</span>
+            </div>
+            <div class="lp-m-body">
+              <div class="lp-m-meta"><span class="lp-m-meta-tag">{{ article.tags.first | default: 'Article' }}</span><span class="lp-m-dot"></span><span class="lp-m-time">{{ article.published_at | time_tag: '%b %-d, %Y' }}</span></div>
+              <div class="lp-m-title">{{ article.title }}</div>
+              <div class="lp-m-excerpt">{{ article.excerpt_or_content | strip_html | truncatewords: 22 }}</div>
+              <div class="lp-m-footer">
+                <div class="lp-m-author">
+                  <div class="lp-avatar">{{ article.author | slice: 0 }}</div>
+                  <span>{{ article.author | default: 'narkk Loop' }}</span>
+                </div>
+                <span class="lp-m-read">Read &rarr;</span>
+              </div>
+            </div>
+          </a>
+        {%- endfor -%}
+      {%- else -%}
+        <!-- Static fallback cards — mirrors the standalone site's "From the Loop" content exactly -->
+        <a href="#" class="lp-m-card hero" data-tag="il">
+          <div class="lp-m-img">
+            <img src="{{ 'loop-article-1-intentional-living.jpg' | asset_url }}" alt="Move beyond trends. Design a space that outlives the season." loading="lazy">
+          </div>
+          <div class="lp-m-body">
+            <div class="lp-m-meta"><span class="lp-m-meta-tag">Intentional Living</span><span class="lp-m-dot"></span><span class="lp-m-time">6 min read</span></div>
+            <div class="lp-m-title">Move beyond trends. Design a space that outlives the season.</div>
+            <div class="lp-m-excerpt">The homes that age well aren't the ones that chased the moment. They started with one question — what do I actually need?</div>
+            <div class="lp-m-footer">
+              <div class="lp-m-author"><div class="lp-avatar">NL</div><span>narkk Loop</span></div>
+              <span class="lp-m-read">Read &rarr;</span>
+            </div>
+          </div>
+        </a>
+        <a href="#" class="lp-m-card" data-tag="do">
+          <div class="lp-m-img">
+            <img src="{{ 'loop-article-2-declutter.jpg' | asset_url }}" alt="The one rule that makes decluttering actually stick." loading="lazy">
+          </div>
+          <div class="lp-m-body">
+            <div class="lp-m-meta"><span class="lp-m-meta-tag">Declutter &amp; Organise</span><span class="lp-m-dot"></span><span class="lp-m-time">4 min read</span></div>
+            <div class="lp-m-title">The one rule that makes decluttering actually stick.</div>
+            <div class="lp-m-excerpt">It's not about getting rid of things. It's about understanding why you kept them.</div>
+            <div class="lp-m-footer">
+              <div class="lp-m-author"><div class="lp-avatar">NL</div><span>narkk Loop</span></div>
+              <span class="lp-m-read">Read &rarr;</span>
+            </div>
+          </div>
+        </a>
+        <a href="#" class="lp-m-card" data-tag="cm">
+          <div class="lp-m-img">
+            <img src="{{ 'loop-article-3-craft-material.jpg' | asset_url }}" alt="Why birch plywood outlasts MDF by a decade." loading="lazy">
+          </div>
+          <div class="lp-m-body">
+            <div class="lp-m-meta"><span class="lp-m-meta-tag">Craft &amp; Material</span><span class="lp-m-dot"></span><span class="lp-m-time">5 min read</span></div>
+            <div class="lp-m-title">Why birch plywood outlasts MDF by a decade.</div>
+            <div class="lp-m-excerpt">The material decision is made before the product is designed.</div>
+            <div class="lp-m-footer">
+              <div class="lp-m-author"><div class="lp-avatar">N</div><span>Niranjan</span></div>
+              <span class="lp-m-read">Read &rarr;</span>
+            </div>
+          </div>
+        </a>
+        <a href="#" class="lp-m-card" data-tag="ss">
+          <div class="lp-m-img">
+            <img src="{{ 'loop-article-4-stories-stayed.jpg' | asset_url }}" alt="My grandfather's chair is still in our living room." loading="lazy">
+          </div>
+          <div class="lp-m-body">
+            <div class="lp-m-meta"><span class="lp-m-meta-tag">Stories That Stayed</span><span class="lp-m-dot"></span><span class="lp-m-time">3 min read</span></div>
+            <div class="lp-m-title">My grandfather's chair is still in our living room.</div>
+            <div class="lp-m-excerpt">A piece of furniture from 1971. Still standing.</div>
+            <div class="lp-m-footer">
+              <div class="lp-m-author"><div class="lp-avatar">PK</div><span>Community</span></div>
+              <span class="lp-m-read">Read &rarr;</span>
+            </div>
+          </div>
+        </a>
+        <a href="#" class="lp-m-card" data-tag="iu">
+          <div class="lp-m-img">
+            <img src="{{ 'loop-article-5-in-use.jpg' | asset_url }}" alt="How a 550mm board changed our entryway." loading="lazy">
+          </div>
+          <div class="lp-m-body">
+            <div class="lp-m-meta"><span class="lp-m-meta-tag">In Use</span><span class="lp-m-dot"></span><span class="lp-m-time">2 min read</span></div>
+            <div class="lp-m-title">How a 550mm board changed our entryway.</div>
+            <div class="lp-m-excerpt">Keys, bag, jacket — and somehow everything else.</div>
+            <div class="lp-m-footer">
+              <div class="lp-m-author"><div class="lp-avatar">SR</div><span>Community</span></div>
+              <span class="lp-m-read">Read &rarr;</span>
+            </div>
+          </div>
+        </a>
+        <a href="#" class="lp-m-card" data-tag="il">
+          <div class="lp-m-img">
+            <img src="{{ 'loop-article-6-il-question.jpg' | asset_url }}" alt="The question to ask before buying anything for your home." loading="lazy">
+          </div>
+          <div class="lp-m-body">
+            <div class="lp-m-meta"><span class="lp-m-meta-tag">Intentional Living</span><span class="lp-m-dot"></span><span class="lp-m-time">7 min read</span></div>
+            <div class="lp-m-title">The question to ask before buying anything for your home.</div>
+            <div class="lp-m-excerpt">Not "do I like it?" — but "where will this be in five years?"</div>
+            <div class="lp-m-footer">
+              <div class="lp-m-author"><div class="lp-avatar">NL</div><span>narkk Loop</span></div>
+              <span class="lp-m-read">Read &rarr;</span>
+            </div>
+          </div>
+        </a>
+      {%- endif -%}
+
+    </div>
+  </div>
+  <div class="lp-see-more"><a href="#" class="lp-see-more-btn">See all articles &rarr;</a></div>
+  </div>
+
+  <!-- FIND YOUR COMMUNITY &mdash; teal, 1:2 ratio feel -->
+  <section class="lp-community">
+    <div class="lp-comm-head">
+      <div class="lp-comm-ey"><span class="lp-comm-ey-line"></span>Find your community</div>
+      <div class="lp-comm-title">Where the conversation continues.</div>
+      <div class="lp-comm-sub">Four places to find us, each with its own rhythm. Come for the long reads or the day-to-day, whichever suits how you like to listen.</div>
+    </div>
+<div class="lp-channels">
+<a href="{{ section.settings.instagram_url | default: 'https://www.instagram.com/narkkloop' }}" class="lp-channel" target="_blank" rel="noopener">
+<div class="lp-ch-icon"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="1"></circle></svg></div>
+<div class="lp-ch-name">Instagram</div>
+<div class="lp-ch-handle">@narkkloop</div>
+<div class="lp-ch-desc">Daily content on intentional living, behind-the-scenes craft, and spaces worth staying in.</div>
+<span class="lp-ch-cta" style="text-transform:uppercase;">Follow us &rarr;</span>
+</a>
+<a href="{{ section.settings.reddit_url | default: 'https://www.reddit.com/r/Narkkloop/' }}" class="lp-channel" target="_blank" rel="noopener">
+        <div class="lp-ch-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <!-- Cloud -->
+          <path d="M16 15a2.5 2.5 0 0 0-2.5-2.5h-1a3.5 3.5 0 0 0-6.5.5h-.5a2.5 2.5 0 0 0 0 5h10.5a2.5 2.5 0 0 0 0-5z"></path>
+          <!-- Flag -->
+          <line x1="10" y1="12.5" x2="10" y2="7"></line>
+          <path d="M10 7h3.5v2.5H10"></path>
+        </svg></div>
+<div class="lp-ch-name">Reddit</div>
+<div class="lp-ch-handle">r/Narkkloop</div>
+<div class="lp-ch-desc">Questions, discussions, and honest reviews from people living with narkk products.</div>
+<span class="lp-ch-cta" style="text-transform:uppercase;">Join the thread &rarr;</span>
+</a>
+<a href="{{ section.settings.discord_url | default: '#' }}" class="lp-channel lp-ch-soon" {% if section.settings.discord_url == blank %}style="cursor:default;pointer-events:none;"{% else %}target="_blank" rel="noopener"{% endif %}>
+<div class="lp-ch-icon"><svg viewBox="0 0 24 24"><path d="M20.3 4.4A19 19 0 0 0 15.7 3a13 13 0 0 0-.6 1.2 17.6 17.6 0 0 0-6.3 0A13 13 0 0 0 8.3 3 19.1 19.1 0 0 0 3.7 4.4C.5 9.1-.3 13.6.1 18a19.2 19.2 0 0 0 5.9 3 14.4 14.4 0 0 0 1.2-2 12.3 12.3 0 0 1-1.9-.9l.5-.4a13.7 13.7 0 0 0 11.7 0l.5.4a12.5 12.5 0 0 1-2 .9 14.4 14.4 0 0 0 1.3 2 19.1 19.1 0 0 0 5.8-3c.5-5.1-.8-9.5-3.7-13.6z"></path></svg></div>
+<div class="lp-ch-name">Discord</div>
+<div class="lp-ch-handle">Inner Loop &mdash; coming soon</div>
+<div class="lp-ch-desc">A dedicated space for Inner Loop members. Real-time, signal-only, no noise.</div>
+<span class="lp-ch-cta lp-ch-cta-dim" style="text-transform:uppercase;">Launching soon</span>
+</a>
+    </div>
+  </section>
+
+  <!-- LIVING WITH NARKK -->
+  {%- assign narkk_blog = blogs[section.settings.blog_second] -%}
+  {%- assign narkk_articles = narkk_blog.articles -%}
+  {%- assign narkk_limit = section.settings.blog_second_limit | default: 6 -%}
+  <div class="lp-sec-head" style="border-top:1px solid var(--border);">
+    <div>
+      <div class="lp-sec-ey"><span class="lp-sec-ey-line"></span>From the narkk</div>
+      <div class="lp-sec-title">Living with narkk</div>
+    </div>
+    <a href="{{ narkk_blog.url | default: '#' }}" class="lp-sec-link">See all &rarr;</a>
+  </div>
+  <div class="lp-masonry-wrap">
+    <div class="lp-masonry">
+      {%- if narkk_articles.size > 0 -%}
+        {%- for article in narkk_articles limit: narkk_limit -%}
+          {%- assign tag_lower = article.tags.first | downcase -%}
+          {%- case tag_lower -%}
+            {%- when 'intentional living' -%}{%- assign tag_slug = 'il' -%}
+            {%- when 'declutter & organise' or 'declutter and organise' -%}{%- assign tag_slug = 'do' -%}
+            {%- when 'craft & material' or 'craft and material' -%}{%- assign tag_slug = 'cm' -%}
+            {%- when 'stories that stayed' -%}{%- assign tag_slug = 'ss' -%}
+            {%- when 'in use' -%}{%- assign tag_slug = 'iu' -%}
+            {%- else -%}{%- assign tag_slug = 'iu' -%}
+          {%- endcase -%}
+          <a href="{{ article.url }}" class="lp-m-card {% if forloop.first %}hero{% endif %}" data-tag="{{ tag_slug }}">
+            <div class="lp-m-img">
+              {%- if article.image -%}
+                <img src="{{ article.image | image_url: width: 800 }}" alt="{{ article.title | escape }}" loading="lazy">
+              {%- else -%}
+                <div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; color:var(--text-secondary); font-size:11px;">No image</div>
+              {%- endif -%}
+              <span class="lp-m-tag lp-tag-{{ tag_slug }}">{{ article.tags.first | default: 'Brand' }}</span>
+            </div>
+            <div class="lp-m-body">
+              <div class="lp-m-meta"><span class="lp-m-meta-tag">{{ article.tags.first | default: 'Brand' }}</span><span class="lp-m-dot"></span><span class="lp-m-time">{{ article.published_at | time_tag: '%b %-d, %Y' }}</span></div>
+              <div class="lp-m-title">{{ article.title }}</div>
+              <div class="lp-m-excerpt">{{ article.excerpt_or_content | strip_html | truncatewords: 22 }}</div>
+              <div class="lp-m-footer">
+                <div class="lp-m-author">
+                  <div class="lp-avatar">{{ article.author | slice: 0 }}</div>
+                  <span>{{ article.author | default: 'narkk' }}</span>
+                </div>
+                <span class="lp-m-read">Read &rarr;</span>
+              </div>
+            </div>
+          </a>
+        {%- endfor -%}
+      {%- else -%}
+        <!-- Static fallback cards — mirrors the standalone site's "Living with narkk" content exactly -->
+        <a href="#" class="lp-m-card hero" data-tag="iu">
+          <div class="lp-m-img">
+            <img src="{{ 'loop-narkk-1-studios.jpg' | asset_url }}" alt="A Tulai Standard in a rented studio — six months, three configurations." loading="lazy">
+          </div>
+          <div class="lp-m-body">
+            <div class="lp-m-meta"><span class="lp-m-meta-tag">In Use</span><span class="lp-m-dot"></span><span class="lp-m-time">3 min read</span></div>
+            <div class="lp-m-title">A Tulai Standard in a rented studio — six months, three configurations.</div>
+            <div class="lp-m-excerpt">Started with hooks and a shelf. Moved cities. Rebuilt it in a new flat in 20 minutes.</div>
+            <div class="lp-m-footer">
+              <div class="lp-m-author"><div class="lp-avatar">AK</div><span>Community</span></div>
+              <span class="lp-m-read">Read &rarr;</span>
+            </div>
+          </div>
+        </a>
+        <a href="#" class="lp-m-card" data-tag="iu">
+          <div class="lp-m-img">
+            <img src="{{ 'loop-narkk-2-stories.jpg' | asset_url }}" alt="Why I put a pegboard in my kitchen — and what happened after." loading="lazy">
+          </div>
+          <div class="lp-m-body">
+            <div class="lp-m-meta"><span class="lp-m-meta-tag">In Use</span><span class="lp-m-dot"></span><span class="lp-m-time">2 min read</span></div>
+            <div class="lp-m-title">Why I put a pegboard in my kitchen — and what happened after.</div>
+            <div class="lp-m-excerpt">Knives, spice jars, a small herb planter. The wall finally doing something.</div>
+            <div class="lp-m-footer">
+              <div class="lp-m-author"><div class="lp-avatar">RK</div><span>Community</span></div>
+              <span class="lp-m-read">Read &rarr;</span>
+            </div>
+          </div>
+        </a>
+        <a href="#" class="lp-m-card" data-tag="iu">
+          <div class="lp-m-img">
+            <img src="{{ 'loop-narkk-3-pets.jpg' | asset_url }}" alt="The wardrobe wall that grew with us — a Tulai Large story." loading="lazy">
+          </div>
+          <div class="lp-m-body">
+            <div class="lp-m-meta"><span class="lp-m-meta-tag">In Use</span><span class="lp-m-dot"></span><span class="lp-m-time">4 min read</span></div>
+            <div class="lp-m-title">The wardrobe wall that grew with us — a Tulai Large story.</div>
+            <div class="lp-m-excerpt">Started with clothes. Now it's bags, books, plants, and a rail for coats.</div>
+            <div class="lp-m-footer">
+              <div class="lp-m-author"><div class="lp-avatar">SM</div><span>Community</span></div>
+              <span class="lp-m-read">Read &rarr;</span>
+            </div>
+          </div>
+        </a>
+      {%- endif -%}
+    </div>
+  </div>
+  <!-- INNER LOOP -->
+  <section class="lp-inner">
+    <div class="lp-inner-intro">
+      <div class="lp-inner-ey"><span class="lp-inner-ey-line"></span>The core of narkk</div>
+      <div class="lp-inner-title">The Inner Loop.</div>
+      <div class="lp-inner-desc">The Inner Loop is narkk's circle of people who think, make, and advocate for a different way of living. You help shape what we build, how we communicate, and where we go next. The vision of this brand is to collaborate with thinkers, makers, designers to bring products that withstand the test of time and make an impact. In return, you get early access, real input sessions, part of product testing, and a percentage in products created.</div>
+    </div>
+
+    <div class="lp-inner-who-section">
+      <div class="lp-inner-who-lbl">Who we are looking for</div>
+      <div class="lp-person-grid">
+        <div class="lp-person-card"><div class="lp-person-num">01</div><div class="lp-person-name">Designers</div><div class="lp-person-desc">People who build with intention and care about what their work becomes &mdash; not just how it looks on delivery day.</div></div>
+        <div class="lp-person-card"><div class="lp-person-num">02</div><div class="lp-person-name">Makers</div><div class="lp-person-desc">Craftspeople who understand materials and respect the process behind objects that last.</div></div>
+        <div class="lp-person-card"><div class="lp-person-num">03</div><div class="lp-person-name">Writers</div><div class="lp-person-desc">Voices that value depth over density. Writing for the long read, not the scroll, not the algorithm.</div></div>
+        <div class="lp-person-card"><div class="lp-person-num">04</div><div class="lp-person-name">Sustainability Advocates</div><div class="lp-person-desc">People who've long believed this, but never had a place built around it rather than around the performance of it.</div></div>
+        <div class="lp-person-card"><div class="lp-person-num">05</div><div class="lp-person-name">Intentional Consumers</div><div class="lp-person-desc">Those who ask why before they buy, and think about what their things become when they're done with them.</div></div>
+      </div>
+    </div>
+
+    <div class="lp-inner-cta-row">
+      <div>
+        <div class="lp-inner-cta-title">Ready to be part of it?</div>
+        <div class="lp-inner-cta-sub">We're taking expressions of interest now. Tell us who you are and what you care about. We'll reach out.</div>
+      </div>
+      <button type="button" class="lp-inner-cta-btn" data-inquiry-open="Join The Inner Loop">Join The Inner Loop &rarr;</button>
+    </div>
+  </section>
+
+  <!-- TO MINDFUL CONTENT CREATORS &mdash; pre-footer -->
+  <div class="lp-writers">
+    <div class="lp-writers-inner">
+      <div class="lp-writers-left" style="background-color: var(--sage)">
+        <div class="lp-writers-ey" style="color: var(--slate)">To mindful content creators</div>
+        <div class="lp-writers-title" style="color: var(--ink-2)">Create for Loop.</div>
+        <div class="lp-writers-desc" style="color: var(--ink-2)">We're looking for creators who value depth over density. If you make content around mindful consumerism, intentional living, or the circular economy &mdash; we want to hear from you. Your voice, your perspective, our platform. Not just writers &mdash; photographers, videographers, illustrators, and podcasters too.</div>
+        <button type="button" class="lp-writers-btn" data-inquiry-open="Create For Loop">Create with us &rarr;</button>
+      </div>
+      <div class="lp-writers-right" style="background: url('{{ 'loop-creator.jpg' | asset_url }}') center/cover no-repeat, linear-gradient(135deg, #2D3E4E 0%, #1a2a35 100%);">
+        </div>
+    </div>
+  </div>
+
+  <!-- LOOP END DIVIDER -->
+  <div class="lp-loop-endline">
+    <span class="lp-loop-endline-bar"></span>
+    <span class="lp-loop-endline-word">Loop</span>
+    <span class="lp-loop-endline-bar"></span>
+  </div>
+
+<!-- ============================================================
+     TAG FILTERING (instant, no page reload)
+     Clicking a tab in the filter strip shows only the "From the
+     Loop" cards whose data-tag matches. This filters the cards
+     already on the page. Category tags come from each article's
+     first Shopify tag — tag every article in the admin so it
+     shows up under the right heading (e.g. tag it "Declutter &
+     Organise" so it appears under that tab). Untagged articles
+     default to "Intentional Living".
+     ============================================================ -->
+<script>
+  (function () {
+    function initLoopFilter() {
+      var strip = document.getElementById('lp-filter-strip');
+      var grid = document.getElementById('lp-article-grid');
+      var countEl = document.getElementById('lp-count');
+      if (!strip || !grid) return;
+
+      var tabs = strip.querySelectorAll('.lp-tab');
+      var cards = grid.querySelectorAll('.lp-m-card');
+      var totalLabel = countEl ? countEl.textContent : '';
+
+      tabs.forEach(function (tab) {
+        tab.addEventListener('click', function () {
+          var tag = tab.getAttribute('data-tag');
+
+          tabs.forEach(function (t) { t.classList.remove('active'); });
+          tab.classList.add('active');
+
+          var visibleCount = 0;
+          cards.forEach(function (card) {
+            var match = tag === 'all' || card.getAttribute('data-tag') === tag;
+            card.style.display = match ? '' : 'none';
+            if (match) visibleCount++;
+          });
+
+          if (countEl) {
+            countEl.textContent = tag === 'all'
+              ? totalLabel
+              : visibleCount + (visibleCount === 1 ? ' article' : ' articles');
+          }
+        });
+      });
+    }
+
+    initLoopFilter();
+    document.addEventListener('shopify:section:load', initLoopFilter);
+  })();
+</script>
+
+<!-- Blog/CollectionPage JSON-LD -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Blog",
+  "name": "Loop \u2014 narkk",
+  "url": "{{ shop.url }}/blogs/loop",
+  "publisher": { "@type": "Organization", "name": {{ shop.name | json }}, "url": "{{ shop.url }}" }
+}
+</script>
+
+{% schema %}
+{
+  "name": "Loop Page",
+  "settings": [
+    {
+      "type": "blog",
+      "id": "blog_top",
+      "label": "From the Loop — Blog",
+      "info": "Pick the blog category whose posts show in the 'From the Loop' grid (e.g. 'Loop - Living with Intentions'). New posts published in this blog appear here automatically."
+    },
+    {
+      "type": "range",
+      "id": "blog_top_limit",
+      "label": "From the Loop — number of posts",
+      "min": 3,
+      "max": 12,
+      "step": 1,
+      "default": 6
+    },
+    {
+      "type": "blog",
+      "id": "blog_second",
+      "label": "Living with narkk — Blog",
+      "info": "Pick the blog category whose posts show in the 'Living with narkk' grid (e.g. 'Loop - Living with Narkk'). New posts published in this blog appear here automatically."
+    },
+    {
+      "type": "range",
+      "id": "blog_second_limit",
+      "label": "Living with narkk — number of posts",
+      "min": 3,
+      "max": 12,
+      "step": 1,
+      "default": 6
+    },
+    {
+      "type": "url",
+      "id": "inner_loop_form_url",
+      "label": "Join The Inner Loop button link",
+      "info": "Where 'Join The Inner Loop' should send people — e.g. a Contact page or a form page. Defaults to /pages/contact."
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Hero Image"
+    },
+    {
+      "type": "text",
+      "id": "hero_image_url",
+      "label": "Hero Image URL (fallback)",
+      "info": "Used if no image is uploaded above"
+    },
+    {
+      "type": "header",
+      "content": "Community Links"
+    },
+    {
+      "type": "url",
+      "id": "instagram_url",
+      "label": "Instagram URL",
+      "info": "Default: https://www.instagram.com/narkkloop"
+    },
+    {
+      "type": "url",
+      "id": "reddit_url",
+      "label": "Reddit URL",
+      "info": "Default: https://www.reddit.com/r/Narkkloop/"
+    },
+    {
+      "type": "url",
+      "id": "discord_url",
+      "label": "Discord URL",
+      "info": "Leave blank to show 'coming soon'"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "loop_card",
+      "name": "From the Loop Card",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "fallback_image",
+          "label": "Fallback Asset Filename",
+          "info": "e.g., 'tulai-lifestyle.jpg'"
+        },
+        {
+          "type": "text",
+          "id": "tag",
+          "label": "Tag",
+          "default": "Intentional Living"
+        },
+        {
+          "type": "text",
+          "id": "time",
+          "label": "Time/Date",
+          "default": "Coming soon"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "The art of living with less — and loving it more."
+        },
+        {
+          "type": "textarea",
+          "id": "excerpt",
+          "label": "Excerpt",
+          "default": "How intentional choices in your space can lead to a calmer, more focused mind."
+        },
+        {
+          "type": "text",
+          "id": "author_initial",
+          "label": "Author Initial",
+          "default": "N"
+        },
+        {
+          "type": "text",
+          "id": "author_name",
+          "label": "Author Name",
+          "default": "narkk Loop"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    },
+    {
+      "type": "narkk_card",
+      "name": "Living with narkk Card",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "fallback_image",
+          "label": "Fallback Asset Filename",
+          "info": "e.g., 'shop-gallery-1.jpg'"
+        },
+        {
+          "type": "text",
+          "id": "tag",
+          "label": "Tag",
+          "default": "In Use"
+        },
+        {
+          "type": "text",
+          "id": "time",
+          "label": "Time/Date",
+          "default": "Coming soon"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "How creative studios are using Tulai setups."
+        },
+        {
+          "type": "textarea",
+          "id": "excerpt",
+          "label": "Excerpt",
+          "default": "We visited three different studios in Bangalore to see how they adapted our pegboards."
+        },
+        {
+          "type": "text",
+          "id": "author_initial",
+          "label": "Author Initial",
+          "default": "N"
+        },
+        {
+          "type": "text",
+          "id": "author_name",
+          "label": "Author Name",
+          "default": "narkk Loop"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Loop Page",
+      "blocks": [
+        {
+          "type": "loop_card",
+          "settings": {
+            "fallback_image": "loop-article-1-intentional-living.jpg",
+            "tag": "Intentional Living",
+            "title": "Move beyond trends. Design a space that outlives the season.",
+            "excerpt": "The homes that age well aren't the ones that chased the moment. They started with one question — what do I actually need?"
+          }
+        },
+        {
+          "type": "loop_card",
+          "settings": {
+            "fallback_image": "loop-article-2-declutter.jpg",
+            "tag": "Declutter & Organise",
+            "title": "The one rule that makes decluttering actually stick.",
+            "excerpt": "It's not about getting rid of things. It's about understanding why you kept them."
+          }
+        },
+        {
+          "type": "loop_card",
+          "settings": {
+            "fallback_image": "loop-article-3-craft-material.jpg",
+            "tag": "Craft & Material",
+            "title": "Why birch plywood outlasts MDF by a decade.",
+            "excerpt": "The material decision is made before the product is designed."
+          }
+        },
+        {
+          "type": "narkk_card",
+          "settings": {
+            "fallback_image": "loop-narkk-1-studios.jpg",
+            "tag": "In Use",
+            "title": "A Tulai Standard in a rented studio — six months, three configurations.",
+            "excerpt": "Started with hooks and a shelf. Moved cities. Rebuilt it in a new flat in 20 minutes."
+          }
+        },
+        {
+          "type": "narkk_card",
+          "settings": {
+            "fallback_image": "loop-narkk-2-stories.jpg",
+            "tag": "In Use",
+            "title": "Why I put a pegboard in my kitchen — and what happened after.",
+            "excerpt": "Knives, spice jars, a small herb planter. The wall finally doing something."
+          }
+        },
+        {
+          "type": "narkk_card",
+          "settings": {
+            "fallback_image": "loop-narkk-3-pets.jpg",
+            "tag": "In Use",
+            "title": "The wardrobe wall that grew with us — a Tulai Large story.",
+            "excerpt": "Started with clothes. Now it's bags, books, plants, and a rail for coats."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

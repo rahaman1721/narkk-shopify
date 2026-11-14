@@ -1,0 +1,178 @@
+<style>
+/* UPCOMING COLLECTIONS / PIPELINE */
+.hp-pipe { background:var(--cream); border-bottom:1px solid var(--border); }
+.hp-pipe-head { padding:110px 44px 96px; display:flex; flex-direction:column; align-items:center; text-align:center; border-bottom:1px solid var(--border); }
+.hp-pipe-eyebrow { display:flex; align-items:center; justify-content:center; gap:10px; font-size:var(--fs-lbl); font-weight:300; letter-spacing:2.5px; text-transform:uppercase; color:var(--coral); margin-bottom:14px; }
+.hp-pipe-eyebrow-line { width:24px; height:1px; background:var(--coral); flex-shrink:0; }
+.hp-pipe-title { font-size:var(--fs-h1); font-weight:200; letter-spacing:-0.5px; color:var(--slate); line-height:1.15; }
+.hp-pipe-sub { margin:18px auto 0; max-width:620px; font-size:var(--fs-body); font-weight:300; line-height:1.65; color:var(--slate-l); text-wrap:pretty; text-align:center; }
+@media(max-width:768px) { .hp-pipe-head { padding:72px 20px 64px; } }
+
+/* fallback ratio; header.liquid's script overrides this inline with the exact
+   measured "LOOP" boundary so the divide matches the hero, split and starter. */
+/* Full-bleed breakout — see hero-split.liquid for why. */
+.hp-pipe-lead { width:100vw; margin-left:calc(50% - 50vw); margin-right:calc(50% - 50vw); display:grid; grid-template-columns:var(--col-split); border-bottom:1px solid var(--border); }
+.hp-pipe-video { position:relative; aspect-ratio:16/9; background:var(--cream-d); border-right:1px solid var(--border); cursor:pointer; overflow:hidden; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px; }
+.hp-pipe-video-play { width:64px; height:64px; border-radius:50%; border:1px solid rgba(245,240,234,0.35); display:flex; align-items:center; justify-content:center; transition:background 0.2s; }
+.hp-pipe-video:hover .hp-pipe-video-play { background:rgba(245,240,234,0.1); }
+.hp-pipe-video-play svg { width:18px; height:18px; stroke:none; fill:rgba(245,240,234,0.85); margin-left:3px; }
+.hp-pipe-video-lbl { font-size:var(--fs-micro); font-weight:300; letter-spacing:1.8px; text-transform:uppercase; color:rgba(245,240,234,0.5); }
+.hp-pipe-lead-text { padding:56px 52px; display:flex; flex-direction:column; justify-content:center; }
+.hp-pipe-lead-label { font-size:var(--fs-lbl); font-weight:300; letter-spacing:2px; text-transform:uppercase; color:var(--coral); margin-bottom:16px; }
+.hp-pipe-lead-title { font-size:var(--fs-disp); font-weight:200; letter-spacing:-1.5px; color:var(--slate); line-height:1; margin-bottom:20px; }
+.hp-pipe-lead-desc { font-size:var(--fs-body); font-weight:300; color:var(--slate-l); line-height:1.8; max-width:420px; margin-bottom:24px; }
+.hp-pipe-status { font-size:var(--fs-micro); font-weight:300; letter-spacing:1.8px; text-transform:uppercase; color:var(--coral); border:1px solid rgba(193,107,69,0.4); padding:4px 12px; border-radius:20px; width:fit-content; white-space:nowrap; }
+.hp-pipe-status--reimagine { color:#8676A0; border-color:rgba(134,118,160,0.4); }
+@media(max-width:900px) { .hp-pipe-lead { grid-template-columns:1fr; } .hp-pipe-video { aspect-ratio:16/9; border-right:none; border-bottom:1px solid var(--border); } .hp-pipe-lead-text { padding:40px 24px; } .hp-pipe-lead-title { font-size:clamp(32px,8vw,56px); } }
+
+.hp-pipe-panel-inner { min-height:0; }
+.hp-pipe-panel { display:grid; grid-template-columns:repeat(4,1fr); }
+.hp-pipe-tile { padding:36px 28px 40px; border-right:1px solid var(--border); border-bottom:1px solid var(--border); display:flex; flex-direction:column; }
+.hp-pipe-tile:nth-child(4n) { border-right:none; }
+.hp-pipe-tile:last-child { border-right:none; border-bottom:none; }
+.hp-pipe-tile-icon { width:40px; height:40px; margin-bottom:22px; }
+.hp-pipe-tile-icon svg { width:100%; height:100%; stroke:var(--coral); fill:none; stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round; }
+.hp-pipe-tile-name { font-size:var(--fs-h3); font-weight:200; letter-spacing:-0.3px; color:var(--slate); margin-bottom:10px; }
+.hp-pipe-tile-desc { font-size:var(--fs-sm); font-weight:300; color:var(--slate-l); line-height:1.7; margin-bottom:20px; flex:1; }
+@media(max-width:900px) { .hp-pipe-panel { grid-template-columns:repeat(2,1fr); } .hp-pipe-tile { padding:28px 22px; } .hp-pipe-tile:nth-child(4n) { border-right:1px solid var(--border); } .hp-pipe-tile:nth-child(2n) { border-right:none; } .hp-pipe-tile:last-child { border-right:none; } }
+@media(max-width:500px) { .hp-pipe-panel { grid-template-columns:1fr; } .hp-pipe-tile { border-right:none !important; } .hp-pipe-tile:last-child { border-bottom:none; } }
+
+/* Modal Styles */
+.hp-modal-overlay {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: var(--cream, #F5F0EA);
+  z-index: 9999;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none; transition: opacity 0.3s;
+}
+.hp-modal-overlay.active { opacity: 1; pointer-events: auto; }
+.hp-modal-close {
+  position: absolute; top: 32px; right: 32px;
+  width: 40px; height: 40px; border-radius: 50%;
+  background: transparent; border: 1px solid rgba(51,65,85,0.2);
+  display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background 0.2s;
+}
+.hp-modal-close:hover { background: rgba(51,65,85,0.05); }
+.hp-modal-close svg { width: 16px; height: 16px; stroke: var(--slate); stroke-width: 1.5; }
+.hp-modal-play {
+  width: 80px; height: 80px; border-radius: 50%; background: #4A9B8E;
+  display: flex; align-items: center; justify-content: center; cursor: pointer; margin-bottom: 24px; transition: transform 0.2s;
+}
+.hp-modal-play:hover { transform: scale(1.05); }
+.hp-modal-play svg { width: 24px; height: 24px; fill: white; stroke: none; margin-left: 4px; }
+.hp-modal-lbl {
+  font-family: 'Outfit', sans-serif; font-size: 11px; font-weight: 300; letter-spacing: 2.5px;
+  text-transform: uppercase; color: var(--slate); opacity: 0.6;
+}
+</style>
+
+<div class="hp-pipe">
+  <div class="hp-pipe-head">
+    <div class="hp-pipe-eyebrow"><span class="hp-pipe-eyebrow-line"></span>Our Pipeline</div>
+    <div class="hp-pipe-title">Upcoming collections, one intention.</div>
+    <div class="hp-pipe-sub">These are in the works, prototypes tested and refining. Durable, modular systems and living essentials for everyday use, made to build positive habits around.</div>
+  </div>
+  <div class="hp-pipe-lead">
+    <div class="hp-pipe-video" id="thogai-tile" style="overflow: hidden; padding: 0; position: relative;">
+      {% if section.settings.thogai_yt_url != blank %}
+        {% assign yt_id = section.settings.thogai_yt_url | split: 'shorts/' | last | split: 'v=' | last | split: 'youtu.be/' | last | split: '?' | first | split: '&' | first %}
+        <iframe src="https://www.youtube.com/embed/{{ yt_id }}?autoplay=1&mute=1&controls=1&loop=1&playlist={{ yt_id }}&playsinline=1&rel=0&modestbranding=1" 
+                style="width: 100%; height: 100%; border: none; position: absolute; inset: 0;" 
+                allow="autoplay; encrypted-media" 
+                allowfullscreen></iframe>
+      {% elsif section.settings.thogai_video != blank %}
+        {{ section.settings.thogai_video | video_tag: autoplay: true, loop: true, muted: true, controls: false, image_size: '800x', style: 'width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0;' }}
+      {% else %}
+        <video id="thogai-inline-video" style="width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0;" playsinline autoplay loop muted>
+          <source src="{{ 'Thogai.mp4' | asset_url }}" type="video/mp4">
+        </video>
+      {% endif %}
+    </div>
+    <div class="hp-pipe-lead-text" style="position: relative">
+      <div class="hp-pipe-lead-label">Modular Seating</div>
+      <div class="hp-pipe-lead-title">Thogai</div>
+      <div class="hp-pipe-lead-desc">Backrest, support, and cover &mdash; each one separate, each one replaceable. The prototype is built. Watch how it comes together, and how we're refining it before it scales.</div>
+      <span class="hp-pipe-status">Prototype built</span>
+    </div>
+  </div>
+  <div class="hp-pipe-panel-wrap">
+    <div class="hp-pipe-panel-inner">
+      <div class="hp-pipe-panel">
+        <div class="hp-pipe-tile">
+          <div class="hp-pipe-tile-icon"><svg viewBox="0 0 40 40" fill="none" stroke="var(--coral)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <!-- Thunn -->
+            <rect x="10" y="8" width="20" height="24" rx="1"></rect>
+            <line x1="10" y1="18" x2="30" y2="18"></line>
+            <line x1="10" y1="26" x2="30" y2="26"></line>
+            <line x1="14" y1="32" x2="14" y2="36"></line>
+            <line x1="26" y1="32" x2="26" y2="36"></line>
+          </svg></div>
+          <div class="hp-pipe-tile-name">Thunn</div>
+          <div class="hp-pipe-tile-desc">Already manufactured and sold to retail &mdash; now getting new accessories and a full rework for the home wall.</div>
+          <span class="hp-pipe-status hp-pipe-status--reimagine">Reimagining</span>
+        </div>
+        <div class="hp-pipe-tile">
+          <div class="hp-pipe-tile-icon"><svg viewBox="0 0 40 40" fill="none" stroke="var(--coral)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <!-- Play -->
+            <circle cx="20" cy="16" r="9"></circle>
+            <path d="M14 34 C14 28 26 28 26 34" stroke-linecap="round"></path>
+            <circle cx="20" cy="16" r="3" fill="none"></circle>
+          </svg></div>
+          <div class="hp-pipe-tile-name">Play</div>
+          <div class="hp-pipe-tile-desc">From the forgotten toys of the past to carefully curated play items for kids and adults. Anything that takes your mind off and puts you in a flow state.</div>
+          <span class="hp-pipe-status">Concept Stage</span>
+        </div>
+        <div class="hp-pipe-tile">
+          <div class="hp-pipe-tile-icon"><svg viewBox="0 0 40 40" fill="none" stroke="var(--coral)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <!-- Coexist -->
+            <ellipse cx="20" cy="24" rx="10" ry="6"></ellipse>
+            <path d="M12 22 Q10 14 16 12" stroke-linecap="round"></path>
+            <circle cx="16" cy="11" r="2"></circle>
+            <path d="M28 22 Q30 14 24 12" stroke-linecap="round"></path>
+          </svg></div>
+          <div class="hp-pipe-tile-name">Coexist</div>
+          <div class="hp-pipe-tile-desc">We don't just design products for humans. From a small dog stepper to a bird house &mdash; this is a place for your pets and your egalitarian mindset.</div>
+          <span class="hp-pipe-status">Concept Stage</span>
+        </div>
+        <div class="hp-pipe-tile">
+          <div class="hp-pipe-tile-icon"><svg viewBox="0 0 40 40" fill="none" stroke="var(--coral)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <!-- Nourish -->
+            <path d="M8 20 Q8 30 20 30 Q32 30 32 20" stroke-linecap="round"></path>
+            <line x1="6" y1="20" x2="34" y2="20"></line>
+            <line x1="18" y1="10" x2="18" y2="16"></line>
+            <line x1="22" y1="8" x2="22" y2="16"></line>
+          </svg></div>
+          <div class="hp-pipe-tile-name">Nourish</div>
+          <div class="hp-pipe-tile-desc">A concept library &mdash; starting with a kids' lunch series, mindful eating built into daily habit.</div>
+          <span class="hp-pipe-status">Concept Stage</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Upcoming Collections",
+  "settings": [
+    {
+      "type": "video",
+      "id": "thogai_video",
+      "label": "Thogai Video (Shopify Hosted)",
+      "info": "Autoplays inline."
+    },
+    {
+      "type": "text",
+      "id": "thogai_yt_url",
+      "label": "YouTube Video URL",
+      "info": "Overrides Shopify Hosted Video. E.g. https://youtu.be/WfUzMHxWEz0"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Upcoming Collections"
+    }
+  ]
+}
+{% endschema %}

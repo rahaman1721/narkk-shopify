@@ -1,0 +1,28 @@
+{% comment %}
+  Shopify's default "All Collections" directory page (/collections) has no
+  useful content for this store — everything lives under a single collection.
+  This section removes the empty directory by redirecting straight to Shop.
+  (Site review, Aug 2026 — "Eliminate the empty Collections directory")
+{% endcomment %}
+<meta http-equiv="refresh" content="0; url={{ section.settings.redirect_url | default: '/collections/tulai' }}">
+<script>window.location.replace("{{ section.settings.redirect_url | default: '/collections/tulai' }}");</script>
+<noscript>
+  <div style="padding:120px 20px;text-align:center;font-family:'Outfit',sans-serif;">
+    <p>This page has moved. <a href="{{ section.settings.redirect_url | default: '/collections/tulai' }}">Continue to Shop &rarr;</a></p>
+  </div>
+</noscript>
+
+{% schema %}
+{
+  "name": "Collections Redirect",
+  "settings": [
+    {
+      "type": "url",
+      "id": "redirect_url",
+      "label": "Redirect To",
+      "default": "/collections/tulai"
+    }
+  ],
+  "presets": [{ "name": "Collections Redirect" }]
+}
+{% endschema %}

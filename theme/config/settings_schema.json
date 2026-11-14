@@ -1,0 +1,116 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "NARKK Theme",
+    "theme_version": "1.0.0",
+    "theme_author": "NARKK Studio",
+    "theme_documentation_url": "https://narkk.in",
+    "theme_support_url": "https://narkk.in"
+  },
+  {
+    "name": "Logo & Favicon",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Store Logo"
+      },
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon"
+      }
+    ]
+  },
+  {
+    "name": "Colors",
+    "settings": [
+      {
+        "type": "color",
+        "id": "color_cream",
+        "label": "Cream Background",
+        "default": "#F5F0EA"
+      },
+      {
+        "type": "color",
+        "id": "color_coral",
+        "label": "Coral Accent",
+        "default": "#D85A30"
+      },
+      {
+        "type": "color",
+        "id": "color_teal",
+        "label": "Teal Accent",
+        "default": "#4A9B8E"
+      },
+      {
+        "type": "color",
+        "id": "color_slate",
+        "label": "Slate (Text)",
+        "default": "#334155"
+      }
+    ]
+  },
+  {
+    "name": "Typography",
+    "settings": [
+      {
+        "type": "select",
+        "id": "font_weight",
+        "label": "Default Font Weight",
+        "options": [
+          { "value": "200", "label": "Extra Light" },
+          { "value": "300", "label": "Light" },
+          { "value": "400", "label": "Regular" }
+        ],
+        "default": "300"
+      }
+    ]
+  },
+  {
+    "name": "Announcement Bar",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "announcement_show",
+        "label": "Show Announcement Bar",
+        "default": true
+      }
+    ]
+  },
+  {
+    "name": "Cart",
+    "settings": [
+      {
+        "type": "select",
+        "id": "cart_type",
+        "label": "Cart Type",
+        "options": [
+          { "value": "drawer", "label": "Drawer (Recommended)" },
+          { "value": "page", "label": "Cart Page" }
+        ],
+        "default": "drawer"
+      }
+    ]
+  },
+  {
+    "name": "Social Media",
+    "settings": [
+      {
+        "type": "url",
+        "id": "social_instagram",
+        "label": "Instagram URL"
+      },
+      {
+        "type": "url",
+        "id": "social_facebook",
+        "label": "Facebook URL"
+      },
+      {
+        "type": "url",
+        "id": "social_whatsapp",
+        "label": "WhatsApp URL"
+      }
+    ]
+  }
+]

@@ -1,0 +1,677 @@
+<!-- MAIN ARTICLE — narkk Loop article detail page, styled like accessory PDP -->
+<style>
+/* ===== ARTICLE PAGE — narkk Loop style ===== */
+:root {
+  --cream: #f5f0ea;
+  --cream-d: #ede8e0;
+  --slate: #2c2c2a;
+  --slate-l: #6b6b67;
+  --teal: #4a9b8e;
+  --teal-d: #3a7d72;
+  --border: rgba(44,44,42,0.10);
+  --border-m: rgba(44,44,42,0.18);
+  --sage: #8a9e8d;
+}
+
+/* Reset body background */
+.art-page { background: var(--cream); min-height: 100vh; }
+
+/* ── HERO ── */
+.art-hero { position: relative; background: var(--slate); }
+.art-page .art-hero-img {
+  width: 100%;
+  max-width: none;
+  aspect-ratio: unset;
+  height: min(70vh, 560px);
+  overflow: hidden;
+  position: relative;
+}
+.art-page .art-hero-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  opacity: 0.75;
+}
+.art-hero-img::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(44,44,42,0.15) 0%, rgba(44,44,42,0.65) 100%);
+}
+
+.art-page .art-hero-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  max-width: none;
+  margin: 0;
+  padding: 0 7vw 52px;
+  z-index: 2;
+}
+
+/* No image fallback */
+.art-page .art-hero-no-img .art-hero-content {
+  position: static;
+  max-width: none;
+  margin: 0;
+  background: var(--slate);
+  padding: 72px 7vw 56px;
+}
+
+.art-hero-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.art-eyebrow-line { width: 24px; height: 1px; background: rgba(245,240,234,0.5); flex-shrink: 0; }
+.art-eyebrow-text {
+  font-size: 10px;
+  font-weight: 300;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: rgba(245,240,234,0.7);
+}
+
+.art-hero-title {
+  font-size: clamp(28px, 4.5vw, 52px);
+  font-weight: 200;
+  letter-spacing: -0.5px;
+  color: white;
+  line-height: 1.2;
+  max-width: 780px;
+  margin: 0 0 20px;
+}
+
+.art-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.art-meta-tag {
+  font-size: 10px;
+  font-weight: 300;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--teal);
+  background: rgba(74,155,142,0.2);
+  border: 1px solid rgba(74,155,142,0.35);
+  padding: 3px 10px;
+  border-radius: 2px;
+}
+.art-meta-dot { width: 3px; height: 3px; border-radius: 50%; background: rgba(245,240,234,0.35); }
+.art-meta-date, .art-meta-time {
+  font-size: 12px;
+  font-weight: 300;
+  color: rgba(245,240,234,0.6);
+  letter-spacing: 0.5px;
+}
+
+/* ── AUTHOR STRIP ── */
+.art-author-strip {
+  background: var(--cream-d);
+  border-bottom: 1px solid var(--border);
+  padding: 20px 7vw;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.art-author-info { display: flex; align-items: center; gap: 12px; }
+.art-author-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--teal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 400;
+  color: white;
+  flex-shrink: 0;
+  letter-spacing: 0.5px;
+}
+.art-author-name {
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--slate);
+}
+.art-author-role {
+  font-size: 10px;
+  font-weight: 300;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--slate-l);
+  margin-top: 1px;
+}
+.art-back-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 10px;
+  font-weight: 300;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--slate-l);
+  text-decoration: none;
+  transition: color 0.15s;
+  border-bottom: 1px solid var(--border-m);
+  padding-bottom: 1px;
+}
+.art-back-link:hover { color: var(--teal); border-color: var(--teal); }
+.art-back-link svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+
+/* ── BODY ── */
+.art-page .art-body-wrap {
+  display: grid;
+  grid-template-columns: 200px minmax(0,1fr) 240px;
+  gap: 56px;
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: 56px 7vw 80px;
+  background: var(--cream);
+  align-items: start;
+}
+
+/* ── LEFT SIDEBAR: categories + read next ── */
+.art-side-left { position: sticky; top: 24px; }
+.art-side-title {
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--slate-l);
+  margin-bottom: 14px;
+}
+.art-cat-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 40px; }
+.art-cat-link {
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--slate);
+  text-decoration: none;
+  padding-bottom: 2px;
+  border-bottom: 1px solid transparent;
+  width: fit-content;
+  transition: color 0.15s, border-color 0.15s;
+}
+.art-cat-link:hover { color: var(--teal); border-color: var(--teal); }
+.art-read-next-list { display: flex; flex-direction: column; gap: 16px; }
+.art-rn-card { display: flex; gap: 10px; text-decoration: none; align-items: center; }
+.art-rn-thumb {
+  width: 52px; height: 52px;
+  border-radius: 3px;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: var(--cream-d);
+}
+.art-rn-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.art-rn-title {
+  font-size: 12px;
+  font-weight: 300;
+  line-height: 1.35;
+  color: var(--slate);
+  transition: color 0.15s;
+}
+.art-rn-card:hover .art-rn-title { color: var(--teal); }
+
+/* ── CENTER: article content ── */
+.art-body-inner { min-width: 0; }
+.art-share-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--border);
+}
+.art-share-row-label {
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--slate-l);
+  margin-right: 4px;
+}
+.art-share-icon {
+  width: 30px; height: 30px;
+  border: 1px solid var(--border-m);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--slate-l);
+  text-decoration: none;
+  transition: color 0.15s, border-color 0.15s;
+}
+.art-share-icon:hover { color: var(--teal); border-color: var(--teal); }
+.art-share-icon svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+
+/* Featured image inside the content column, above the text */
+.art-content-featured {
+  width: 100%;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 32px;
+}
+.art-content-featured img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.art-rte > p:first-of-type::first-letter {
+  float: left;
+  font-size: 3.6em;
+  line-height: 0.8;
+  font-weight: 200;
+  color: var(--teal);
+  padding: 4px 10px 0 0;
+}
+
+/* Inline gallery strip for extra article images (optional block) */
+.art-gallery-strip {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin: 2em 0;
+}
+.art-gallery-strip img {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 2px;
+  margin: 0;
+}
+
+/* ── RIGHT SIDEBAR: author card ── */
+.art-side-right { position: sticky; top: 24px; }
+.art-author-card {
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 22px;
+  background: var(--cream-d);
+}
+.art-ac-top { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.art-ac-avatar {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: var(--teal);
+  color: white;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 400;
+  flex-shrink: 0;
+}
+.art-ac-name { font-size: 13px; font-weight: 400; color: var(--slate); }
+.art-ac-role { font-size: 10px; font-weight: 300; letter-spacing: 1px; text-transform: uppercase; color: var(--slate-l); margin-top: 2px; }
+.art-ac-bio { font-size: 12.5px; font-weight: 300; line-height: 1.6; color: var(--slate-l); margin-bottom: 16px; }
+.art-ac-social { display: flex; gap: 8px; }
+
+/* Rich text content styling */
+.art-rte { font-size: 16px; font-weight: 300; color: var(--slate); line-height: 1.8; }
+.art-rte h1, .art-rte h2, .art-rte h3, .art-rte h4 {
+  font-weight: 200;
+  letter-spacing: -0.3px;
+  color: var(--slate);
+  margin: 2em 0 0.6em;
+  line-height: 1.3;
+}
+.art-rte h2 { font-size: 28px; }
+.art-rte h3 { font-size: 22px; }
+.art-rte p { margin: 0 0 1.4em; }
+.art-rte a { color: var(--teal); text-decoration: underline; text-underline-offset: 3px; }
+.art-rte img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 2px;
+  margin: 2em 0;
+}
+.art-rte blockquote {
+  border-left: 2px solid var(--teal);
+  margin: 2em 0;
+  padding: 0 0 0 24px;
+  font-size: 18px;
+  font-weight: 200;
+  font-style: italic;
+  color: var(--slate-l);
+  line-height: 1.6;
+}
+.art-rte ul, .art-rte ol { margin: 0 0 1.4em; padding-left: 1.5em; }
+.art-rte li { margin-bottom: 0.5em; }
+.art-rte strong { font-weight: 400; }
+.art-rte hr { border: none; border-top: 1px solid var(--border); margin: 3em 0; }
+
+/* ── TAGS STRIP ── */
+.art-tags-strip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 28px 7vw;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  background: var(--cream);
+}
+.art-tags-label {
+  font-size: 10px;
+  font-weight: 300;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--slate-l);
+  margin-right: 4px;
+}
+.art-tag-pill {
+  font-size: 10px;
+  font-weight: 300;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--teal);
+  border: 1px solid rgba(74,155,142,0.4);
+  padding: 4px 12px;
+  border-radius: 2px;
+  text-decoration: none;
+  transition: background 0.15s;
+}
+.art-tag-pill:hover { background: rgba(74,155,142,0.08); }
+
+/* ── RELATED / FOOTER STRIP ── */
+.art-footer-strip {
+  background: var(--cream-d);
+  border-top: 1px solid var(--border);
+  padding: 52px 7vw;
+}
+.art-footer-ey {
+  font-size: 10px;
+  font-weight: 300;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--slate-l);
+  margin-bottom: 32px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.art-footer-ey::before {
+  content: '';
+  display: block;
+  width: 24px;
+  height: 1px;
+  background: var(--border-m);
+  flex-shrink: 0;
+}
+.art-footer-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.art-footer-back {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 10px;
+  font-weight: 300;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--slate);
+  text-decoration: none;
+  border-bottom: 1px solid var(--border-m);
+  padding-bottom: 2px;
+  transition: color 0.15s;
+}
+.art-footer-back:hover { color: var(--teal); border-color: var(--teal); }
+.art-footer-back svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.art-shop-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--teal);
+  color: white;
+  font-size: 10px;
+  font-weight: 300;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 14px 28px;
+  transition: background 0.15s;
+}
+.art-shop-cta:hover { background: var(--teal-d); }
+
+/* ── MOBILE ── */
+@media(max-width: 900px) {
+  .art-page .art-body-wrap {
+    grid-template-columns: 1fr;
+    gap: 0;
+    padding: 40px 20px 60px;
+  }
+  .art-side-left { order: 2; position: static; margin-top: 40px; padding-top: 32px; border-top: 1px solid var(--border); }
+  .art-body-inner { order: 1; }
+  .art-side-right { order: 3; position: static; margin-top: 32px; }
+  .art-gallery-strip { grid-template-columns: repeat(2, 1fr); }
+}
+@media(max-width: 768px) {
+  .art-hero-img { height: 55vw; min-height: 240px; }
+  .art-hero-content { padding: 0 20px 36px; }
+  .art-hero-no-img .art-hero-content { padding: 48px 20px 40px; }
+  .art-author-strip { padding: 16px 20px; }
+  .art-body-inner { padding: 40px 20px 60px; }
+  .art-rte h2 { font-size: 22px; }
+  .art-tags-strip { padding: 20px 20px; }
+  .art-footer-strip { padding: 40px 20px; }
+  .art-footer-actions { flex-direction: column; align-items: flex-start; }
+}
+</style>
+
+<div class="art-page">
+
+  {%- assign loop_url = section.settings.loop_page_url | default: '/pages/loop' -%}
+
+  {%- assign has_img = false -%}
+  {%- if article.image -%}{%- assign has_img = true -%}{%- endif -%}
+
+  <!-- HERO -->
+  <div class="art-hero {% unless has_img %}art-hero-no-img{% endunless %}">
+    {%- if has_img -%}
+      <div class="art-hero-img">
+        <img
+          src="{{ article.image | image_url: width: 1600 }}"
+          alt="{{ article.image.alt | default: article.title | escape }}"
+          loading="eager"
+          width="1600"
+          height="800">
+      </div>
+    {%- endif -%}
+    <div class="art-hero-content">
+      <div class="art-hero-eyebrow">
+        <span class="art-eyebrow-line"></span>
+        <span class="art-eyebrow-text">narkk Loop</span>
+      </div>
+      <h1 class="art-hero-title">{{ article.title }}</h1>
+      <div class="art-meta-row">
+        {%- for tag in article.tags -%}
+          <span class="art-meta-tag">{{ tag }}</span>
+        {%- endfor -%}
+        {%- if article.tags.size > 0 -%}<span class="art-meta-dot"></span>{%- endif -%}
+        <time class="art-meta-date" datetime="{{ article.published_at | date: '%Y-%m-%d' }}">{{ article.published_at | date: "%B %d, %Y" }}</time>
+      </div>
+    </div>
+  </div>
+
+  <!-- AUTHOR STRIP -->
+  <div class="art-author-strip">
+    <div class="art-author-info">
+      <div class="art-author-avatar">{{ article.author | slice: 0, 2 | upcase }}</div>
+      <div>
+        <div class="art-author-name">{{ article.author }}</div>
+        <div class="art-author-role">narkk Loop</div>
+      </div>
+    </div>
+    <a href="{{ loop_url }}" class="art-back-link">
+      <svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+      Back to Loop
+    </a>
+  </div>
+
+  <!-- ARTICLE BODY: sidebar + content + author card -->
+  <div class="art-body-wrap">
+
+    <!-- LEFT: categories + read next -->
+    <aside class="art-side-left">
+      {%- if article.tags.size > 0 -%}
+        <div class="art-side-title">Categories</div>
+        <div class="art-cat-list">
+          {%- for tag in article.tags -%}
+            <a href="{{ blog.url }}/tagged/{{ tag | handle }}" class="art-cat-link">{{ tag }}</a>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+
+      {%- assign rn_count = 0 -%}
+      <div class="art-side-title">Read Next</div>
+      <div class="art-read-next-list">
+        {%- for rn_article in blog.articles -%}
+          {%- if rn_article.id != article.id and rn_count < 3 -%}
+            {%- assign rn_count = rn_count | plus: 1 -%}
+            <a href="{{ rn_article.url }}" class="art-rn-card">
+              <div class="art-rn-thumb">
+                {%- if rn_article.image -%}
+                  <img src="{{ rn_article.image | image_url: width: 120 }}" alt="{{ rn_article.title | escape }}" loading="lazy">
+                {%- endif -%}
+              </div>
+              <span class="art-rn-title">{{ rn_article.title }}</span>
+            </a>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </aside>
+
+    <!-- CENTER: content -->
+    <div class="art-body-inner">
+      <div class="art-share-row">
+        <span class="art-share-row-label">Share</span>
+        <a class="art-share-icon" href="https://wa.me/?text={{ article.title | url_encode }}%20{{ shop.url }}{{ article.url | url_encode }}" target="_blank" rel="noopener" aria-label="Share on WhatsApp">
+          <svg viewBox="0 0 24 24"><path d="M21 11.5a8.5 8.5 0 0 1-12.36 7.56L3 20l1.06-5.5A8.5 8.5 0 1 1 21 11.5z"/></svg>
+        </a>
+        <a class="art-share-icon" href="https://twitter.com/intent/tweet?text={{ article.title | url_encode }}&url={{ shop.url }}{{ article.url | url_encode }}" target="_blank" rel="noopener" aria-label="Share on Twitter">
+          <svg viewBox="0 0 24 24"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg>
+        </a>
+        <a class="art-share-icon" href="mailto:?subject={{ article.title | url_encode }}&body={{ shop.url }}{{ article.url | url_encode }}" aria-label="Share by email">
+          <svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="m22 6-10 7L2 6"/></svg>
+        </a>
+      </div>
+
+      {%- if article.image -%}
+        <div class="art-content-featured">
+          <img src="{{ article.image | image_url: width: 1400 }}" alt="{{ article.image.alt | default: article.title | escape }}" loading="lazy" width="1400" height="900">
+        </div>
+      {%- endif -%}
+
+      <div class="art-rte">
+        {{ article.content }}
+      </div>
+    </div>
+
+    <!-- RIGHT: author card -->
+    <aside class="art-side-right">
+      <div class="art-author-card">
+        <div class="art-ac-top">
+          <div class="art-ac-avatar">{{ article.author | slice: 0, 2 | upcase }}</div>
+          <div>
+            <div class="art-ac-name">{{ article.author }}</div>
+            <div class="art-ac-role">narkk Loop</div>
+          </div>
+        </div>
+        <p class="art-ac-bio">Writes about mindful living, craft, and the objects worth keeping.</p>
+        <div class="art-ac-social">
+          {%- if settings.social_instagram != blank -%}
+            <a class="art-share-icon" href="{{ settings.social_instagram }}" target="_blank" rel="noopener" aria-label="Instagram">
+              <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>
+            </a>
+          {%- endif -%}
+        </div>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- TAGS STRIP -->
+  {%- if article.tags.size > 0 -%}
+    <div class="art-tags-strip">
+      <span class="art-tags-label">Filed under</span>
+      {%- for tag in article.tags -%}
+        <a href="{{ blog.url }}/tagged/{{ tag | handle }}" class="art-tag-pill">{{ tag }}</a>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+
+  <!-- FOOTER STRIP -->
+  <div class="art-footer-strip">
+    <div class="art-footer-ey">More from narkk Loop</div>
+    <div class="art-footer-actions">
+      <a href="{{ loop_url }}" class="art-footer-back">
+        <svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+        All articles
+      </a>
+      <a href="{{ routes.collections_url }}/tulai" class="art-shop-cta">
+        Shop Tulai &rarr;
+      </a>
+    </div>
+  </div>
+
+</div>
+
+<!-- BlogPosting JSON-LD + BreadcrumbList -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "{{ shop.url }}" },
+    { "@type": "ListItem", "position": 2, "name": "Loop", "item": "{{ shop.url }}{{ loop_url }}" },
+    { "@type": "ListItem", "position": 3, "name": "{{ article.title | escape }}", "item": "{{ shop.url }}{{ article.url }}" }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "{{ article.title | escape }}",
+  "description": "{{ article.excerpt_or_content | strip_html | truncate: 300 | escape }}",
+  {% if article.image %}"image": "{{ article.image | image_url: width: 1200 }}",{% endif %}
+  "datePublished": "{{ article.published_at | date: '%Y-%m-%dT%H:%M:%SZ' }}",
+  "dateModified": "{{ article.updated_at | date: '%Y-%m-%dT%H:%M:%SZ' }}",
+  "url": "{{ shop.url }}{{ article.url }}",
+  "author": {
+    "@type": "Person",
+    "name": "{{ article.author | escape }}"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "NARKK",
+    "@id": "{{ shop.url }}/#organization"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "{{ canonical_url }}"
+  }
+}
+</script>
+
+{% schema %}
+{
+  "name": "Article",
+  "settings": [
+    {
+      "type": "url",
+      "id": "loop_page_url",
+      "label": "Loop Page URL",
+      "info": "Where 'Back to Loop' links go. Leave blank to use /pages/loop."
+    }
+  ]
+}
+{% endschema %}

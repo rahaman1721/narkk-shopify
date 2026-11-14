@@ -1,0 +1,504 @@
+<!-- LOOP ARTICLE PAGE — narkk-styled full article layout -->
+<style>
+:root {
+  --la-cream: #f5f0ea;
+  --la-cream-d: #ede8e0;
+  --la-slate: #2c2c2a;
+  --la-slate-l: #6b6b67;
+  --la-teal: #4a9b8e;
+  --la-teal-d: #3a7d72;
+  --la-border: rgba(44,44,42,0.10);
+  --la-border-m: rgba(44,44,42,0.18);
+}
+
+/* ── PAGE HERO ── */
+.la-hero {
+  position: relative;
+  background: var(--la-slate);
+  overflow: hidden;
+}
+.la-hero-img {
+  width: 100%;
+  height: min(65vh, 520px);
+  overflow: hidden;
+  position: relative;
+}
+.la-hero-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  opacity: 0.72;
+}
+.la-hero-img::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(44,44,42,0.1) 0%, rgba(44,44,42,0.7) 100%);
+}
+.la-hero-no-img { min-height: 220px; display: flex; align-items: flex-end; }
+
+.la-hero-content {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: 0 7vw 52px;
+  z-index: 2;
+}
+.la-hero-no-img .la-hero-content {
+  position: static;
+  padding: 56px 7vw 48px;
+}
+
+.la-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+.la-eyebrow-line { width: 24px; height: 1px; background: rgba(245,240,234,0.45); flex-shrink:0; }
+.la-eyebrow-text {
+  font-size: 10px;
+  font-weight: 300;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: rgba(245,240,234,0.65);
+}
+
+.la-hero h1 {
+  font-size: clamp(26px, 4.5vw, 52px);
+  font-weight: 200;
+  letter-spacing: -0.5px;
+  color: white;
+  line-height: 1.2;
+  max-width: 820px;
+  margin: 0 0 20px;
+}
+
+.la-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.la-tag {
+  font-size: 10px;
+  font-weight: 300;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  color: var(--la-teal);
+  background: rgba(74,155,142,0.18);
+  border: 1px solid rgba(74,155,142,0.3);
+  padding: 3px 10px;
+  border-radius: 2px;
+}
+.la-meta-sep { width: 3px; height: 3px; border-radius: 50%; background: rgba(245,240,234,0.3); }
+.la-meta-date {
+  font-size: 12px;
+  font-weight: 300;
+  color: rgba(245,240,234,0.55);
+}
+
+/* ── BREADCRUMB STRIP ── */
+.la-strip {
+  background: var(--la-cream-d);
+  border-bottom: 1px solid var(--la-border);
+  padding: 18px 7vw;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.la-back {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 10px;
+  font-weight: 300;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--la-slate-l);
+  text-decoration: none;
+  border-bottom: 1px solid var(--la-border-m);
+  padding-bottom: 1px;
+  transition: color 0.15s, border-color 0.15s;
+}
+.la-back:hover { color: var(--la-teal); border-color: var(--la-teal); }
+.la-back svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+
+.la-author {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.la-avatar {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: var(--la-teal);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 400; color: white;
+  flex-shrink: 0;
+}
+.la-author-name { font-size: 13px; font-weight: 300; color: var(--la-slate); }
+.la-author-role { font-size: 10px; font-weight: 300; letter-spacing: 1.2px; text-transform: uppercase; color: var(--la-slate-l); margin-top: 1px; }
+
+/* ── BODY ── */
+.la-body {
+  background: var(--la-cream);
+  padding: 64px 7vw 80px;
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+/* Rich text styles */
+.la-rte { font-size: 16.5px; font-weight: 300; color: var(--la-slate); line-height: 1.82; }
+.la-rte > * + * { margin-top: 1.5em; }
+.la-rte h1, .la-rte h2, .la-rte h3, .la-rte h4 {
+  font-weight: 200;
+  color: var(--la-slate);
+  letter-spacing: -0.3px;
+  line-height: 1.25;
+  margin-top: 2.2em;
+  margin-bottom: 0.6em;
+}
+.la-rte h2 { font-size: clamp(22px, 3vw, 30px); }
+.la-rte h3 { font-size: clamp(18px, 2.4vw, 24px); }
+.la-rte h4 { font-size: 18px; }
+.la-rte p { margin: 0 0 1.5em; }
+.la-rte a { color: var(--la-teal); text-decoration: underline; text-underline-offset: 3px; }
+.la-rte strong { font-weight: 400; }
+.la-rte em { font-style: italic; }
+.la-rte img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 2px;
+  margin: 2.5em 0;
+  box-shadow: 0 2px 24px rgba(44,44,42,0.08);
+}
+.la-rte blockquote {
+  border-left: 2px solid var(--la-teal);
+  margin: 2.2em 0;
+  padding: 4px 0 4px 24px;
+  font-size: 19px;
+  font-weight: 200;
+  font-style: normal;
+  color: var(--la-slate-l);
+  line-height: 1.6;
+}
+.la-rte ul, .la-rte ol {
+  margin: 0 0 1.5em;
+  padding-left: 1.6em;
+}
+.la-rte li { margin-bottom: 0.6em; }
+.la-rte hr {
+  border: none;
+  border-top: 1px solid var(--la-border);
+  margin: 3em 0;
+}
+.la-rte figure { margin: 2.5em 0; }
+.la-rte figcaption {
+  font-size: 12px;
+  font-weight: 300;
+  letter-spacing: 0.5px;
+  color: var(--la-slate-l);
+  text-align: center;
+  margin-top: 10px;
+}
+
+/* ── TAGS ── */
+.la-tags {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 28px 7vw;
+  border-top: 1px solid var(--la-border);
+  border-bottom: 1px solid var(--la-border);
+  background: var(--la-cream);
+  max-width: 100%;
+}
+.la-tags-label {
+  font-size: 10px;
+  font-weight: 300;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--la-slate-l);
+  margin-right: 4px;
+}
+.la-tag-pill {
+  font-size: 10px;
+  font-weight: 300;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--la-teal);
+  border: 1px solid rgba(74,155,142,0.35);
+  padding: 4px 12px;
+  border-radius: 2px;
+  text-decoration: none;
+  transition: background 0.15s;
+}
+.la-tag-pill:hover { background: rgba(74,155,142,0.08); }
+
+/* ── FOOTER ── */
+.la-footer {
+  background: var(--la-cream-d);
+  padding: 52px 7vw;
+  border-top: 1px solid var(--la-border);
+}
+.la-footer-ey {
+  font-size: 10px;
+  font-weight: 300;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--la-slate-l);
+  margin-bottom: 32px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.la-footer-ey::before {
+  content: '';
+  display: block;
+  width: 24px; height: 1px;
+  background: var(--la-border-m);
+  flex-shrink: 0;
+}
+.la-footer-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.la-footer-back {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 10px;
+  font-weight: 300;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--la-slate);
+  text-decoration: none;
+  border-bottom: 1px solid var(--la-border-m);
+  padding-bottom: 2px;
+  transition: color 0.15s;
+}
+.la-footer-back:hover { color: var(--la-teal); border-color: var(--la-teal); }
+.la-footer-back svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.la-shop-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--la-teal);
+  color: white;
+  font-size: 10px;
+  font-weight: 300;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 14px 28px;
+  transition: background 0.15s;
+}
+.la-shop-btn:hover { background: var(--la-teal-d); }
+
+/* ── MOBILE ── */
+@media(max-width: 768px) {
+  .la-hero-img { height: 56vw; min-height: 220px; }
+  .la-hero-content { padding: 0 20px 32px; }
+  .la-hero-no-img .la-hero-content { padding: 44px 20px 36px; }
+  .la-strip { padding: 14px 20px; }
+  .la-body { padding: 36px 20px 56px; }
+  .la-rte { font-size: 15.5px; }
+  .la-tags { padding: 20px; }
+  .la-footer { padding: 36px 20px; }
+  .la-footer-actions { flex-direction: column; align-items: flex-start; }
+}
+</style>
+
+{%- assign art_tag = section.settings.article_tag | default: 'Loop' -%}
+{%- assign art_author = section.settings.author_name | default: 'narkk Loop' -%}
+{%- assign art_author_init = section.settings.author_initial | default: 'NL' -%}
+{%- assign loop_url = section.settings.loop_page_url | default: '/pages/loop' -%}
+{%- assign shop_url = section.settings.shop_url | default: '/collections/tulai' -%}
+
+<div class="la-page">
+
+  <!-- HERO -->
+  <div class="la-hero {% if section.settings.hero_image == blank %}la-hero-no-img{% endif %}">
+    {%- if section.settings.hero_image != blank -%}
+      <div class="la-hero-img">
+        <img
+          src="{{ section.settings.hero_image | image_url: width: 1600 }}"
+          alt="{{ section.settings.hero_image.alt | default: page.title | escape }}"
+          loading="eager"
+          width="1600"
+          height="800">
+      </div>
+    {%- endif -%}
+    <div class="la-hero-content">
+      <div class="la-eyebrow">
+        <span class="la-eyebrow-line"></span>
+        <span class="la-eyebrow-text">{{ art_tag }}</span>
+      </div>
+      <h1>{{ page.title }}</h1>
+      <div class="la-meta-row">
+        {%- if section.settings.article_tag != blank -%}
+          <span class="la-tag">{{ section.settings.article_tag }}</span>
+          <span class="la-meta-sep"></span>
+        {%- endif -%}
+        {%- if section.settings.publish_date != blank -%}
+          <span class="la-meta-date">{{ section.settings.publish_date }}</span>
+        {%- endif -%}
+        {%- if section.settings.read_time != blank -%}
+          <span class="la-meta-sep"></span>
+          <span class="la-meta-date">{{ section.settings.read_time }} read</span>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+
+  <!-- AUTHOR STRIP -->
+  <div class="la-strip">
+    <div class="la-author">
+      <div class="la-avatar">{{ art_author_init }}</div>
+      <div>
+        <div class="la-author-name">{{ art_author }}</div>
+        <div class="la-author-role">narkk Loop</div>
+      </div>
+    </div>
+    <a href="{{ loop_url }}" class="la-back">
+      <svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+      Back to Loop
+    </a>
+  </div>
+
+  <!-- ARTICLE BODY — full rich text from the Page content editor -->
+  <div class="la-body">
+    <div class="la-rte">
+      {{ page.content }}
+    </div>
+  </div>
+
+  <!-- TAGS -->
+  {%- if section.settings.tags != blank -%}
+    <div class="la-tags">
+      <span class="la-tags-label">Filed under</span>
+      {%- assign tag_list = section.settings.tags | split: ',' -%}
+      {%- for t in tag_list -%}
+        <span class="la-tag-pill">{{ t | strip }}</span>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+
+  <!-- FOOTER -->
+  <div class="la-footer">
+    <div class="la-footer-ey">Continue exploring</div>
+    <div class="la-footer-actions">
+      <a href="{{ loop_url }}" class="la-footer-back">
+        <svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+        All articles
+      </a>
+      <a href="{{ shop_url }}" class="la-shop-btn">
+        Shop Tulai &rarr;
+      </a>
+    </div>
+  </div>
+
+</div>
+
+<!-- BlogPosting JSON-LD -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "{{ section.settings.article_title | default: page.title | escape }}",
+  "description": "{{ section.settings.article_excerpt | default: '' | escape }}",
+  {% if section.settings.hero_image %}"image": "{{ section.settings.hero_image | image_url: width: 1200 }}",{% endif %}
+  "datePublished": "{{ section.settings.publish_date | default: 'now' }}",
+  "author": {
+    "@type": "Person",
+    "name": "{{ section.settings.author_name | default: 'NARKK' }}"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "NARKK",
+    "@id": "{{ shop.url }}/#organization"
+  },
+  "url": "{{ canonical_url }}",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "{{ canonical_url }}"
+  }
+}
+</script>
+
+{% schema %}
+{
+  "name": "Loop Article",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Hero Image",
+      "info": "Large banner image at the top of the article"
+    },
+    {
+      "type": "text",
+      "id": "article_tag",
+      "label": "Article Category",
+      "default": "In Use",
+      "info": "e.g. Intentional Living, In Use, Craft & Material"
+    },
+    {
+      "type": "text",
+      "id": "publish_date",
+      "label": "Publish Date",
+      "default": "August 2025"
+    },
+    {
+      "type": "text",
+      "id": "read_time",
+      "label": "Read Time",
+      "default": "4 min read"
+    },
+    {
+      "type": "text",
+      "id": "author_name",
+      "label": "Author Name",
+      "default": "narkk Loop"
+    },
+    {
+      "type": "text",
+      "id": "author_initial",
+      "label": "Author Initials",
+      "default": "NL",
+      "info": "2 letters shown in the avatar circle"
+    },
+    {
+      "type": "text",
+      "id": "tags",
+      "label": "Tags (comma-separated)",
+      "default": "In Use, Tulai",
+      "info": "e.g. In Use, Intentional Living, Craft"
+    },
+    {
+      "type": "url",
+      "id": "loop_page_url",
+      "label": "Loop Page URL",
+      "info": "Link for 'Back to Loop' button"
+    },
+    {
+      "type": "url",
+      "id": "shop_url",
+      "label": "Shop Button URL",
+      "info": "Link for the 'Shop Tulai' button at the bottom"
+    }
+  ],
+  "presets": [
+    { "name": "Loop Article" }
+  ]
+}
+{% endschema %}

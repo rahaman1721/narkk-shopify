@@ -1,0 +1,236 @@
+<!-- HEADER &mdash; Exact from narkk-site-7.html -->
+<header class="nav" id="site-header" role="banner">
+  <a href="{{ routes.root_url }}" class="nav-logo" aria-label="{{ shop.name }} home">
+    {%- if section.settings.logo != blank -%}
+      <img
+        src="{{ section.settings.logo | image_url: width: 200 }}"
+        alt="{{ shop.name }}"
+        width="120"
+        height="30"
+        loading="eager"
+      >
+    {%- else -%}
+      <img
+        src="https://narkk-india.myshopify.com/cdn/shop/t/2/assets/narkk-logo-black-updated.svg?v=26487935200603946611781263187"
+        alt="narkk"
+        width="120"
+        height="30"
+        loading="eager"
+      >
+    {%- endif -%}
+  </a>
+
+  <nav class="nav-links" aria-label="Primary navigation">
+    {% if section.settings.menu %}
+      {%- assign loop_index = -1 -%}
+      {%- for link in section.settings.menu.links -%}
+        {%- assign lt_down = link.title | downcase -%}
+        {%- if lt_down == 'loop' -%}{%- assign loop_index = forloop.index0 -%}{%- endif -%}
+      {%- endfor -%}
+      <div class="nav-links-side left">
+        {%- for link in section.settings.menu.links -%}
+          {%- if forloop.index0 < loop_index -%}
+            <a href="{{ link.url }}" class="nav-link {% if link.active %}active{% endif %}">{{ link.title }}</a>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+      {%- for link in section.settings.menu.links -%}
+        {%- assign lt_down = link.title | downcase -%}
+        {%- if lt_down == 'loop' -%}
+          <a href="{{ link.url }}" id="nav-loop-link" class="nav-link {% if link.active %}active{% endif %}"><span class="loop-h1">LO</span><span class="loop-h2">OP</span></a>
+        {%- endif -%}
+      {%- endfor -%}
+      <div class="nav-links-side right">
+        {%- for link in section.settings.menu.links -%}
+          {%- if forloop.index0 > loop_index -%}
+            <a href="{{ link.url }}" class="nav-link {% if link.active %}active{% endif %}">{{ link.title }}</a>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    {% else %}
+      <div class="nav-links-side left">
+        <a href="/collections/tulai" class="nav-link {% if request.page_type == 'collection' and collection.handle == 'tulai' %}active{% endif %}">Shop</a>
+      </div>
+      <a href="/pages/loop" id="nav-loop-link" class="nav-link {% if request.page_type == 'blog' or request.path contains 'loop' %}active{% endif %}"><span class="loop-h1">LO</span><span class="loop-h2">OP</span></a>
+      <div class="nav-links-side right">
+        <a href="/pages/philosophy" class="nav-link {% if request.page_type == 'page' and page.handle == 'philosophy' %}active{% endif %}">Philosophy</a>
+      </div>
+    {% endif %}
+  </nav>
+
+  <div class="nav-icons">
+    <a href="/pages/contact" class="nav-icon" aria-label="Contact">
+      <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg>
+    </a>
+    <a href="{{ routes.account_url }}" class="nav-icon" aria-label="Account">
+      <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    </a>
+    <button class="nav-icon" id="cartBtn" aria-label="Cart" aria-expanded="false">
+      <svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+      <span class="cart-badge" id="cartCount">{{ cart.item_count }}</span>
+    </button>
+  </div>
+
+  <button class="hamburger" id="hamburgerBtn" aria-label="Open menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+</header>
+
+<!-- MOBILE DRAWER -->
+<div class="drawer" id="mobileDrawer" role="dialog" aria-modal="true">
+  <div class="drawer-overlay" id="drawerOverlay"></div>
+  <div class="drawer-panel">
+    {% if section.settings.menu %}
+      {% for link in section.settings.menu.links %}
+        <a href="{{ link.url }}" class="drawer-link">{{ link.title }}</a>
+      {% endfor %}
+    {% else %}
+      <a href="/collections/tulai" class="drawer-link">Shop</a>
+      <a href="/pages/loop" class="drawer-link">Loop</a>
+      <a href="/pages/philosophy" class="drawer-link">Philosophy</a>
+    {% endif %}
+
+    <div class="drawer-util-row">
+      <a href="/pages/contact" class="drawer-util">
+        <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg>
+        Contact
+      </a>
+      <a href="{{ routes.account_url }}" class="drawer-util">
+        <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Account
+      </a>
+      <button class="drawer-util" id="drawerCartBtn">
+        <svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        Cart
+      </button>
+    </div>
+  </div>
+</div>
+
+
+<script>
+/*
+  DESIGN SPINE — the vertical divide on .hp-hero / .hp-split / .hp-starter-inner
+  must land EXACTLY between the two O's in "LOOP" (nav-link, split "LO" | "OP").
+  A fixed fr/% ratio can't guarantee this: SHOP and PHILOSOPHY are different
+  widths, so LOOP's true center shifts with font, zoom and viewport width.
+  Instead we measure the live boundary between the "LO" and "OP" spans and
+  push it as an exact pixel column width to every section sharing the spine.
+*/
+window.NARKK_SPINE_VERSION = 'spine-v3-breakout-2026-08-28';
+console.log('[narkk-spine] script version:', window.NARKK_SPINE_VERSION);
+(function () {
+  // Two-column sections whose divider must land exactly on the spine.
+  var SPINE_SPLIT_TARGETS = ['.hp-hero', '.hp-split', '.hp-starter-inner', '.hp-mani-inner', '.hp-pipe-lead', '.nl-inner'];
+  // Full-bleed sections that draw the spine as a plain hairline (.narkk-spine::before),
+  // e.g. the Loop masonry, Upcoming panel, Newsletter and Footer.
+  var MOBILE_BREAKPOINT = 900; // widest breakpoint among the spine-split sections
+
+  function applySpine() {
+    var loop = document.getElementById('nav-loop-link');
+    var lo = loop && loop.querySelector('.loop-h1');
+    if (!loop || !lo) {
+      console.warn('[narkk-spine] #nav-loop-link or .loop-h1 not found — is the menu link titled exactly "Loop"?');
+      window.NARKK_SPINE_DEBUG = { error: 'loop-link-not-found' };
+      return;
+    }
+
+    if (window.innerWidth <= MOBILE_BREAKPOINT) {
+      // Let each section's own mobile media query (single column) take over.
+      SPINE_SPLIT_TARGETS.forEach(function (sel) {
+        document.querySelectorAll(sel).forEach(function (el) {
+          el.style.gridTemplateColumns = '';
+        });
+      });
+      document.documentElement.style.removeProperty('--spine-x');
+      return;
+    }
+
+    // Boundary = right edge of "LO" = left edge of "OP" = exact center of LOOP,
+    // measured live in viewport pixels so it tracks font/zoom/viewport changes.
+    var boundaryPx = Math.round(lo.getBoundingClientRect().right);
+
+    // Sanity guard: if the nav hasn't rendered/laid out properly yet (fonts not
+    // ready, link display:none, mid-transition, etc.) boundaryPx can come back
+    // as 0, negative, or absurdly large. Rather than ever push a broken split
+    // (content clipped almost off-screen), just skip this pass and fall back
+    // to the CSS var(--col-split) ratio already on each section — a future
+    // resize/fonts.ready/load pass will re-measure and correct it.
+    if (!boundaryPx || boundaryPx < window.innerWidth * 0.3 || boundaryPx > window.innerWidth * 0.7) {
+      return;
+    }
+
+    // Drives the plain hairline drawn by .narkk-spine::before (Loop, Upcoming,
+    // Newsletter, Footer) so it lines up with the same point.
+    document.documentElement.style.setProperty('--spine-x', boundaryPx + 'px');
+
+    // Drives the actual column split on every two-column section. Accounts for
+    // each container's own left padding + column-gap, so the visual divide
+    // (not just the raw column width) lands on the spine regardless of how
+    // that particular section is built.
+    SPINE_SPLIT_TARGETS.forEach(function (sel) {
+      document.querySelectorAll(sel).forEach(function (el) {
+        var rect = el.getBoundingClientRect();
+
+        // NOTE: these sections are meant to be full-bleed via the 100vw
+        // breakout trick, but on any real desktop browser with a visible
+        // vertical scrollbar, 100vw includes the scrollbar's width, so
+        // rect.left is routinely off by ~15-17px (not 0) even when the
+        // layout is perfectly healthy. We used to reject any rect.left
+        // beyond 5px as "broken layout", which meant the pixel-perfect
+        // LOOP measurement was discarded on virtually every normal desktop
+        // browser and it silently fell back to the plain CSS ratio (this
+        // is why the divide was landing under Philosophy instead of LOOP).
+        // The col1Width formula below already subtracts rect.left, so it
+        // stays correct regardless of this offset — no need to guard on it.
+
+        var cs = window.getComputedStyle(el);
+        var paddingLeft = parseFloat(cs.paddingLeft) || 0;
+        var columnGap = parseFloat(cs.columnGap) || 0;
+        var col1Width = boundaryPx - rect.left - paddingLeft - (columnGap / 2);
+
+        // Per-section guard too: never let col1 collapse below 30% or exceed
+        // 70% of that element's own width — protects content from ever being
+        // clipped even if this particular section's box model is unusual.
+        var elWidth = rect.width || 1;
+        if (col1Width < elWidth * 0.3 || col1Width > elWidth * 0.7) {
+          el.style.gridTemplateColumns = '';
+          return;
+        }
+        el.style.gridTemplateColumns = col1Width + 'px 1fr';
+      });
+    });
+  }
+
+  var raf;
+  function scheduleApplySpine() {
+    cancelAnimationFrame(raf);
+    raf = requestAnimationFrame(applySpine);
+  }
+
+  document.addEventListener('DOMContentLoaded', applySpine);
+  window.addEventListener('load', applySpine);
+  window.addEventListener('resize', scheduleApplySpine);
+  window.addEventListener('orientationchange', scheduleApplySpine);
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(applySpine);
+  }
+  // Catch late reflows (announcement bar marquee, lazy-loaded nav icons, etc.)
+  // that can shift nav layout slightly after the initial paint.
+  [100, 400, 1000, 2000].forEach(function (delay) {
+    setTimeout(applySpine, delay);
+  });
+  // Re-measure if the theme editor swaps sections around.
+  document.addEventListener('shopify:section:load', scheduleApplySpine);
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    { "type": "image_picker", "id": "logo", "label": "Logo" },
+    { "type": "link_list", "id": "menu", "label": "Menu" }
+  ]
+}
+{% endschema %}

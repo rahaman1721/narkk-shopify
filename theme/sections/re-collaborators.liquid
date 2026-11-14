@@ -1,0 +1,196 @@
+{% comment %}
+  ------------------------------------------------------------------------------------------------------------------------------------
+  NARKK &mdash; Collaborators (Call to Action)
+  Layout matches the video: Full bleed background image, with a 
+  centered sand/beige card containing the text and CTA.
+  ------------------------------------------------------------------------------------------------------------------------------------
+{% endcomment %}
+
+<style>
+.rc-section {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 120px 5vw;
+  box-sizing: border-box;
+  background: var(--cream-d, #EDE7DE);
+}
+
+/* Background image */
+.rc-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  z-index: 0;
+}
+
+/* Centered card */
+.rc-card {
+  position: relative;
+  z-index: 1;
+  background: {{ section.settings.card_bg | default: '#F2EDE6' }};
+  width: 100%;
+  max-width: 840px;
+  padding: 80px 8vw;
+  box-sizing: border-box;
+  text-align: left;
+}
+
+.rc-heading {
+  font-family: 'Outfit', system-ui, sans-serif;
+  font-size: clamp(28px, 3.5vw, 42px);
+  font-weight: 400;
+  line-height: 1.1;
+  text-transform: uppercase;
+  color: {{ section.settings.heading_color | default: '#1a2535' }};
+  margin: 0 0 32px 0;
+}
+
+.rc-subheading {
+  font-family: 'Outfit', system-ui, sans-serif;
+  font-size: clamp(18px, 1.8vw, 22px);
+  font-weight: 400;
+  text-transform: uppercase;
+  color: {{ section.settings.accent_color | default: '#C85C3A' }};
+  margin: 0 0 20px 0;
+  letter-spacing: -0.01em;
+}
+
+.rc-body {
+  font-family: 'Outfit', system-ui, sans-serif;
+  font-size: clamp(14px, 1.3vw, 16px);
+  font-weight: 300;
+  line-height: 1.8;
+  color: rgba(26,37,53,0.7);
+  margin: 0 0 24px 0;
+}
+.rc-body:last-of-type {
+  margin-bottom: 48px;
+}
+
+/* Button */
+.rc-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Outfit', system-ui, sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #1a2535;
+  text-decoration: none;
+  border: 1px solid rgba(26,37,53,0.3);
+  padding: 16px 32px;
+  transition: all 0.3s ease;
+  background: transparent;
+}
+.rc-btn:hover {
+  border-color: #1a2535;
+  background: rgba(26,37,53,0.04);
+}
+
+@media (max-width: 768px) {
+  .rc-section {
+    padding: 80px 24px;
+    min-height: auto;
+  }
+  .rc-card {
+    padding: 48px 24px;
+  }
+}
+</style>
+
+<div class="rc-section">
+
+  {%- if section.settings.image != blank -%}
+    <img class="rc-bg" src="{{ section.settings.image | image_url: width: 2000 }}" alt="" loading="lazy">
+  {%- endif -%}
+
+  <div class="rc-card">
+    {%- for block in section.blocks -%}
+      {%- case block.type -%}
+        
+        {%- when 'heading' -%}
+          <h2 class="rc-heading" {{ block.shopify_attributes }}>{{ block.settings.text }}</h2>
+          
+        {%- when 'subheading' -%}
+          <h3 class="rc-subheading" {{ block.shopify_attributes }}>{{ block.settings.text }}</h3>
+          
+        {%- when 'paragraph' -%}
+          <p class="rc-body" {{ block.shopify_attributes }}>{{ block.settings.text }}</p>
+          
+        {%- when 'button' -%}
+          {%- if block.settings.link != blank -%}
+            <a href="{{ block.settings.link }}" class="rc-btn" {{ block.shopify_attributes }}>
+              + {{ block.settings.text }}
+            </a>
+          {%- else -%}
+            <button type="button" class="rc-btn" data-inquiry-open="Chat With Us" {{ block.shopify_attributes }}>
+              + {{ block.settings.text }}
+            </button>
+          {%- endif -%}
+
+      {%- endcase -%}
+    {%- endfor -%}
+  </div>
+
+</div>
+
+{% schema %}
+{
+  "name": "RE Collaborators",
+  "class": "section-re-collaborators",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Background Image" },
+    { "type": "color", "id": "card_bg", "label": "Card Background", "default": "#F2EDE6" },
+    { "type": "color", "id": "heading_color", "label": "Heading Color", "default": "#1a2535" },
+    { "type": "color", "id": "accent_color", "label": "Accent Color", "default": "#C85C3A" }
+  ],
+  "blocks": [
+    {
+      "type": "heading",
+      "name": "Large Heading",
+      "settings": [ { "type": "text", "id": "text", "label": "Text", "default": "A CALL FOR COLLABORATORS" } ]
+    },
+    {
+      "type": "subheading",
+      "name": "Small Colored Heading",
+      "settings": [ { "type": "text", "id": "text", "label": "Text", "default": "WHO WE'RE LOOKING FOR" } ]
+    },
+    {
+      "type": "paragraph",
+      "name": "Paragraph",
+      "settings": [ { "type": "textarea", "id": "text", "label": "Text", "default": "This isn't just a brand. It's a position. And we're looking for people who share it." } ]
+    },
+    {
+      "type": "button",
+      "name": "Button",
+      "settings": [
+        { "type": "text", "id": "text", "label": "Label", "default": "JOIN THE LOOP" },
+        { "type": "url",  "id": "link", "label": "Link" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "RE Collaborators",
+      "blocks": [
+        { "type": "heading", "settings": { "text": "A CALL FOR COLLABORATORS" } },
+        { "type": "paragraph", "settings": { "text": "This isn't just a brand. It's a position. And we're looking for people who share it." } },
+        { "type": "paragraph", "settings": { "text": "The Inner Loop is narkk's circle of people who don't just buy mindfully, but think, make, and advocate for a different way of living. Designers, makers, writers &mdash; people who've long believed this, but never had a place for it." } },
+        { "type": "paragraph", "settings": { "text": "This is that place. Built slowly and deliberately. No noise. No numbers game. Just the right people, doing meaningful work together." } },
+        { "type": "subheading", "settings": { "text": "WHO WE'RE LOOKING FOR" } },
+        { "type": "paragraph", "settings": { "text": "Designers, Makers, Writers, Sustainability Advocates, Intentional Consumers" } },
+        { "type": "button", "settings": { "text": "JOIN THE LOOP" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

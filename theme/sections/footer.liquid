@@ -1,0 +1,202 @@
+<!-- FOOTER — matches standalone reference: Shop · Company · Legal · Social · Support -->
+<style>
+.ft {
+  background: var(--cream);
+  border-top: 1px solid var(--border);
+  font-family: 'Outfit', sans-serif;
+  margin: 0;
+}
+
+.shopify-section:has(> .ft) { margin: 0 !important; padding: 0 !important; }
+
+/* Single horizontal row — 5 link groups side by side on desktop, matching the standalone site */
+.ft-top {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  border-bottom: 1px solid var(--border);
+  align-items: stretch;
+}
+
+.ft-group {
+  padding: 32px 20px 36px;
+  border-right: 1px solid var(--border);
+}
+
+.ft-group:last-child {
+  border-right: none;
+}
+
+.ft-col-title {
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--sage);
+  margin-bottom: 16px;
+}
+
+.ft-links { display: flex; flex-direction: column; gap: 11px; }
+
+.ft-link {
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--slate-l);
+  text-decoration: none;
+  transition: color 0.12s;
+  line-height: 1.5;
+}
+.ft-link:hover { color: var(--slate); }
+.ft-soon { font-size: 13px; font-weight: 300; color: var(--coral); opacity: 0.65; cursor: default; }
+
+/* Bottom bar */
+.ft-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 18px 44px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.ft-sub-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 44px;
+  border-top: 1px solid var(--border);
+}
+.ft-copy { font-size: 11px; font-weight: 300; color: var(--sage); letter-spacing: 0.5px; }
+.ft-pays { display: flex; gap: 6px; align-items: center; }
+.ft-pay {
+  font-size: 9px;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--sage);
+  border: 1px solid var(--border-m);
+  padding: 3px 8px;
+  border-radius: 3px;
+}
+.ft-logo-wrap img { height: 36px; width: auto; display: block; opacity: 0.7; }
+
+/* Responsive — 3 columns on tablet, 2 columns stacked on mobile */
+@media (max-width: 900px) and (min-width: 769px) {
+  .ft-top { grid-template-columns: repeat(3, 1fr); }
+  .ft-group { border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .ft-group:nth-child(3n) { border-right: none; }
+  .ft-group:nth-last-child(-n+3) { border-bottom: none; }
+}
+@media (max-width: 768px) {
+  .ft-top { grid-template-columns: 1fr 1fr; }
+  .ft-group { padding: 32px 20px; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .ft-group:nth-child(2n) { border-right: none; }
+  .ft-group:nth-last-child(-n+2) { border-bottom: none; }
+  .ft-bottom { padding: 16px 20px; flex-direction: column; align-items: flex-start; }
+  .ft-sub-bottom { padding: 12px 20px; justify-content: flex-start; }
+}
+</style>
+
+<footer class="ft">
+  <div class="ft-top">
+
+    <!-- Shop -->
+    <div class="ft-group">
+      <div class="ft-col-title">Shop</div>
+      <div class="ft-links">
+        <a href="/collections/tulai" class="ft-link">Tulai &mdash; Pegboard System</a>
+        <span class="ft-soon">Thogai &mdash; Rest (coming soon)</span>
+        <span class="ft-soon">Thunn &mdash; Store (coming soon)</span>
+      </div>
+    </div>
+
+    <!-- Company -->
+    <div class="ft-group">
+      <div class="ft-col-title">Company</div>
+      <div class="ft-links">
+        {% if section.settings.company_menu != blank %}
+          {% for link in section.settings.company_menu.links %}
+            <a href="{{ link.url }}" class="ft-link">{{ link.title }}</a>
+          {% endfor %}
+        {% else %}
+          <a href="/pages/loop" class="ft-link">Loop</a>
+          <a href="/pages/trade" class="ft-link">Trade Program</a>
+          <a href="/pages/philosophy" class="ft-link">Philosophy</a>
+          <a href="/pages/career" class="ft-link">Career</a>
+          <a href="/pages/contact" class="ft-link">Contact</a>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Legal -->
+    <div class="ft-group">
+      <div class="ft-col-title">Legal</div>
+      <div class="ft-links">
+        {% if section.settings.legal_menu != blank %}
+          {% for link in section.settings.legal_menu.links %}
+            <a href="{{ link.url }}" class="ft-link">{{ link.title }}</a>
+          {% endfor %}
+        {% else %}
+          <a href="/pages/legal#privacy" class="ft-link">Privacy Policy</a>
+          <a href="/pages/legal#terms" class="ft-link">Terms &amp; Conditions</a>
+          <a href="/pages/legal#shipping" class="ft-link">Shipping Policy</a>
+          <a href="/pages/legal#returns" class="ft-link">Returns &amp; Refunds</a>
+          <a href="/pages/legal#warranty" class="ft-link">Repair &amp; Warranty</a>
+          <a href="/pages/legal#cancellation" class="ft-link">Cancellation Policy</a>
+          <a href="/pages/legal#grievance" class="ft-link">Grievance Redressal</a>
+          <a href="/pages/legal#cookies" class="ft-link">Cookie Policy</a>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Social -->
+    <div class="ft-group">
+      <div class="ft-col-title">Social</div>
+      <div class="ft-links">
+        <a href="{{ section.settings.instagram_url | default: 'https://www.instagram.com/narkkloop' }}" class="ft-link" target="_blank" rel="noopener">Instagram</a>
+        <a href="{{ section.settings.reddit_url | default: 'https://www.reddit.com/r/Narkkloop/' }}" class="ft-link" target="_blank" rel="noopener">Reddit</a>
+        <span class="ft-soon">Discord &mdash; soon</span>
+      </div>
+    </div>
+
+    <!-- Support -->
+    <div class="ft-group">
+      <div class="ft-col-title">Support</div>
+      <div class="ft-links">
+        <a href="mailto:{{ section.settings.email | default: 'hello@narkk.in' }}" class="ft-link">{{ section.settings.email | default: 'hello@narkk.in' }}</a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Bottom bar: logo -->
+  <div class="ft-bottom">
+    <div class="ft-logo-wrap">
+      <a href="/"><img src="https://narkk-india.myshopify.com/cdn/shop/t/2/assets/narkk-logo-black-updated.svg?v=26487935200603946611781263187" alt="narkk"></a>
+    </div>
+  </div>
+  
+  <!-- Sub bottom bar: copyright & payments -->
+  <div class="ft-sub-bottom">
+    <div class="ft-copy">&copy; 2026 narkk</div>
+    <div class="ft-pays">
+      <span class="ft-pay">Mastercard</span>
+      <span class="ft-pay">Visa</span>
+      <span class="ft-pay">UPI</span>
+      <span class="ft-pay">GPay</span>
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+    { "type": "text", "id": "email", "label": "Support Email", "default": "hello@narkk.in" },
+    { "type": "url", "id": "instagram_url", "label": "Instagram URL" },
+    { "type": "url", "id": "reddit_url", "label": "Reddit URL" },
+    { "type": "link_list", "id": "shop_menu", "label": "Shop Menu" },
+    { "type": "link_list", "id": "brand_menu", "label": "Brand Menu" },
+    { "type": "link_list", "id": "support_menu", "label": "Support Menu" },
+    { "type": "link_list", "id": "company_menu", "label": "Company Menu" },
+    { "type": "link_list", "id": "legal_menu", "label": "Legal Menu" }
+  ]
+}
+{% endschema %}

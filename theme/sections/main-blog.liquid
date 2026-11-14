@@ -1,0 +1,156 @@
+<style>
+/* Loop page styles */
+.lp-hero{padding:80px 44px 60px;border-bottom:1px solid var(--border);text-align:center;}
+.lp-hero-ey{display:flex;align-items:center;justify-content:center;gap:10px;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--burnt-clay);font-weight:400;margin-bottom:16px;}
+.lp-hero-ey-line{width:20px;height:1px;background:var(--burnt-clay);}
+.lp-hero-title{font-size:clamp(36px,6vw,80px);font-weight:200;letter-spacing:-1px;color:var(--slate);line-height:1;margin-bottom:16px;}
+.lp-hero-sub{font-size:15px;font-weight:300;color:var(--text-secondary);max-width:480px;margin:0 auto;line-height:1.7;}
+.lp-section{padding:64px 44px;border-bottom:1px solid var(--border);}
+.lp-section-hdr{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:40px;flex-wrap:wrap;gap:16px;}
+.lp-section-ey{font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--burnt-clay);font-weight:400;margin-bottom:8px;}
+.lp-section-title{font-size:clamp(22px,3vw,36px);font-weight:200;letter-spacing:-0.3px;color:var(--slate);}
+.lp-section-sub{font-size:13px;font-weight:300;color:var(--text-secondary);max-width:400px;line-height:1.6;margin-top:6px;}
+.lp-view-all{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--slate);text-decoration:none;border-bottom:1px solid var(--border-m);padding-bottom:2px;transition:color 0.15s;white-space:nowrap;}
+.lp-view-all:hover{color:var(--burnt-clay);}
+.lp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);}
+.lp-card{background:var(--cream);text-decoration:none;display:block;transition:background 0.2s;}
+.lp-card:hover{background:var(--cream-d);}
+.lp-card-img{aspect-ratio:16/9;overflow:hidden;background:var(--cream-d);}
+.lp-card-img img{width:100%;height:100%;object-fit:contain;display:block;transition:transform 0.4s ease;}
+.lp-card:hover .lp-card-img img{transform:scale(1.04);}
+.lp-card-img-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:var(--text-secondary);font-size:11px;letter-spacing:1px;}
+.lp-card-body{padding:20px 22px 24px;}
+.lp-card-tag{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--burnt-clay);margin-bottom:8px;font-weight:400;}
+.lp-card-title{font-size:16px;font-weight:300;color:var(--slate);line-height:1.4;margin-bottom:8px;}
+.lp-card-excerpt{font-size:13px;font-weight:300;color:var(--text-secondary);line-height:1.6;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.lp-card-date{font-size:11px;color:var(--text-secondary);margin-top:10px;letter-spacing:0.5px;}
+.lp-empty{padding:60px;text-align:center;color:var(--text-secondary);font-size:14px;font-weight:300;background:var(--cream);}
+/* Separator */
+.lp-sep{display:flex;align-items:center;gap:24px;padding:48px 44px;border-bottom:1px solid var(--border);background:var(--cream-d);}
+.lp-sep-line{flex:1;height:1px;background:var(--border-m);}
+.lp-sep-text{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--text-secondary);font-weight:400;white-space:nowrap;}
+/* Social */
+.lp-social{display:flex;align-items:center;gap:16px;padding:40px 44px;border-bottom:1px solid var(--border);background:var(--cream);flex-wrap:wrap;}
+.lp-social-label{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--text-secondary);font-weight:400;margin-right:8px;}
+.lp-social-link{display:flex;align-items:center;gap:8px;text-decoration:none;color:var(--slate);font-size:13px;font-weight:300;padding:8px 16px;border:1px solid var(--border-m);border-radius:4px;transition:all 0.15s;}
+.lp-social-link:hover{background:var(--slate);color:var(--cream);border-color:var(--slate);}
+.lp-social-link svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;}
+@media(max-width:900px){.lp-grid{grid-template-columns:1fr;}.lp-section{padding:44px 20px;}.lp-hero{padding:60px 20px 40px;}.lp-social{padding:32px 20px;}}
+</style>
+
+<!-- Loop Hero -->
+<section class="lp-hero">
+  <div class="lp-hero-ey"><span class="lp-hero-ey-line"></span>The Loop<span class="lp-hero-ey-line"></span></div>
+  <h1 class="lp-hero-title">Living with intention.</h1>
+  <div class="lp-hero-sub">Stories, ideas, and perspectives on mindful living. From the NARC community and beyond.</div>
+</section>
+
+<!-- Living with Intention -->
+<section class="lp-section" id="living-with-intention">
+  <div class="lp-section-hdr">
+    <div>
+      <div class="lp-section-ey">Community</div>
+      <div class="lp-section-title">Living with Intention</div>
+      <div class="lp-section-sub">Lifestyle articles, tips, product reviews, vlogs and community stories.</div>
+    </div>
+    <a href="/blogs/living-with-intention" class="lp-view-all">View all</a>
+  </div>
+  <div class="lp-grid">
+    {%- assign lwi_blog = blogs['living-with-intention'] -%}
+    {%- if lwi_blog and lwi_blog.articles.size > 0 -%}
+      {%- for article in lwi_blog.articles limit: 3 -%}
+        <a href="{{ article.url }}" class="lp-card">
+          <div class="lp-card-img">
+            {%- if article.image -%}
+              <img src="{{ article.image | image_url: width: 600 }}" alt="{{ article.image.alt | default: article.title | escape }}" width="600" height="338" loading="lazy">
+            {%- else -%}
+              <div class="lp-card-img-ph">No image</div>
+            {%- endif -%}
+          </div>
+          <div class="lp-card-body">
+            <div class="lp-card-tag">{{ article.tags.first | default: 'Community' }}</div>
+            <div class="lp-card-title">{{ article.title }}</div>
+            <div class="lp-card-excerpt">{{ article.excerpt | default: article.content | strip_html | truncatewords: 20 }}</div>
+            <div class="lp-card-date">{{ article.published_at | date: '%b %d, %Y' }}</div>
+          </div>
+        </a>
+      {%- endfor -%}
+    {%- else -%}
+      <div class="lp-empty" style="grid-column:1/-1;">Articles coming soon. Check back shortly!</div>
+    {%- endif -%}
+  </div>
+</section>
+
+<!-- Find Your Community Separator -->
+<div class="lp-sep">
+  <div class="lp-sep-line"></div>
+  <div class="lp-sep-text">Find Your Community</div>
+  <div class="lp-sep-line"></div>
+</div>
+
+<!-- Social Links -->
+<div class="lp-social">
+  <span class="lp-social-label">Follow us</span>
+  <a href="{{ section.settings.instagram_url | default: 'https://www.instagram.com/narkkloop?igsh=NXo4em56b3k4Z3Qy' }}" class="lp-social-link" target="_blank" rel="noopener" aria-label="Instagram">
+    <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+    Instagram
+  </a>
+  <a href="{{ section.settings.reddit_url | default: 'https://www.reddit.com/r/Narkkloop/s/94Mec6cAYf' }}" class="lp-social-link" target="_blank" rel="noopener" aria-label="Reddit">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="13.5" r="7" />
+      <path d="M11 7.2 9.3 3.4l3.1-.8 1 1.7" />
+      <circle cx="9.3" cy="3.4" r="1.1" fill="currentColor" stroke="none" />
+      <circle cx="9.3" cy="12.2" r="1" fill="currentColor" stroke="none" />
+      <circle cx="14.7" cy="12.2" r="1" fill="currentColor" stroke="none" />
+      <path d="M9 16.3c.8.9 1.9 1.4 3 1.4s2.2-.5 3-1.4" />
+    </svg>
+    Reddit
+  </a>
+</div>
+
+<!-- Living with narkk -->
+<section class="lp-section" id="living-with-narkk">
+  <div class="lp-section-hdr">
+    <div>
+      <div class="lp-section-ey">Brand Stories</div>
+      <div class="lp-section-title">Living with narkk</div>
+      <div class="lp-section-sub">Product reviews, brand news, launches, and company stories.</div>
+    </div>
+    <a href="/blogs/living-with-narkk" class="lp-view-all">View all</a>
+  </div>
+  <div class="lp-grid">
+    {%- assign lwn_blog = blogs['living-with-narkk'] -%}
+    {%- if lwn_blog and lwn_blog.articles.size > 0 -%}
+      {%- for article in lwn_blog.articles limit: 3 -%}
+        <a href="{{ article.url }}" class="lp-card">
+          <div class="lp-card-img">
+            {%- if article.image -%}
+              <img src="{{ article.image | image_url: width: 600 }}" alt="{{ article.image.alt | default: article.title | escape }}" width="600" height="338" loading="lazy">
+            {%- else -%}
+              <div class="lp-card-img-ph">No image</div>
+            {%- endif -%}
+          </div>
+          <div class="lp-card-body">
+            <div class="lp-card-tag">{{ article.tags.first | default: 'Brand' }}</div>
+            <div class="lp-card-title">{{ article.title }}</div>
+            <div class="lp-card-excerpt">{{ article.excerpt | default: article.content | strip_html | truncatewords: 20 }}</div>
+            <div class="lp-card-date">{{ article.published_at | date: '%b %d, %Y' }}</div>
+          </div>
+        </a>
+      {%- endfor -%}
+    {%- else -%}
+      <div class="lp-empty" style="grid-column:1/-1;">Brand stories coming soon!</div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Loop Blog",
+  "settings": [
+    { "type": "url", "id": "instagram_url", "label": "Instagram URL" },
+    { "type": "url", "id": "reddit_url", "label": "Reddit URL" }
+  ],
+  "presets": [{ "name": "Loop Blog" }]
+}
+{% endschema %}

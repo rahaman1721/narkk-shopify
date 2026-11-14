@@ -1,0 +1,55 @@
+{% render 'pdp-accessory-layout', section: section, product: product %}
+
+{% schema %}
+{
+  "name": "Accessory PDP",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "about_text",
+      "label": "About text",
+      "default": "A thoughtfully designed accessory for the Tulai pegboard system. Made from solid birch plywood, each piece is CNC-machined and hand-sealed for a clean, lasting finish."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "title",
+      "name": "Title",
+      "limit": 1
+    },
+    {
+      "type": "pack_info",
+      "name": "Pack Info",
+      "limit": 1
+    },
+    {
+      "type": "price",
+      "name": "Price",
+      "limit": 1
+    },
+    {
+      "type": "description",
+      "name": "Description",
+      "limit": 1
+    },
+    {
+      "type": "buy_buttons",
+      "name": "Buy Buttons",
+      "limit": 1
+    }
+  ],
+  "presets": [
+    {
+      "name": "Accessory PDP",
+      "category": "Product",
+      "blocks": [
+        { "type": "title" },
+        { "type": "pack_info" },
+        { "type": "description" },
+        { "type": "price" },
+        { "type": "buy_buttons" }
+      ]
+    }
+  ]
+}
+{% endschema %}

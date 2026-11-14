@@ -1,0 +1,111 @@
+<!-- SCROLL-TRIGGERED YOUTUBE SHORTS SHOWCASE — 3 portrait 4:5 videos -->
+<style>
+.yt-section { background:var(--cream); border-bottom:1px solid var(--border); padding:72px 56px; }
+.yt-eyebrow { display:flex; align-items:center; gap:10px; font-family:'Outfit',sans-serif; font-size:var(--fs-lbl); font-weight:300; letter-spacing:2.5px; text-transform:uppercase; color:var(--coral); margin-bottom:14px; }
+.yt-eyebrow::before { content:''; display:block; width:24px; height:1px; background:var(--coral); flex-shrink:0; }
+.yt-title { font-family:'Outfit',sans-serif; font-size:var(--fs-h1); font-weight:200; letter-spacing:-0.5px; color:var(--slate); line-height:1.15; margin-bottom:40px; }
+.yt-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+.yt-card { position:relative; overflow:hidden; border-radius:4px; background:var(--cream-d); aspect-ratio:4/5; border:1px solid var(--border); }
+.yt-card iframe { position:absolute; inset:0; width:100%; height:100%; border:none; display:block; }
+.yt-card-overlay { position:absolute; inset:0; z-index:2; background:var(--cream-d); transition:opacity 0.5s ease; pointer-events:none; display:flex; align-items:center; justify-content:center; }
+.yt-card-overlay svg { width:40px; height:40px; opacity:0.3; }
+.yt-card.loaded .yt-card-overlay { opacity:0; }
+.yt-cap { margin-top:10px; font-family:'Outfit',sans-serif; font-size:var(--fs-meta); font-weight:300; color:var(--sage); letter-spacing:0.5px; text-align:center; }
+@media(max-width:900px) {
+  .yt-section { padding:48px 20px; }
+  .yt-grid { grid-template-columns:1fr; max-width:360px; margin:0 auto; gap:24px; }
+}
+@media(min-width:901px) and (max-width:1100px) {
+  .yt-section { padding:56px 32px; }
+}
+</style>
+
+<section class="yt-section" id="yt-showcase">
+  <div class="yt-eyebrow">{{ section.settings.eyebrow | default: 'In the wild' }}</div>
+  <div class="yt-title">{{ section.settings.title | default: 'See Tulai in real spaces.' }}</div>
+
+  <div class="yt-grid">
+    {% assign yt_ids = section.settings.yt_id_1 | append: '||' | append: section.settings.yt_id_2 | append: '||' | append: section.settings.yt_id_3 | split: '||' %}
+    {% assign yt_caps = section.settings.cap_1 | append: '||' | append: section.settings.cap_2 | append: '||' | append: section.settings.cap_3 | split: '||' %}
+    {% for vid_id in yt_ids %}
+      {% assign vid = vid_id | strip %}
+      {% if vid != blank %}
+        <div>
+          <div class="yt-card" data-ytid="{{ vid }}">
+            <div class="yt-card-overlay">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8" fill="currentColor" stroke="none"/></svg>
+            </div>
+          </div>
+          {% assign cap = yt_caps[forloop.index0] | strip %}
+          {% if cap != blank %}<div class="yt-cap">{{ cap }}</div>{% endif %}
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+</section>
+
+<script>
+(function(){
+  'use strict';
+  function extractYTId(input) {
+    input = input.trim();
+    if (/^[a-zA-Z0-9_-]{11}$/.test(input)) return input;
+    var m = input.match(/shorts\/([a-zA-Z0-9_-]{11})/);
+    if (m) return m[1];
+    m = input.match(/v=([a-zA-Z0-9_-]{11})/);
+    if (m) return m[1];
+    m = input.match(/youtu\.be\/([a-zA-Z0-9_-]{11})/);
+    if (m) return m[1];
+    return input;
+  }
+  function buildSrc(id){
+    var cleanId = extractYTId(id);
+    return 'https://www.youtube.com/embed/' + cleanId + '?autoplay=1&mute=1&controls=1&loop=1&playlist=' + cleanId + '&playsinline=1&rel=0&modestbranding=1&enablejsapi=1';
+  }
+  function loadCard(card){
+    if(card.dataset.loaded) return;
+    card.dataset.loaded='1';
+    var iframe=document.createElement('iframe');
+    iframe.src=buildSrc(card.dataset.ytid);
+    iframe.allow='autoplay; encrypted-media';
+    iframe.allowFullscreen=true;
+    card.appendChild(iframe);
+    setTimeout(function(){ card.classList.add('loaded'); }, 900);
+  }
+  function postCmd(card,fn){
+    var f=card.querySelector('iframe');
+    if(f) f.contentWindow.postMessage(JSON.stringify({event:'command',func:fn,args:[]}),'*');
+  }
+  if('IntersectionObserver' in window){
+    var obs=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){ loadCard(e.target); postCmd(e.target,'playVideo'); }
+        else { postCmd(e.target,'pauseVideo'); }
+      });
+    },{threshold:0.4});
+    document.querySelectorAll('.yt-card[data-ytid]').forEach(function(c){ obs.observe(c); });
+  } else {
+    document.querySelectorAll('.yt-card[data-ytid]').forEach(loadCard);
+  }
+})();
+</script>
+
+{% schema %}
+{
+  "name": "YouTube Showcase",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "In the wild" },
+    { "type": "text", "id": "title",   "label": "Title",   "default": "See Tulai in real spaces." },
+    { "type": "header", "content": "Video 1" },
+    { "type": "text", "id": "yt_id_1", "label": "YouTube Video URL or ID", "default": "https://youtube.com/shorts/tcu7uFIotQM", "info": "Paste the full YouTube URL or just the video ID" },
+    { "type": "text", "id": "cap_1",   "label": "Caption (optional)" },
+    { "type": "header", "content": "Video 2" },
+    { "type": "text", "id": "yt_id_2", "label": "YouTube Video URL or ID", "default": "https://youtube.com/shorts/bkGILOtldWo" },
+    { "type": "text", "id": "cap_2",   "label": "Caption (optional)" },
+    { "type": "header", "content": "Video 3" },
+    { "type": "text", "id": "yt_id_3", "label": "YouTube Video URL or ID", "default": "https://youtu.be/WfUzMHxWEz0" },
+    { "type": "text", "id": "cap_3",   "label": "Caption (optional)" }
+  ],
+  "presets": [{ "name": "YouTube Showcase" }]
+}
+{% endschema %}

@@ -1,0 +1,94 @@
+<!-- ----------------------------------------------------------------------------------------------------------------------
+     NARKK HOMEPAGE FEATURED PRODUCTS
+     Shows a clean 4-column grid of featured products.
+     Boards get "SHOP &rarr;" link. Accessories/Pegs get "Add" button.
+     ---------------------------------------------------------------------------------------------------------------------- -->
+
+{%- assign all_products = collections.all.products -%}
+
+<div class="hp-products">
+  <div class="hp-products-hdr">
+    <div class="hp-products-ey">
+      <div class="hp-products-ey-line"></div>
+      Featured products
+    </div>
+    <a href="{{ routes.collections_url }}" class="hp-products-link">Shop all &rarr;</a>
+  </div>
+
+  <div class="sp-grid">
+    {%- assign shown = 0 -%}
+    {%- for product in all_products limit: 8 -%}
+      {%- render 'product-card', product: product -%}
+      {%- assign shown = shown | plus: 1 -%}
+    {%- endfor -%}
+
+    {%- comment %} Fallback if no products yet {%- endcomment %}
+    {%- if shown == 0 -%}
+      <div class="sp-card">
+        <a href="#" class="sp-card-img" aria-label="Tiny Pegboard"><div class="sp-card-ph">Tiny</div></a>
+        <div class="sp-card-body">
+          <div class="sp-card-ey">{{ product.vendor }} &middot; {{ product.type }}</div>
+          <a href="#" class="sp-card-name">Tiny Pegboard</a>
+          <div class="sp-card-sub">550  150  16 mm</div>
+          <div class="sp-card-footer">
+            <span class="sp-card-price">Rs. 3,999</span>
+            <a href="#" class="sp-card-cta">SHOP &rarr;</a>
+          </div>
+        </div>
+      </div>
+      <div class="sp-card">
+        <a href="#" class="sp-card-img" aria-label="Small Pegboard"><div class="sp-card-ph">Small</div></a>
+        <div class="sp-card-body">
+          <div class="sp-card-ey">{{ product.vendor }} &middot; {{ product.type }}</div>
+          <a href="#" class="sp-card-name">Small Pegboard</a>
+          <div class="sp-card-sub">550  550  16 mm</div>
+          <div class="sp-card-footer">
+            <span class="sp-card-price">Rs. 4,99</span>
+            <a href="#" class="sp-card-cta">SHOP &rarr;</a>
+          </div>
+        </div>
+      </div>
+      <div class="sp-card">
+        <a href="#" class="sp-card-img" aria-label="Standard Pegboard"><div class="sp-card-ph">Standard</div></a>
+        <div class="sp-card-body">
+          <div class="sp-card-ey">{{ product.vendor }} &middot; {{ product.type }}</div>
+          <a href="#" class="sp-card-name">Standard Pegboard</a>
+          <div class="sp-card-sub">550  1100  16 mm</div>
+          <div class="sp-card-footer">
+            <span class="sp-card-price">Rs. 6,999</span>
+            <a href="#" class="sp-card-cta">SHOP &rarr;</a>
+          </div>
+        </div>
+      </div>
+      <div class="sp-card">
+        <a href="#" class="sp-card-img" aria-label="Large Pegboard"><div class="sp-card-ph">Large</div></a>
+        <div class="sp-card-body">
+          <div class="sp-card-ey">{{ product.vendor }} &middot; {{ product.type }}</div>
+          <a href="#" class="sp-card-name">Large Pegboard</a>
+          <div class="sp-card-sub">550  1750  16 mm</div>
+          <div class="sp-card-footer">
+            <span class="sp-card-price">Rs. 9,999</span>
+            <a href="#" class="sp-card-cta">SHOP &rarr;</a>
+          </div>
+        </div>
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+<style>
+  .hp-products { background: var(--cream); border-bottom: 1px solid var(--border); }
+  .hp-products-hdr { display: flex; align-items: center; justify-content: space-between; padding: 48px 44px 32px; border-bottom: 1px solid var(--border); }
+  .hp-products-ey { display: flex; align-items: center; gap: 10px; font-size: var(--fs-lbl); font-weight: 300; letter-spacing: 2.5px; text-transform: uppercase; color: var(--burnt-clay); }
+  .hp-products-ey-line { width: 24px; height: 1px; background: var(--burnt-clay); flex-shrink: 0; }
+  .hp-products-link { font-size: var(--fs-lbl); font-weight: 300; letter-spacing: 1.5px; text-transform: uppercase; color: var(--burnt-clay); text-decoration: none; border-bottom: 1px solid var(--burnt-clay); padding-bottom: 1px; transition: opacity 0.2s; }
+  .hp-products-link:hover { opacity: 0.65; }
+  @media(max-width:900px) { .hp-products-hdr { padding: 32px 20px 24px; } }
+</style>
+
+{% schema %}
+{
+  "name": "Featured Products",
+  "settings": []
+}
+{% endschema %}

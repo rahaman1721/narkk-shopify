@@ -1,0 +1,79 @@
+<style>
+.standard-page {
+  padding: 80px 44px 120px;
+  background: var(--cream);
+  min-height: 60vh;
+}
+.standard-page-inner {
+  max-width: 800px;
+  margin: 0 auto;
+}
+.standard-page-title {
+  font-size: var(--fs-h1);
+  font-weight: 200;
+  letter-spacing: -0.5px;
+  color: var(--slate);
+  margin-bottom: 40px;
+  text-align: center;
+}
+.standard-page-content {
+  font-size: var(--fs-body);
+  font-weight: 300;
+  color: var(--text-secondary);
+  line-height: 1.85;
+}
+.standard-page-content h2,
+.standard-page-content h3 {
+  font-weight: 300;
+  color: var(--slate);
+  margin-top: 40px;
+  margin-bottom: 16px;
+}
+.standard-page-content p {
+  margin-bottom: 24px;
+}
+.standard-page-content ul {
+  margin-bottom: 24px;
+  padding-left: 20px;
+}
+.standard-page-content li {
+  margin-bottom: 8px;
+}
+.standard-page-content a {
+  color: var(--burnt-clay);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(193,107,69,0.3);
+}
+@media(max-width: 900px) {
+  .standard-page {
+    padding: 60px 20px 80px;
+  }
+}
+</style>
+
+<div class="standard-page">
+  <div class="standard-page-inner">
+    <h1 class="standard-page-title">{{ page.title | escape }}</h1>
+    <div class="standard-page-content">
+      {{ page.content }}
+    </div>
+  </div>
+</div>
+
+<!-- WebPage JSON-LD -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": {{ page.title | json }},
+  "url": "{{ shop.url }}{{ page.url }}",
+  "isPartOf": { "@type": "WebSite", "name": {{ shop.name | json }}, "url": "{{ shop.url }}" }
+}
+</script>
+
+{% schema %}
+{
+  "name": "Page",
+  "settings": []
+}
+{% endschema %}

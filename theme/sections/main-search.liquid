@@ -1,0 +1,118 @@
+<!-- SEARCH PAGE -->
+<div class="search-pg">
+  <div class="search-pg-head">
+    <div class="search-pg-head-left">
+      <div class="search-eyebrow"><span class="search-eyebrow-line"></span>Search</div>
+      <h1 class="search-title">Find what you're looking for.</h1>
+    </div>
+    
+    <div class="search-pg-head-right">
+      <form action="{{ routes.search_url }}" method="get" role="search" class="search-form">
+        <input type="hidden" name="type" value="product">
+        <input
+          class="search-input"
+          type="search"
+          name="q"
+          value="{{ search.terms | escape }}"
+          placeholder="Search products..."
+          autocomplete="off"
+          aria-label="Search"
+        >
+        <button type="submit" class="search-submit" aria-label="Search">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+        </button>
+      </form>
+      
+      {%- if search.performed -%}
+        <div class="search-results-count">
+          {{ search.results_count }} result{% if search.results_count != 1 %}s{% endif %} for "<strong>{{ search.terms }}</strong>"
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{%- if search.performed -%}
+  {%- if search.results_count > 0 -%}
+    <div class="sp-grid">
+      {%- for item in search.results -%}
+        {%- if item.object_type == 'product' -%}
+          <div class="sp-card">
+            <a href="{{ item.url }}" class="sp-card-img" aria-label="{{ item.title }}">
+              {%- if item.featured_image -%}
+                <img src="{{ item.featured_image | image_url: width: 600 }}" alt="{{ item.featured_image.alt | default: item.title }}" width="600" height="600" loading="lazy">
+              {%- else -%}
+                <div class="sp-card-ph">{{ item.title | truncate: 12 }}</div>
+              {%- endif -%}
+            </a>
+            <div class="sp-card-body">
+              <div class="sp-card-ey">{{ item.vendor }}</div>
+              <a href="{{ item.url }}" class="sp-card-name">{{ item.title }}</a>
+              <div class="sp-card-sub">{{ item.type }}</div>
+              <div class="sp-card-footer">
+                <div class="sp-card-price">{%- render 'price', product: item -%}</div>
+              </div>
+            </div>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  {%- else -%}
+    <div class="search-empty">
+      <div class="search-empty-icon">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+      </div>
+      <h2>No results found</h2>
+      <p>Try checking your spelling or using more general terms.</p>
+      <a href="{{ routes.all_products_collection_url }}" class="search-empty-btn">Browse all products</a>
+    </div>
+  {%- endif -%}
+{%- endif -%}
+
+<style>
+.search-pg { padding: 80px 40px 60px; max-width: 1400px; margin: 0 auto; }
+.search-pg-head { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 1px solid var(--border-m); padding-bottom: 40px; gap: 40px; }
+.search-pg-head-left { flex: 1; max-width: 600px; }
+.search-eyebrow { font-size: var(--fs-xs); text-transform: uppercase; letter-spacing: 0.1em; font-weight: 500; color: var(--coral); margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
+.search-eyebrow-line { width: 32px; height: 1px; background: var(--coral); }
+.search-title { font-family: 'Outfit', sans-serif; font-size: clamp(32px, 4vw, 56px); font-weight: 300; line-height: 1.1; color: var(--slate); margin: 0; }
+
+.search-pg-head-right { flex: 1; max-width: 500px; width: 100%; }
+.search-form { display: flex; border-bottom: 1px solid var(--slate); padding-bottom: 8px; }
+.search-input { flex: 1; background: transparent; border: none; font-family: 'Outfit', sans-serif; font-size: var(--fs-lg); color: var(--slate); font-weight: 300; outline: none; padding: 8px 0; }
+.search-input::placeholder { color: var(--text-secondary); opacity: 0.5; }
+.search-submit { background: transparent; border: none; color: var(--slate); cursor: pointer; padding: 8px 16px 8px 24px; transition: color 0.2s ease; }
+.search-submit:hover { color: var(--coral); }
+.search-results-count { margin-top: 16px; font-size: var(--fs-sm); color: var(--text-secondary); }
+.search-results-count strong { color: var(--slate); font-weight: 500; }
+
+.sp-grid { display: grid; grid-template-columns: repeat(4, 1fr); max-width: 1400px; margin: 0 auto; border-top: 1px solid var(--border-m); border-left: 1px solid var(--border-m); }
+.sp-card { border-right: 1px solid var(--border-m); border-bottom: 1px solid var(--border-m); display: flex; flex-direction: column; background: white; transition: background 0.3s ease; }
+
+.search-empty { text-align: center; padding: 120px 20px; max-width: 600px; margin: 0 auto; }
+.search-empty-icon { color: var(--text-secondary); margin-bottom: 24px; }
+.search-empty h2 { font-family: 'Outfit', sans-serif; font-size: var(--fs-xl); color: var(--slate); font-weight: 300; margin-bottom: 12px; }
+.search-empty p { color: var(--text-secondary); font-size: var(--fs-body); margin-bottom: 32px; }
+.search-empty-btn { display: inline-block; background: var(--slate); color: white; padding: 14px 32px; border-radius: 4px; text-decoration: none; font-size: var(--fs-sm); transition: background 0.2s ease; }
+.search-empty-btn:hover { background: var(--coral); }
+
+@media (max-width: 900px) {
+  .search-pg { padding: 40px 20px; }
+  .search-pg-head { flex-direction: column; align-items: flex-start; }
+  .sp-grid { grid-template-columns: repeat(2, 1fr); border-left: none; border-top: none; }
+  .sp-card { border: none; border-bottom: 1px solid var(--border-m); }
+  .sp-card:nth-child(even) { border-left: 1px solid var(--border-m); }
+}
+@media (max-width: 600px) {
+  .sp-grid { grid-template-columns: 1fr; }
+  .sp-card:nth-child(even) { border-left: none; }
+}
+</style>
+
+{% schema %}
+{ "name": "Search Results" }
+{% endschema %}

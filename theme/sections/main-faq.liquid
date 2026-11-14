@@ -1,0 +1,195 @@
+<style>
+.pg-hero{background:var(--cream);border-bottom:1px solid var(--border);}
+.pg-hero-top{padding:72px 56px 64px;display:grid;grid-template-columns:1fr 1fr;min-height:260px;align-items:start;}
+.pg-hero-left{padding-right:40px;}
+.pg-eyebrow{display:flex;align-items:center;gap:10px;font-size:var(--fs-lbl);font-weight:300;letter-spacing:2.5px;text-transform:uppercase;margin-bottom:20px;color:var(--sage);}
+.pg-eyebrow-line{width:24px;height:1px;background:var(--sage);flex-shrink:0;}
+.pg-hero-title{font-size:var(--fs-disp);font-weight:200;letter-spacing:-2px;line-height:1;color:var(--slate);}
+.pg-hero-desc{font-size:var(--fs-body);font-weight:300;color:var(--text-secondary);line-height:1.85;max-width:380px;margin-top:40px;}
+.faq-wrap{display:grid;grid-template-columns:240px 1fr;}
+.faq-nav{padding:44px 28px;border-right:1px solid var(--border);position:sticky;top:96px;align-self:start;}
+.faq-nav-lbl{font-size:var(--fs-lbl);font-weight:400;letter-spacing:2.5px;text-transform:uppercase;color:var(--sage);margin-bottom:16px;}
+.faq-nav-link{display:block;font-size:var(--fs-sm);font-weight:300;color:var(--text-secondary);padding:8px 0;text-decoration:none;transition:color 0.15s;border-bottom:1px solid transparent;}
+.faq-nav-link:hover,.faq-nav-link.active{color:var(--slate);}
+.faq-main{}
+.faq-cat{border-bottom:1px solid var(--border);}
+.faq-cat-title{padding:32px 44px 24px;font-size:var(--fs-h2);font-weight:200;color:var(--slate);letter-spacing:-0.3px;}
+.faq-list{}
+.faq-item{border-top:1px solid var(--border);}
+.faq-q{display:flex;align-items:center;justify-content:space-between;padding:20px 44px;cursor:pointer;font-size:var(--fs-body);font-weight:300;color:var(--slate);transition:color 0.15s;gap:16px;}
+.faq-q:hover{color:var(--burnt-clay);}
+.faq-q svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.5;flex-shrink:0;transition:transform 0.2s;}
+.faq-item.open .faq-q svg{transform:rotate(45deg);}
+.faq-a{display:none;padding:0 44px 20px;font-size:var(--fs-body);font-weight:300;color:var(--text-secondary);line-height:1.85;max-width:640px;}
+.faq-item.open .faq-a{display:block;}
+@media(max-width:900px){
+  .pg-hero-top{grid-template-columns:1fr;padding:48px 20px;}
+  .pg-hero-desc{margin-top:20px;max-width:none;}
+  .faq-wrap{grid-template-columns:1fr;}
+  .faq-nav{display:none;}
+  .faq-cat-title{padding:24px 20px 16px;}
+  .faq-q{padding:16px 20px;}
+  .faq-a{padding:0 20px 16px;}
+}
+</style>
+
+<div class="pg-hero">
+  <div class="pg-hero-top">
+    <div class="pg-hero-left">
+      <div class="pg-eyebrow">
+        <div class="pg-eyebrow-line"></div>
+        Common questions
+      </div>
+      <h1 class="pg-hero-title">FAQs.</h1>
+    </div>
+    <div class="pg-hero-desc">Everything you might want to know, before you need to ask.</div>
+  </div>
+</div>
+
+<div class="faq-wrap">
+  <div class="faq-nav">
+    <div class="faq-nav-lbl">Categories</div>
+    <a href="#orders-shipping" class="faq-nav-link">Orders & Shipping</a>
+    <a href="#returns-repairs" class="faq-nav-link">Returns & Repairs</a>
+    <a href="#products" class="faq-nav-link">Products</a>
+    <a href="#payments" class="faq-nav-link">Payments</a>
+  </div>
+  
+  <div class="faq-main">
+    <div class="faq-cat" id="orders-shipping">
+      <h2 class="faq-cat-title">ORDERS & SHIPPING</h2>
+      <div class="faq-list">
+        <div class="faq-item">
+          <div class="faq-q">How long does delivery take? <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></svg></div>
+          <div class="faq-a">3-7 working days across India. We ship Monday through Saturday.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">Do you ship outside India? <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></svg></div>
+          <div class="faq-a">Not yet. We currently ship across India only. International shipping is planned for 2025.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">Can I track my order? <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></svg></div>
+          <div class="faq-a">Yes &mdash; a tracking link is sent to your email once your order ships.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">Can I change my delivery address? <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></svg></div>
+          <div class="faq-a">Contact us within 24 hours of placing your order and we'll do our best.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-cat" id="returns-repairs">
+      <h2 class="faq-cat-title">RETURNS & REPAIRS</h2>
+      <div class="faq-list">
+        <div class="faq-item">
+          <div class="faq-q">What is the 360-day return policy? <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></svg></div>
+          <div class="faq-a">You can return any narkk product within 360 days of purchase, no questions asked. The product doesn't need to be unused.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">How do I start a return? <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></svg></div>
+          <div class="faq-a">Email hello@narkk.com with your order number. We'll arrange pickup.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">How do I start a repair? <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></svg></div>
+          <div class="faq-a">Write to us with your order number and a photo of what needs fixing. We'll guide you through it.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">Is repair free? <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></svg></div>
+          <div class="faq-a">Minor repairs are free. For significant damage, we'll give you a transparent quote before proceeding.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-cat" id="products">
+      <h2 class="faq-cat-title">PRODUCTS</h2>
+      <div class="faq-list">
+        <div class="faq-item">
+          <div class="faq-q">Are all accessories compatible with all boards? <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></svg></div>
+          <div class="faq-a">Yes. Every Tulai accessory is designed to fit every Tulai board, regardless of size.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">What wood is the pegboard made from? <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></svg></div>
+          <div class="faq-a">Solid birch plywood, 16mm thick, CNC-drilled and hand-sealed.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">Can I add to my pegboard over time? <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></svg></div>
+          <div class="faq-a">Absolutely. That's by design &mdash; start with one board and one or two accessories, add more as your needs change.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">Do you have a showroom? <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></svg></div>
+          <div class="faq-a">Not yet. We're based in Chennai and are planning pop-up events &mdash; follow us on Instagram for updates.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-cat" id="payments">
+      <h2 class="faq-cat-title">PAYMENTS</h2>
+      <div class="faq-list">
+        <div class="faq-item">
+          <div class="faq-q">What payment methods do you accept? <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></svg></div>
+          <div class="faq-a">UPI, Debit/Credit cards (Visa, Mastercard), Net banking, and EMI via Razorpay.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">Is payment secure? <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></svg></div>
+          <div class="faq-a">Yes. All payments are processed through Razorpay, which is PCI-DSS compliant.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">Can I pay on delivery? <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></svg></div>
+          <div class="faq-a">We currently don't offer cash on delivery. All orders require online payment.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const faqItems = document.querySelectorAll('.faq-item');
+  faqItems.forEach(item => {
+    const q = item.querySelector('.faq-q');
+    q.addEventListener('click', () => {
+      item.classList.toggle('open');
+    });
+  });
+
+  const links = document.querySelectorAll('.faq-nav-link');
+  links.forEach(link => {
+    link.addEventListener('click', (e) => {
+      links.forEach(l => l.classList.remove('active'));
+      link.classList.add('active');
+    });
+  });
+});
+</script>
+
+<!-- FAQPage JSON-LD -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "How long does delivery take?", "acceptedAnswer": { "@type": "Answer", "text": "3-7 working days across India. We ship Monday through Saturday." } },
+    { "@type": "Question", "name": "Do you ship outside India?", "acceptedAnswer": { "@type": "Answer", "text": "Not yet. We currently ship across India only. International shipping is planned for 2025." } },
+    { "@type": "Question", "name": "Can I track my order?", "acceptedAnswer": { "@type": "Answer", "text": "Yes — a tracking link is sent to your email once your order ships." } },
+    { "@type": "Question", "name": "Can I change my delivery address?", "acceptedAnswer": { "@type": "Answer", "text": "Contact us within 24 hours of placing your order and we'll do our best." } },
+    { "@type": "Question", "name": "What is your return policy?", "acceptedAnswer": { "@type": "Answer", "text": "360-day return window on all products. We initiate a pickup and process the refund within 5–7 business days." } },
+    { "@type": "Question", "name": "What if my product is damaged?", "acceptedAnswer": { "@type": "Answer", "text": "Reach out within 48 hours of delivery with a photo. We'll replace or repair — no questions asked." } },
+    { "@type": "Question", "name": "What materials are used in Tulai products?", "acceptedAnswer": { "@type": "Answer", "text": "FSC-certified birch plywood, CNC-machined and finished with a matte water-based PU coat. No harmful chemicals." } },
+    { "@type": "Question", "name": "Is the pegboard system modular?", "acceptedAnswer": { "@type": "Answer", "text": "Yes — every Tulai accessory fits every Tulai board. You can rearrange, replace, or add accessories at any time." } },
+    { "@type": "Question", "name": "What payment methods do you accept?", "acceptedAnswer": { "@type": "Answer", "text": "UPI, cards (Visa, Mastercard), net banking, and EMI options via Razorpay." } },
+    { "@type": "Question", "name": "Is cash on delivery available?", "acceptedAnswer": { "@type": "Answer", "text": "Currently we only offer prepaid orders. COD is not available." } }
+  ]
+}
+</script>
+
+{% schema %}
+{
+  "name": "FAQ Page",
+  "settings": [],
+  "presets": [
+    {
+      "name": "FAQ Page"
+    }
+  ]
+}
+{% endschema %}

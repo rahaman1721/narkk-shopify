@@ -1,0 +1,123 @@
+<!-- Customer Register Page -->
+<div class="auth-split">
+  <div class="auth-left">
+    <div class="auth-left-content">
+      <div class="auth-left-eyebrow">Join the Community</div>
+      <h1 class="auth-left-title">Create your account.</h1>
+      <p class="auth-left-desc">Become a part of Loop, our inner circle. Track your orders, manage preferences, and shop seamlessly.</p>
+    </div>
+  </div>
+  <div class="auth-right">
+    <div class="auth-form-container">
+      <h2 class="auth-form-title">Register</h2>
+      <p class="auth-form-sub">Fill in your details below.</p>
+
+      {%- form 'create_customer', class: 'auth-form' -%}
+        {{ form.errors | default_errors }}
+
+        <div style="display: flex; gap: 16px;">
+          <div class="auth-field" style="flex:1;">
+            <label class="auth-label" for="regFirstName">First Name</label>
+            <input
+              class="auth-input"
+              type="text"
+              name="customer[first_name]"
+              id="regFirstName"
+              autocomplete="given-name"
+              placeholder="First Name"
+            >
+          </div>
+          <div class="auth-field" style="flex:1;">
+            <label class="auth-label" for="regLastName">Last Name</label>
+            <input
+              class="auth-input"
+              type="text"
+              name="customer[last_name]"
+              id="regLastName"
+              autocomplete="family-name"
+              placeholder="Last Name"
+            >
+          </div>
+        </div>
+
+        <div class="auth-field">
+          <label class="auth-label" for="regEmail">Email Address</label>
+          <input
+            class="auth-input"
+            type="email"
+            name="customer[email]"
+            id="regEmail"
+            autocomplete="email"
+            required
+            placeholder="your@email.com"
+          >
+        </div>
+
+        <div class="auth-field">
+          <label class="auth-label" for="regPassword">Password</label>
+          <input
+            class="auth-input"
+            type="password"
+            name="customer[password]"
+            id="regPassword"
+            required
+            placeholder=""
+          >
+        </div>
+
+        <button type="submit" class="auth-btn">Create Account</button>
+      {%- endform -%}
+
+      <div class="auth-footer">
+        Already have an account? <a href="{{ routes.account_login_url }}">Log in</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+/* Reusing auth styles from login page */
+.auth-split { display: flex; min-height: calc(100vh - var(--header-h)); background: var(--bg); }
+.auth-left { flex: 1; background: var(--slate); color: white; padding: 60px; display: flex; flex-direction: column; justify-content: center; }
+.auth-left-content { max-width: 480px; margin: 0 auto; }
+.auth-left-eyebrow { color: var(--coral); font-size: var(--fs-xs); text-transform: uppercase; letter-spacing: 0.1em; font-weight: 500; margin-bottom: 24px; }
+.auth-left-title { font-family: 'Outfit', sans-serif; font-size: clamp(32px, 4vw, 56px); font-weight: 300; line-height: 1.1; margin-bottom: 24px; letter-spacing: -0.02em; }
+.auth-left-desc { color: rgba(255,255,255,0.7); font-size: var(--fs-body); font-weight: 300; line-height: 1.6; }
+
+.auth-right { flex: 1; display: flex; align-items: center; justify-content: center; padding: 60px 40px; background: var(--bg); }
+.auth-form-container { width: 100%; max-width: 400px; }
+.auth-form-title { font-family: 'Outfit', sans-serif; font-size: var(--fs-xl); font-weight: 300; color: var(--slate); margin-bottom: 8px; }
+.auth-form-sub { font-size: var(--fs-sm); color: var(--text-secondary); font-weight: 300; margin-bottom: 40px; }
+
+.auth-form { display: flex; flex-direction: column; gap: 24px; }
+.auth-field { display: flex; flex-direction: column; gap: 8px; }
+.auth-label { font-size: var(--fs-xs); font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; color: var(--slate); }
+
+.auth-input { width: 100%; padding: 14px 16px; border: 1px solid var(--border-m); border-radius: 4px; background: transparent; font-family: 'Outfit', sans-serif; font-size: var(--fs-body); color: var(--slate); transition: border-color 0.2s ease; outline: none; }
+.auth-input:focus { border-color: var(--burnt-clay); }
+.auth-input::placeholder { color: var(--text-secondary); opacity: 0.5; }
+
+.auth-btn { width: 100%; background: var(--coral); color: white; border: none; padding: 16px 24px; font-family: 'Outfit', sans-serif; font-size: var(--fs-sm); font-weight: 400; border-radius: 4px; cursor: pointer; transition: background 0.2s ease; margin-top: 8px; }
+.auth-btn:hover { background: var(--burnt-clay); }
+
+.auth-footer { margin-top: 32px; text-align: center; font-size: var(--fs-sm); color: var(--text-secondary); }
+.auth-footer a { color: var(--slate); font-weight: 500; text-decoration: underline; text-underline-offset: 4px; }
+.auth-footer a:hover { color: var(--coral); }
+
+/* Form Errors */
+.auth-form .errors { background: #fff0f0; border: 1px solid #ffcccc; color: #cc0000; padding: 16px; border-radius: 4px; font-size: var(--fs-sm); font-weight: 300; margin-bottom: 24px; }
+.auth-form .errors ul { margin: 8px 0 0 16px; padding: 0; }
+
+@media (max-width: 900px) {
+  .auth-split { flex-direction: column; }
+  .auth-left { padding: 40px 20px; }
+  .auth-right { padding: 40px 20px; }
+}
+</style>
+
+{% schema %}
+{
+  "name": "Register",
+  "settings": []
+}
+{% endschema %}

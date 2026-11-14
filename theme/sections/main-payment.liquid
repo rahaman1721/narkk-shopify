@@ -1,0 +1,221 @@
+{{ 'payment-security.css' | asset_url | stylesheet_tag }}
+
+<style>
+.pg-hero {
+  background: var(--cream);
+  border-bottom: 1px solid var(--border);
+}
+.pg-hero-top {
+  padding: 72px 56px 64px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  min-height: 280px;
+}
+.pg-eyebrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: var(--fs-lbl, 12px);
+  font-weight: 300;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  color: var(--sage);
+}
+.pg-eyebrow-line {
+  width: 24px;
+  height: 1px;
+  background: var(--sage);
+}
+.pg-hero-title {
+  font-size: var(--fs-disp, 48px);
+  font-weight: 200;
+  letter-spacing: -2px;
+  line-height: 1;
+  color: var(--slate);
+  margin: 0;
+}
+.pg-hero-desc {
+  font-size: var(--fs-body, 16px);
+  font-weight: 300;
+  color: var(--text-secondary);
+  line-height: 1.85;
+  max-width: 500px;
+  margin-top: 24px;
+}
+.payment-section {
+  padding: 80px 56px;
+  background: var(--cream);
+}
+.payment-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.payment-card {
+  background: white;
+  border: 1px solid var(--border);
+  padding: 32px;
+  border-radius: 4px;
+}
+.payment-card h3 {
+  font-size: var(--fs-h3, 24px);
+  color: var(--slate);
+  margin: 0 0 12px;
+  font-weight: 300;
+}
+.payment-card p {
+  color: var(--text-secondary);
+  font-size: var(--fs-body, 16px);
+  line-height: 1.6;
+  margin: 0;
+}
+.security-section {
+  padding: 80px 56px;
+  background: var(--cream-d);
+}
+.security-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.security-item {
+  text-align: center;
+}
+.security-item h3 {
+  font-size: var(--fs-h3, 20px);
+  color: var(--slate);
+  margin: 0 0 12px;
+  font-weight: 300;
+}
+.security-item p {
+  color: var(--text-secondary);
+  font-size: var(--fs-sm, 14px);
+  line-height: 1.6;
+  margin: 0;
+}
+.faq-section {
+  padding: 80px 56px;
+  background: var(--cream);
+}
+.faq-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+.faq-container h2 {
+  font-size: var(--fs-h2, 32px);
+  color: var(--slate);
+  margin: 0 0 40px;
+  font-weight: 200;
+  text-align: center;
+}
+.faq-item {
+  border-bottom: 1px solid var(--border);
+  padding: 24px 0;
+}
+.faq-item:first-of-type {
+  border-top: 1px solid var(--border);
+}
+.faq-item h4 {
+  font-size: var(--fs-body, 18px);
+  color: var(--slate);
+  margin: 0 0 12px;
+  font-weight: 400;
+}
+.faq-item p {
+  color: var(--text-secondary);
+  font-size: var(--fs-body, 16px);
+  line-height: 1.6;
+  margin: 0;
+}
+@media (max-width: 900px) {
+  .pg-hero-top { padding: 48px 20px; }
+  .payment-section, .security-section, .faq-section { padding: 48px 20px; }
+  .payment-grid, .security-grid { grid-template-columns: 1fr; gap: 24px; }
+}
+</style>
+
+<div class="pg-hero">
+  <div class="pg-hero-top">
+    <div class="pg-eyebrow" style="color: var(--sage)">
+      <div class="pg-eyebrow-line" style="background: var(--sage)"></div>
+      Safe & secure
+    </div>
+    <h1 class="pg-hero-title">Payment & Security.</h1>
+    <p class="pg-hero-desc">Every transaction on narkk is encrypted and processed through certified payment gateways.</p>
+  </div>
+</div>
+
+<div class="payment-section">
+  <div class="payment-grid">
+    <div class="payment-card">
+      <h3>UPI</h3>
+      <p>Pay instantly via GPay, PhonePe, Paytm, or BHIM. Most popular in India.</p>
+    </div>
+    <div class="payment-card">
+      <h3>Credit & Debit Cards</h3>
+      <p>We accept Visa, Mastercard, RuPay, and other major cards seamlessly.</p>
+    </div>
+    <div class="payment-card">
+      <h3>Net Banking</h3>
+      <p>Support for all major Indian banks for direct account transfers.</p>
+    </div>
+    <div class="payment-card">
+      <h3>EMI Options</h3>
+      <p>Flexible 3, 6, and 12 months EMI available via Razorpay checkout.</p>
+    </div>
+  </div>
+</div>
+
+<div class="security-section">
+  <div class="security-grid">
+    <div class="security-item">
+      <h3>SSL Encrypted</h3>
+      <p>All data transmitted is secured with 256-bit SSL encryption</p>
+    </div>
+    <div class="security-item">
+      <h3>Razorpay Certified</h3>
+      <p>Payments processed by Razorpay, a PCI-DSS Level 1 certified gateway</p>
+    </div>
+    <div class="security-item">
+      <h3>No Card Storage</h3>
+      <p>We never store your card details on our servers</p>
+    </div>
+  </div>
+</div>
+
+<div class="faq-section">
+  <div class="faq-container">
+    <h2>Payment FAQs</h2>
+    <div class="faq-item">
+      <h4>Is my payment information safe?</h4>
+      <p>Yes. We use Razorpay, one of India's most trusted payment gateways. Your card data is never stored on our servers.</p>
+    </div>
+    <div class="faq-item">
+      <h4>Can I use EMI?</h4>
+      <p>Yes. EMI options for 3, 6, and 12 months are available at checkout via Razorpay.</p>
+    </div>
+    <div class="faq-item">
+      <h4>What if my payment fails?</h4>
+      <p>If a payment fails, the amount is not deducted. If it is deducted and the order isn't confirmed, it will be refunded within 5-7 working days.</p>
+    </div>
+    <div class="faq-item">
+      <h4>Do you offer COD?</h4>
+      <p>No, we currently don't offer cash on delivery.</p>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Payment & Security",
+  "settings": []
+}
+{% endschema %}

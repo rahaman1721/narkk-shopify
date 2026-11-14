@@ -1,0 +1,52 @@
+<style>
+.pc{background:var(--cream);border:1px solid var(--border);overflow:hidden;transition:box-shadow 0.2s;position:relative;}
+.pc:hover{box-shadow:0 4px 24px rgba(0,0,0,0.08);}
+.pc-img-wrap{aspect-ratio:3/4;overflow:hidden;background:var(--cream-d);position:relative;}
+.pc-img{width:100%;height:100%;object-fit:contain;display:block;transition:transform 0.5s ease;}
+.pc:hover .pc-img{transform:scale(1.04);}
+.pc-quick{position:absolute;bottom:0;left:0;right:0;background:var(--slate);color:var(--cream);border:none;font-family:'Outfit',sans-serif;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;padding:14px;cursor:pointer;transition:transform 0.25s ease;}
+@media (hover:hover) and (pointer:fine) {
+  .pc-quick{transform:translateY(100%);}
+  .pc:hover .pc-quick{transform:translateY(0);}
+}
+.pc-body{padding:16px 16px 20px;}
+.pc-type{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--burnt-clay);font-weight:400;margin-bottom:6px;}
+.pc-name{font-size:15px;font-weight:300;color:var(--slate);line-height:1.3;margin-bottom:8px;}
+.pc-price{font-size:14px;font-weight:300;color:var(--slate);}
+.pc-compare{font-size:12px;color:var(--text-secondary);text-decoration:line-through;margin-left:6px;}
+</style>
+
+{%- assign product = card_product | default: product -%}
+<div class="pc" id="pc-{{ product.id }}">
+  <a href="{{ product.url }}" class="pc-img-wrap" aria-label="{{ product.title }}" style="display:block;text-decoration:none;">
+    {%- if product.featured_image -%}
+      <img
+        class="pc-img"
+        src="{{ product.featured_image | image_url: width: 600 }}"
+        alt="{{ product.featured_image.alt | default: product.title | escape }}"
+        width="600"
+        height="800"
+        loading="lazy"
+      >
+    {%- else -%}
+      <div class="pc-img" style="display:flex;align-items:center;justify-content:center;font-size:11px;letter-spacing:1px;color:var(--text-secondary);">No image</div>
+    {%- endif -%}
+  </a>
+  <button
+    class="pc-quick"
+    id="pc-add-{{ product.id }}"
+    data-product-id="{{ product.selected_or_first_available_variant.id }}"
+    onclick="addToCart({{ product.selected_or_first_available_variant.id }}, this)"
+  >Add to Cart</button>
+  <a href="{{ product.url }}" class="pc-body" style="display:block;text-decoration:none;">
+    <div class="pc-type">{{ product.type | default: 'Tulai' }}</div>
+    <div class="pc-name">{{ product.title }}</div>
+    <div class="pc-price">
+      {{ product.price | money }}
+      {%- if product.compare_at_price > product.price -%}
+        <span class="pc-compare">{{ product.compare_at_price | money }}</span>
+      {%- endif -%}
+    </div>
+  </a>
+</div>
+

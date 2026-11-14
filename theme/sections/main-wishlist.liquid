@@ -1,0 +1,172 @@
+<style>
+.wl-hero{padding:72px 56px 56px;border-bottom:1px solid var(--border);background:var(--cream);display:grid;grid-template-columns:1fr 1fr;min-height:240px;align-items:start;}
+.wl-hero-left{padding-right:40px;}
+.wl-eyebrow{display:flex;align-items:center;gap:10px;font-size:var(--fs-lbl);font-weight:300;letter-spacing:2.5px;text-transform:uppercase;color:var(--burnt-clay);margin-bottom:20px;}
+.wl-eyebrow-line{width:24px;height:1px;background:var(--burnt-clay);flex-shrink:0;}
+.wl-title{font-size:var(--fs-disp);font-weight:200;letter-spacing:-2px;line-height:1;color:var(--slate);}
+.wl-count{font-size:var(--fs-body);font-weight:300;color:var(--text-secondary);margin-top:16px;}
+.wl-empty{padding:80px 44px;text-align:center;}
+.wl-empty-t{font-size:var(--fs-h1);font-weight:200;color:var(--slate);margin-bottom:12px;}
+.wl-empty-d{font-size:var(--fs-body);font-weight:300;color:var(--text-secondary);margin-bottom:28px;}
+.wl-empty-btn{display:inline-block;height:48px;line-height:48px;padding:0 32px;background:var(--slate);color:white;text-decoration:none;border-radius:3px;font-size:var(--fs-lbl);letter-spacing:2px;text-transform:uppercase;transition:background 0.15s;}
+.wl-empty-btn:hover{background:var(--burnt-clay);}
+.wl-grid{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--border);}
+.wl-card{border-right:1px solid var(--border);border-bottom:1px solid var(--border);overflow:hidden;background:var(--cream);transition:background 0.15s;}
+.wl-card:nth-child(4n){border-right:none;}
+.wl-card:hover{background:var(--cream-d);}
+.wl-card-img{aspect-ratio:1/1;background:var(--cream-d);overflow:hidden;}
+.wl-card-img img{width:100%;height:100%;object-fit:contain;display:block;transition:transform 0.4s;}
+.wl-card:hover .wl-card-img img{transform:scale(1.03);}
+.wl-card-body{padding:14px 16px 18px;}
+.wl-card-name{font-size:var(--fs-body);font-weight:300;color:var(--slate);margin-bottom:4px;}
+.wl-card-price{font-size:var(--fs-sm);font-weight:300;color:var(--text-secondary);margin-bottom:14px;}
+.wl-card-actions{display:flex;gap:8px;}
+.wl-add-btn{flex:1;height:36px;background:var(--burnt-clay);color:white;border:none;border-radius:3px;font-family:'Outfit',sans-serif;font-size:var(--fs-lbl);letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:opacity 0.15s;}
+.wl-add-btn:hover{opacity:0.85;}
+.wl-remove-btn{width:36px;height:36px;background:none;border:1px solid rgba(51,65,85,0.12);border-radius:3px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s;}
+.wl-remove-btn:hover{border-color:var(--slate);background:var(--cream-d);}
+.wl-remove-btn svg{width:14px;height:14px;stroke:var(--text-secondary);fill:none;stroke-width:1.5;}
+@media(max-width:900px){
+  .wl-hero{grid-template-columns:1fr;padding:48px 20px;}
+  .wl-grid{grid-template-columns:repeat(2,1fr);}
+  .wl-card:nth-child(4n){border-right:1px solid var(--border);}
+  .wl-card:nth-child(2n){border-right:none;}
+  .wl-add-btn{min-width:0;font-size:11px;letter-spacing:0.5px;padding:0 4px;}
+}
+@media(max-width:420px){
+  .wl-grid{grid-template-columns:1fr;}
+  .wl-card:nth-child(4n),.wl-card:nth-child(2n){border-right:1px solid var(--border);}
+  .wl-card:last-child{border-right:none;}
+}
+</style>
+
+<div class="wl-hero">
+  <div class="wl-hero-left">
+    <div class="wl-eyebrow">
+      <div class="wl-eyebrow-line"></div>
+      Your wishlist
+    </div>
+    <h1 class="wl-title">Saved items.</h1>
+    <div class="wl-count" id="wishlist-count">0 items</div>
+  </div>
+</div>
+
+<div id="wishlist-empty" class="wl-empty" style="display:none;">
+  <div class="wl-empty-t">Nothing saved yet.</div>
+  <div class="wl-empty-d">Explore our collection and add your favorite pieces here.</div>
+  <a href="/collections/tulai" class="wl-empty-btn">Browse products</a>
+</div>
+
+<div id="wishlist-grid" class="wl-grid"></div>
+
+<script>
+window.narkkWishlist = {
+  key: 'narkk_wishlist',
+  get() {
+    try {
+      return JSON.parse(localStorage.getItem(this.key)) || [];
+    } catch {
+      return [];
+    }
+  },
+  add(product) {
+    let items = this.get();
+    if (!items.find(i => i.id === product.id)) {
+      items.push(product);
+      localStorage.setItem(this.key, JSON.stringify(items));
+    }
+  },
+  remove(id) {
+    let items = this.get();
+    items = items.filter(i => i.id !== id);
+    localStorage.setItem(this.key, JSON.stringify(items));
+    this.render();
+  },
+  has(id) {
+    return this.get().some(i => i.id === id);
+  },
+  toggle(product) {
+    if (this.has(product.id)) {
+      this.remove(product.id);
+    } else {
+      this.add(product);
+    }
+  },
+  addToCart(id) {
+    fetch(window.Shopify.routes.root + 'cart/add.js', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ items: [{ id: id, quantity: 1 }] })
+    })
+    .then(response => {
+      if (!response.ok) { return response.json().then(err => { throw err; }); }
+      return response.json();
+    })
+    .then(data => {
+      window.location.href = '/cart';
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+      alert(error.description || 'This item could not be added to your cart.');
+    });
+  },
+  render() {
+    const items = this.get();
+    const grid = document.getElementById('wishlist-grid');
+    const empty = document.getElementById('wishlist-empty');
+    const count = document.getElementById('wishlist-count');
+    
+    if (count) {
+      count.textContent = `${items.length} item${items.length === 1 ? '' : 's'}`;
+    }
+
+    if (items.length === 0) {
+      if (grid) grid.style.display = 'none';
+      if (empty) empty.style.display = 'block';
+    } else {
+      if (empty) empty.style.display = 'none';
+      if (grid) {
+        grid.style.display = 'grid';
+        grid.innerHTML = items.map(item => `
+          <div class="wl-card">
+            <a href="${item.url}" class="wl-card-img">
+              <img src="${item.image}" alt="${item.title}" width="600" height="600" loading="lazy">
+            </a>
+            <div class="wl-card-body">
+              <div class="wl-card-name">${item.title}</div>
+              <div class="wl-card-price">${item.price}</div>
+              <div class="wl-card-actions">
+                <button class="wl-add-btn" onclick="window.narkkWishlist.addToCart(${item.id})">Add to cart</button>
+                <button class="wl-remove-btn" onclick="window.narkkWishlist.remove(${item.id})" aria-label="Remove">
+                  <svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"></path></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        `).join('');
+      }
+    }
+  },
+  init() {
+    if (document.getElementById('wishlist-grid')) {
+      this.render();
+    }
+  }
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+  window.narkkWishlist.init();
+});
+</script>
+
+{% schema %}
+{
+  "name": "Wishlist",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Wishlist"
+    }
+  ]
+}
+{% endschema %}

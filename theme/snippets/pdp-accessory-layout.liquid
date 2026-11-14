@@ -1,0 +1,559 @@
+<style>
+/* PDP Accessory - matching standalone HTML exactly */
+.crumb { padding: 16px 44px; border-bottom: 1px solid var(--border); font-size: var(--fs-sm); font-weight: 300; color: var(--text-secondary); display: flex; gap: 8px; align-items: center; }
+.crumb a { color: var(--text-secondary); text-decoration: none; display: inline-flex; align-items: center; gap: 6px; transition: color 0.15s; }
+.crumb a:hover { color: var(--slate); }
+.sep { color: var(--border-m); }
+
+/* PDP hero section */
+.pd-hero { display: grid; grid-template-columns: 1fr 1fr; min-height: 520px; align-items: start; border-bottom: 1px solid var(--border); }
+.pd-gallery { border-right: 1px solid var(--border); background: var(--cream-d); display: flex; flex-direction: column; gap: 12px; position: static; max-height: none; overflow: visible; padding: 20px; }
+.pd-thumbs { display: flex; flex-direction: row; flex-wrap: wrap; gap: 1px; border: none; background: var(--border); overflow-y: visible; max-height: none; scrollbar-width: none; order: 2; width: 100%; }
+.pd-thumbs::-webkit-scrollbar { display: none; }
+.pd-thumb { background: var(--cream-d); cursor: pointer; overflow: hidden; aspect-ratio: 1/1; flex-shrink: 0; width: calc(20% - 1px); }
+.pd-thumb img { width: 100%; height: 100%; object-fit: contain; display: block; transition: opacity 0.15s; }
+.pd-thumb.active { outline: 2px solid var(--coral); outline-offset: -2px; }
+.pd-main { overflow: hidden; display: flex; align-items: center; justify-content: center; background: var(--cream-d); width: 100%; aspect-ratio: 1/1; height: auto; cursor: zoom-in; order: 1; }
+.pd-main img { width: 100%; height: 100%; object-fit: contain; display: block; }
+
+/* Buy panel */
+.pd-buy { padding: 48px 52px; display: flex; flex-direction: column; gap: 0; background: var(--cream); }
+.pd-ey { display: flex; align-items: center; gap: 10px; font-size: var(--fs-lbl); font-weight: 300; letter-spacing: 2.5px; text-transform: uppercase; color: var(--burnt-clay); margin-bottom: 12px; }
+.pd-ey-line { width: 20px; height: 1px; background: var(--burnt-clay); flex-shrink: 0; }
+.pd-name { font-size: var(--fs-h1); font-weight: 200; letter-spacing: -0.5px; color: var(--slate); margin-bottom: 8px; line-height: 1.1; }
+.pd-pack { font-size: var(--fs-meta); font-weight: 300; color: var(--sage); letter-spacing: 1px; margin-bottom: 14px; }
+.pd-short { font-size: var(--fs-body); font-weight: 300; color: var(--text-secondary); line-height: 1.85; margin-bottom: 24px; }
+.pd-price { font-size: var(--fs-h2); font-weight: 300; color: var(--slate); margin-bottom: 4px; }
+.pd-tax { font-size: var(--fs-meta); font-weight: 300; color: var(--text-secondary); margin-bottom: 28px; }
+
+/* Quantity + Add to Cart */
+.pd-buy-row { display: flex; gap: 12px; align-items: center; margin-bottom: 28px; }
+.pd-qty { display: flex; align-items: center; border: 1px solid var(--border-m); border-radius: 4px; overflow: hidden; height: 48px; }
+.pd-qty button { width: 40px; height: 48px; background: none; border: none; font-family: 'Outfit', sans-serif; font-size: 18px; color: var(--slate); cursor: pointer; transition: background 0.15s; }
+.pd-qty button:hover { background: var(--cream-d); }
+#pd-qty { min-width: 40px; text-align: center; font-size: var(--fs-body); font-weight: 300; color: var(--slate); }
+.pd-add { flex: 1; height: 48px; background: var(--coral); color: white; border: none; border-radius: 4px; font-family: 'Outfit', sans-serif; font-size: var(--fs-lbl); font-weight: 400; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; transition: background 0.25s, opacity 0.15s; }
+.pd-add:hover { opacity: 0.88; }
+.pd-add.added { background: var(--teal); }
+
+/* About / Specs band */
+.pd-band { display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1px solid var(--border); }
+.pd-band-col { padding: 56px 44px 64px; }
+.pd-band-col + .pd-band-col { border-left: 1px solid var(--border); }
+.pd-h { font-size: var(--fs-lbl); font-weight: 400; letter-spacing: 2.5px; text-transform: uppercase; color: var(--burnt-clay); margin-bottom: 26px; }
+.pd-body { font-size: var(--fs-body); font-weight: 300; color: var(--text-secondary); line-height: 1.9; max-width: 520px; text-wrap: pretty; }
+.pd-spec-row { display: grid; grid-template-columns: 150px 1fr; gap: 16px; padding: 13px 0; border-bottom: 1px solid var(--border); font-size: var(--fs-sm); font-weight: 300; }
+.pd-spec-row:last-child { border-bottom: none; }
+.pd-spec-k { color: var(--sage); }
+.pd-spec-v { color: var(--slate); }
+.pd-tags { margin-top: 20px; font-size: var(--fs-sm); font-weight: 300; color: var(--burnt-clay); line-height: 1.7; }
+
+/* In the box */
+.pd-box { padding: 56px 44px 64px; border-bottom: 1px solid var(--border); }
+.pd-box .pd-h { margin-bottom: 26px; }
+.pd-box-row { display: grid; grid-template-columns: 40px 1fr; gap: 16px; padding: 13px 0; border-bottom: 1px solid var(--border); font-size: var(--fs-sm); font-weight: 300; max-width: 520px; }
+.pd-box-row:last-child { border-bottom: none; }
+.pd-box-idx { color: var(--burnt-clay); }
+.pd-box-name { color: var(--slate); }
+
+/* FAQ section using native details */
+.pd-faq { padding: 64px 44px 72px; border-bottom: 1px solid var(--border); }
+.pd-faq-inner { max-width: 760px; }
+.pd-faq details { border-bottom: 1px solid var(--border); }
+.pd-faq summary { list-style: none; padding: 22px 0; font-size: var(--fs-body); font-weight: 300; color: var(--slate); cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+.pd-faq summary::-webkit-details-marker { display: none; }
+.pd-faq summary:hover { color: var(--burnt-clay); }
+.pd-faq summary svg { width: 13px; height: 13px; stroke: var(--burnt-clay); fill: none; stroke-width: 1.5; stroke-linecap: round; transition: transform 0.2s; }
+.pd-faq details[open] summary svg { transform: rotate(180deg); }
+.pd-faq .pd-a { padding: 0 0 24px; font-size: var(--fs-sm); font-weight: 300; color: var(--text-secondary); line-height: 1.85; max-width: 600px; }
+
+/* Loop / community CTA */
+.pd-loop { background: var(--slate); padding: 28px 44px; border-bottom: 1px solid rgba(255,255,255,0.12); }
+.pd-loop-ey { display: flex; align-items: center; gap: 10px; font-size: var(--fs-lbl); font-weight: 300; letter-spacing: 2.5px; text-transform: uppercase; color: rgba(245,240,234,0.7); margin-bottom: 0; }
+.pd-loop-ey-line { width: 20px; height: 1px; background: rgba(245,240,234,0.4); }
+.pd-loop-title { font-size: var(--fs-h1); font-weight: 200; letter-spacing: -1px; color: white; line-height: 1.1; max-width: 620px; }
+.pd-loop-body { margin-top: 28px; max-width: 520px; font-size: var(--fs-body); font-weight: 300; color: rgba(245,240,234,0.72); line-height: 1.85; }
+
+/* RE-Manifesto */
+.pd-remani { background: var(--slate); padding: 64px 44px 72px; border-bottom: 1px solid rgba(255,255,255,0.12); }
+.pd-remani-ey { display: flex; align-items: center; gap: 10px; font-size: var(--fs-lbl); font-weight: 300; letter-spacing: 2.5px; text-transform: uppercase; color: var(--coral); margin-bottom: 20px; }
+.pd-remani-ey-line { width: 20px; height: 1px; background: var(--coral); }
+.pd-remani-title { font-size: var(--fs-h1); font-weight: 200; letter-spacing: -1px; color: white; line-height: 1.1; max-width: 700px; margin-bottom: 36px; }
+.pd-remani-words { display: flex; flex-wrap: wrap; gap: 32px; margin-bottom: 32px; }
+.pd-remani-words span { font-size: var(--fs-body); font-weight: 300; color: rgba(245,240,234,0.85); }
+.pd-remani-body { max-width: 720px; font-size: var(--fs-body); font-weight: 300; color: rgba(245,240,234,0.72); line-height: 1.85; }
+
+/* Related products */
+.pd-related { background: var(--cream); }
+.pd-rel-hdr { padding: 48px 44px 32px; border-bottom: 1px solid var(--border); }
+.pd-rel-ey { display: flex; align-items: center; gap: 10px; font-size: var(--fs-lbl); font-weight: 300; letter-spacing: 2.5px; text-transform: uppercase; color: var(--burnt-clay); margin-bottom: 10px; }
+.pd-rel-ey-line { width: 20px; height: 1px; background: var(--burnt-clay); }
+.pd-rel-title { font-size: var(--fs-h1); font-weight: 200; letter-spacing: -0.5px; color: var(--slate); }
+.pd-rel-grid { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--border); }
+.pd-rel-card { border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); overflow: hidden; }
+.pd-rel-card:nth-child(4n) { border-right: none; }
+.pd-rel-img { aspect-ratio: 1/1; background: var(--cream-d); overflow: hidden; position: relative; }
+.pd-rel-img img { width: 100%; height: 100%; object-fit: contain; display: block; transition: transform 0.4s; }
+.pd-rel-card:hover .pd-rel-img img { transform: scale(1.04); }
+.pd-rel-body { padding: 14px 16px 18px; }
+.pd-rel-name { font-size: var(--fs-body); font-weight: 300; color: var(--slate); margin-bottom: 4px; }
+.pd-rel-foot { display: flex; align-items: center; justify-content: space-between; }
+.pd-rel-price { font-size: var(--fs-body); font-weight: 300; color: var(--slate); }
+.pd-rel-btn { font-size: var(--fs-micro); letter-spacing: 1.5px; text-transform: uppercase; color: var(--burnt-clay); background: none; border: 1px solid rgba(193,107,69,0.4); border-radius: 3px; padding: 5px 12px; cursor: pointer; font-family: 'Outfit', sans-serif; transition: all 0.15s; }
+.pd-rel-btn:hover { background: var(--burnt-clay); color: white; }
+
+/* Image lightbox */
+.pd-lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 9999; align-items: center; justify-content: center; }
+.pd-lightbox.open { display: flex; }
+.pd-lightbox-inner { position: relative; max-width: 90vw; max-height: 90vh; }
+.pd-lightbox-inner img { max-width: 90vw; max-height: 90vh; object-fit: contain; }
+.pd-lightbox-close { position: absolute; top: -40px; right: 0; background: none; border: none; cursor: pointer; color: white; font-size: 28px; line-height: 1; }
+
+/* Responsive */
+@media(max-width:900px){
+  .pd-hero { grid-template-columns: 1fr; overflow-x: hidden; }
+  .pd-gallery { border-right: none; border-bottom: 1px solid var(--border); position: static; max-height: none; overflow: visible; grid-template-columns: 1fr; min-width: 0; }
+  .pd-thumbs { flex-direction: row; overflow-x: auto; overflow-y: visible; max-height: none; border-right: none; border-top: 1px solid var(--border); }
+  .pd-thumb { width: 72px; flex-shrink: 0; }
+  .pd-main { height: auto; min-height: 300px; aspect-ratio: 4/3; min-width: 0; max-width: 100%; }
+  .pd-main img { max-width: 100%; }
+  .pd-buy { padding: 36px 20px 40px; min-width: 0; max-width: 100%; }
+  .pd-short, .pd-body, .pd-tags { overflow-wrap: break-word; word-break: break-word; max-width: 100%; }
+  .pd-buy-row { flex-wrap: wrap; }
+  .pd-qty, .pd-add { min-width: 0; }
+  .pd-add { flex-basis: 100%; }
+  .pd-band { grid-template-columns: 1fr; }
+  .pd-band-col { padding: 44px 20px; min-width: 0; }
+  .pd-band-col + .pd-band-col { border-left: none; border-top: 1px solid var(--border); }
+  .pd-spec-row { grid-template-columns: 120px 1fr; }
+  .pd-box { padding: 44px 20px 48px; }
+  .pd-faq { padding: 48px 20px 56px; }
+  .pd-loop { padding: 20px 20px; }
+  .pd-remani { padding: 48px 20px 56px; }
+  .pd-remani-words { gap: 20px; }
+  .pd-rel-grid { grid-template-columns: repeat(2, 1fr); }
+  .pd-rel-hdr { padding: 36px 20px 24px; }
+  .pd-qty button { min-width: 44px; min-height: 44px; }
+}
+</style>
+
+{%- assign sel_variant = product.selected_or_first_available_variant -%}
+
+<div class="crumb">
+  <a href="{{ product.collections.first.url | default: '/collections/tulai' }}">&larr; Back to collection</a>
+</div>
+
+<section class="pd-hero">
+  <div class="pd-gallery">
+    <div class="pd-thumbs" id="pd-thumbs">
+      {% for image in product.images %}
+        <div class="pd-thumb {% if forloop.first %}active{% endif %}" data-index="{{ forloop.index0 }}" onclick="pdSwitchImage(this, '{{ image | image_url: width: 1000 }}'); pdOpenLightbox('{{ image | image_url: width: 1000 }}')">
+          <img src="{{ image | img_url: '150x150', crop: 'center' }}" alt="{{ image.alt | escape }}" width="150" height="150" loading="lazy">
+        </div>
+      {% endfor %}
+    </div>
+    <div class="pd-main" id="pd-main" onclick="pdOpenLightbox(this.querySelector('img').src)">
+      <img id="PdMainImage" src="{{ sel_variant.featured_image | default: product.featured_image | image_url: width: 1000 }}" alt="{{ product.featured_image.alt | escape }}" width="800" height="800">
+    </div>
+  </div>
+
+  <div class="pd-buy">
+    <div class="pd-ey">
+      <div class="pd-ey-line"></div>
+      {{ product.vendor | default: 'Tulai' }} &middot; {{ product.type | default: 'Accessory' }}
+    </div>
+
+    {%- for block in section.blocks -%}
+      {%- case block.type -%}
+        {%- when '@app' -%}
+          {% render block %}
+        {%- when 'title' -%}
+          <h1 class="pd-name" {{ block.shopify_attributes }}>
+            {{ product.title }}
+            {% if template.suffix == 'variant-detail' and product.variants.size > 1 %}
+              <span style="font-weight: 300; color: var(--text-secondary);">&mdash; {{ sel_variant.title }}</span>
+            {% endif %}
+          </h1>
+        {%- when 'pack_info' -%}
+          {% assign pack_qty = product.metafields.custom["accessories-count"] %}
+          {% if pack_qty != blank %}
+            <div class="pd-pack" {{ block.shopify_attributes }}>Pack of {{ pack_qty }} &middot; {{ product.metafields.custom.finish | default: 'Teak' }}</div>
+          {% elsif product.title contains 'Peg' or product.title contains 'Hook' %}
+            <div class="pd-pack" {{ block.shopify_attributes }}>Pack of 2 &middot; {{ product.metafields.custom.finish | default: 'Teak' }}</div>
+          {% endif %}
+        {%- when 'description' -%}
+          <p class="pd-short" {{ block.shopify_attributes }}>{{ product.description | strip_html | truncatewords: 25 }}</p>
+        {%- when 'price' -%}
+          <div {{ block.shopify_attributes }}>
+            <div class="pd-price">{{ sel_variant.price | money }}</div>
+            <div class="pd-tax">Incl. of all taxes &middot; GST 18% &middot; board sold separately</div>
+          </div>
+        {%- when 'buy_buttons' -%}
+          <form method="post" enctype="multipart/form-data" id="AddToCartForm" {{ block.shopify_attributes }}>
+            {% if product.variants.size > 1 %}
+              <select name="id" id="ProductVariant" style="margin-bottom:20px;width:100%;padding:12px;border:1px solid var(--border-m);border-radius:4px;font-family:'Outfit',sans-serif;font-size:var(--fs-body);color:var(--slate);background:var(--cream);">
+                {% for variant in product.variants %}
+                  <option value="{{ variant.id }}" {% if variant.id == sel_variant.id %}selected="selected"{% endif %}>
+                    {{ variant.title }} — {{ variant.price | money }}
+                  </option>
+                {% endfor %}
+              </select>
+            {% else %}
+              <input type="hidden" name="id" id="ProductVariant" value="{{ sel_variant.id }}">
+            {% endif %}
+
+            <div class="pd-buy-row">
+              <div class="pd-qty">
+                <button type="button" id="pd-minus" aria-label="Decrease quantity" onclick="pdUpdateQty(-1)">-</button>
+                <span id="pd-qty">1</span>
+                <button type="button" id="pd-plus" aria-label="Increase quantity" onclick="pdUpdateQty(1)">+</button>
+                <input type="hidden" name="quantity" id="pd-qty-input" value="1">
+              </div>
+              <button class="pd-add" type="submit" id="AddToCart">Add to Cart</button>
+            </div>
+          </form>
+      {%- endcase -%}
+    {%- endfor -%}
+  </div>
+</section>
+
+<section class="pd-band">
+  <div class="pd-band-col">
+    <div class="pd-h">About this piece</div>
+    <p class="pd-body">
+      {%- if product.metafields.custom["product-short-description"] != blank -%}
+        {{ product.metafields.custom["product-short-description"] | metafield_tag }}
+      {%- else -%}
+        {{ section.settings.about_text | default: "A thoughtfully designed accessory for the Tulai pegboard system. Made from solid birch plywood, each piece is CNC-machined and hand-sealed for a clean, lasting finish." }}
+      {%- endif -%}
+    </p>
+
+    {%- assign pd_tags = product.tags -%}
+    {%- if pd_tags != blank -%}
+      <p class="pd-tags">{{ pd_tags | join: ', ' }}</p>
+    {%- endif -%}
+  </div>
+  <div class="pd-band-col">
+    <div class="pd-h">Specifications</div>
+    <div class="pd-spec-row"><span class="pd-spec-k">SKU</span><span class="pd-spec-v">{{ sel_variant.sku | default: sel_variant.id }}</span></div>
+    <div class="pd-spec-row"><span class="pd-spec-k">Collection</span><span class="pd-spec-v">{{ product.collections.first.title | default: 'Tulai' }}</span></div>
+    <div class="pd-spec-row"><span class="pd-spec-k">Material</span><span class="pd-spec-v">{{ product.metafields.custom.product_filter_materials | default: 'Birch Plywood' }}</span></div>
+    <div class="pd-spec-row"><span class="pd-spec-k">Finish</span><span class="pd-spec-v">{{ product.metafields.custom.finish | default: 'Natural Oil Seal' }}</span></div>
+
+    <div class="pd-spec-row"><span class="pd-spec-k">Dimensions</span><span class="pd-spec-v">
+      {%- if product.metafields.custom.dimensions != blank -%}
+        {{ product.metafields.custom.dimensions }}
+      {%- elsif template.suffix == 'variant-detail' -%}
+        {%- if sel_variant.title == 'Small' -%}550 × 550 × 16 mm
+        {%- elsif sel_variant.title == 'Standard' -%}550 × 1100 × 16 mm
+        {%- else -%}275 × 275 × 16 mm{%- endif -%}
+      {%- else -%}
+        40 × 90 × 40 mm
+      {%- endif -%}
+    </span></div>
+
+    <div class="pd-spec-row"><span class="pd-spec-k">Pack quantity</span><span class="pd-spec-v">{{ product.metafields.custom["accessories-count"] | default: 2 }}</span></div>
+  </div>
+</section>
+
+<section class="pd-box">
+  <div class="pd-h">In the box</div>
+  {%- assign pd_box_field = product.metafields.custom["product-whats-in-the-box"] -%}
+  {%- assign pd_box_items = pd_box_field.value -%}
+  {%- if pd_box_items != blank and pd_box_items != empty -%}
+    {%- for item in pd_box_items -%}
+      <div class="pd-box-row"><span class="pd-box-idx">{{ forloop.index | prepend: '00' | slice: -2, 2 }}</span><span class="pd-box-name">{{ item }}</span></div>
+    {%- endfor -%}
+  {%- elsif pd_box_field != blank -%}
+    <div class="pd-box-row"><span class="pd-box-idx">01</span><span class="pd-box-name">{{ pd_box_field | metafield_tag }}</span></div>
+  {%- else -%}
+    <div class="pd-box-row"><span class="pd-box-idx">01</span><span class="pd-box-name">{{ product.title }} × {{ product.metafields.custom["accessories-count"] | default: 2 }}</span></div>
+  {%- endif -%}
+</section>
+
+<section class="pd-faq">
+  <div class="pd-faq-inner">
+    <div class="pd-h">Questions</div>
+    {%- assign pd_faq = product.metafields.custom.product_faq.value -%}
+    {%- if pd_faq != blank -%}
+      {%- for entry in pd_faq -%}
+        <details>
+          <summary>
+            {{ entry.question.value }}
+            <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+          </summary>
+          <div class="pd-a">{{ entry.answer.value }}</div>
+        </details>
+      {%- endfor -%}
+    {%- else -%}
+    <details>
+      <summary>
+        Does it need a Tulai board?
+        <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="pd-a">Yes — this accessory is designed to slot into any Tulai board's peg holes. It doesn't work as a stand-alone piece.</div>
+    </details>
+    <details>
+      <summary>
+        How much weight will it hold?
+        <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="pd-a">Each piece is rated for everyday items — books, plants, bags, and kitchen tools. For heavier loads, we recommend spreading weight across two pegs.</div>
+    </details>
+    <details>
+      <summary>
+        Will it mark a bag strap or a coat?
+        <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="pd-a">No. The rounded, sanded profile is shaped to distribute weight evenly and avoid pressure marks or snags on fabric.</div>
+    </details>
+    <details>
+      <summary>
+        Can I move it later?
+        <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="pd-a">Yes. It screws out and back into any hole on the board in seconds, so you can rearrange your setup anytime.</div>
+    </details>
+    <details>
+      <summary>
+        How do I look after it?
+        <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="pd-a">Wipe clean with a dry or slightly damp cloth. Avoid soaking it or leaving it in direct sunlight for long periods.</div>
+    </details>
+    {%- endif -%}
+  </div>
+</section>
+
+<div class="pd-loop">
+  <div class="pd-loop-ey"><div class="pd-loop-ey-line"></div>Our community</div>
+</div>
+
+<div class="pd-remani">
+  <div class="pd-remani-ey"><div class="pd-remani-ey-line"></div>RE-MANIFESTO</div>
+  <div class="pd-remani-title">Built for life, not the landfill.</div>
+  <div class="pd-remani-words">
+    <span>Returned</span>
+    <span>Restored</span>
+    <span>Resold</span>
+    <span>Reimagined</span>
+    <span>Recycled</span>
+  </div>
+  <div class="pd-remani-body">When you're done with this piece, send it back. We restore what can be restored, resell what can be resold, and recycle the wood when neither is possible. Nothing we make is meant to end in a skip.</div>
+</div>
+
+<div class="pd-related">
+  <div class="pd-rel-hdr">
+    <div class="pd-rel-ey"><div class="pd-rel-ey-line"></div>Pairs well</div>
+    <div class="pd-rel-title">You may also like.</div>
+  </div>
+
+  <!-- ============================================================
+       PAIRS WELL / YOU MAY ALSO LIKE — per-product, editable
+       Editable from: Shopify Admin > Products > [this product] >
+       "Related products" metafield
+       (shopify--discovery--product_recommendation.related_products —
+       Shopify's built-in Search & Discovery "List of products" field).
+       Add the exact products you want to show here, in the order you
+       want them shown, and they'll always appear on this product's
+       page — regardless of which collection either product is in.
+       If left blank, it automatically falls back to picking other
+       products from this product's first collection (the old
+       behaviour), so nothing breaks for products not yet set up.
+       ============================================================ -->
+  <div class="pd-rel-grid">
+    {%- assign pd_related = product.metafields.shopify--discovery--product_recommendation.related_products.value -%}
+    {%- if pd_related != blank -%}
+      {%- assign related_count = 0 -%}
+      {%- for related_product in pd_related -%}
+        {%- if related_product.handle != product.handle and related_count < 4 -%}
+          <div class="pd-rel-card">
+            <a href="{{ related_product.url }}" style="text-decoration:none;">
+              <div class="pd-rel-img">
+                {% if related_product.featured_image %}
+                  <img src="{{ related_product.featured_image | img_url: '500x500', crop: 'center' }}" alt="{{ related_product.title | escape }}" width="500" height="500" loading="lazy">
+                {% endif %}
+              </div>
+              <div class="pd-rel-body">
+                <div class="pd-rel-name">{{ related_product.title }}</div>
+                <div class="pd-rel-foot">
+                  <div class="pd-rel-price">{{ related_product.price | money }}</div>
+                  <button class="pd-rel-btn">View</button>
+                </div>
+              </div>
+            </a>
+          </div>
+          {%- assign related_count = related_count | plus: 1 -%}
+        {%- endif -%}
+      {%- endfor -%}
+    {%- else -%}
+      {% assign related_count = 0 %}
+      {% assign related_collection = product.collections.first %}
+
+      {% if related_collection %}
+        {% for related_product in collections[related_collection.handle].products limit: 6 %}
+          {% if related_product.handle != product.handle and related_count < 4 %}
+            <div class="pd-rel-card">
+              <a href="{{ related_product.url }}" style="text-decoration:none;">
+                <div class="pd-rel-img">
+                  {% if related_product.featured_image %}
+                    <img src="{{ related_product.featured_image | img_url: '500x500', crop: 'center' }}" alt="{{ related_product.title | escape }}" width="500" height="500" loading="lazy">
+                  {% endif %}
+                </div>
+                <div class="pd-rel-body">
+                  <div class="pd-rel-name">{{ related_product.title }}</div>
+                  <div class="pd-rel-foot">
+                    <div class="pd-rel-price">{{ related_product.price | money }}</div>
+                    <button class="pd-rel-btn">View</button>
+                  </div>
+                </div>
+              </a>
+            </div>
+            {% assign related_count = related_count | plus: 1 %}
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+    {%- endif -%}
+  </div>
+</div>
+
+<!-- Image Lightbox -->
+<div class="pd-lightbox" id="pd-lightbox" onclick="pdCloseLightbox()">
+  <div class="pd-lightbox-inner" onclick="event.stopPropagation()">
+    <button class="pd-lightbox-close" onclick="pdCloseLightbox()">×</button>
+    <img id="pd-lightbox-img" src="" alt="Product image">
+  </div>
+</div>
+
+<script>
+  function pdSwitchImage(thumbElem, imgUrl) {
+    document.getElementById('PdMainImage').src = imgUrl;
+    document.querySelectorAll('.pd-thumb').forEach(function(el) { el.classList.remove('active'); });
+    thumbElem.classList.add('active');
+  }
+
+  function pdUpdateQty(change) {
+    var spanEl = document.getElementById('pd-qty');
+    var inputEl = document.getElementById('pd-qty-input');
+    var currentVal = parseInt(spanEl.textContent) || 1;
+    var newVal = Math.max(1, currentVal + change);
+    spanEl.textContent = newVal;
+    inputEl.value = newVal;
+  }
+
+  function pdOpenLightbox(src) {
+    document.getElementById('pd-lightbox-img').src = src;
+    document.getElementById('pd-lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function pdCloseLightbox() {
+    document.getElementById('pd-lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') pdCloseLightbox();
+  });
+
+  // AJAX Add to Cart
+  var form = document.getElementById('AddToCartForm');
+  if (form) {
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      var btn = document.getElementById('AddToCart');
+      var variantId = document.getElementById('ProductVariant').value;
+      var qty = document.getElementById('pd-qty-input').value;
+      
+      btn.textContent = 'Adding...';
+      btn.disabled = true;
+      
+      fetch('/cart/add.js', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ items: [{ id: variantId, quantity: qty }] })
+      })
+      .then(function(r) {
+        if (!r.ok) { return r.json().then(function(err) { throw err; }); }
+        return r.json();
+      })
+      .then(function() {
+        btn.textContent = 'Added ✓';
+        btn.classList.add('added');
+        setTimeout(function() {
+          btn.textContent = 'Add to Cart';
+          btn.disabled = false;
+          btn.classList.remove('added');
+        }, 2000);
+        // Update cart count
+        fetch('/cart.js')
+          .then(function(r) { return r.json(); })
+          .then(function(cart) {
+            var countEl = document.getElementById('cartCount') || document.querySelector('.cart-badge') || document.querySelector('[data-cart-count]');
+            if (countEl) countEl.textContent = cart.item_count;
+          });
+      })
+      .catch(function(err) {
+        console.error(err);
+        btn.textContent = err.description || 'Out of stock';
+        setTimeout(function() {
+          btn.textContent = 'Add to Cart';
+          btn.disabled = false;
+        }, 2000);
+      });
+    });
+    
+    // Auto-update price/image on dropdown change if multiple variants exist
+    var variantSelect = document.getElementById('ProductVariant');
+    if (variantSelect && variantSelect.tagName === 'SELECT') {
+      variantSelect.addEventListener('change', function() {
+        // Just reload the page with the correct variant to update all UI
+        var url = new URL(window.location.href);
+        url.searchParams.set('variant', this.value);
+        window.location.href = url.toString();
+      });
+    }
+  }
+</script>
+
+<!-- Product JSON-LD + BreadcrumbList -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "{{ shop.url }}" },
+    { "@type": "ListItem", "position": 2, "name": "Shop", "item": "{{ shop.url }}/collections/tulai" },
+    { "@type": "ListItem", "position": 3, "name": "{{ product.title | escape }}", "item": "{{ shop.url }}{{ product.url }}" }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": "{{ product.title | escape }}",
+  "description": "{{ product.description | strip_html | strip_newlines | replace: '"', '\\"' | truncate: 500 }}",
+  "url": "{{ shop.url }}{{ product.url }}",
+  "image": [{% for image in product.images %}"{{ image | image_url: width: 1200 }}"{% unless forloop.last %},{% endunless %}{% endfor %}],
+  "brand": { "@type": "Brand", "name": "NARKK" },
+  "material": "{{ product.metafields.custom.product_filter_materials | default: 'Birch Plywood' }}",
+  "offers": [
+    {% for variant in product.variants %}
+    {
+      "@type": "Offer",
+      "name": "{{ variant.title | escape }}",
+      "sku": "{{ variant.sku | default: variant.id }}",
+      "price": "{{ variant.price | money_without_currency | remove: ',' }}",
+      "priceCurrency": "INR",
+      "availability": "{% if variant.available %}https://schema.org/InStock{% else %}https://schema.org/OutOfStock{% endif %}",
+      "url": "{{ shop.url }}{{ product.url }}?variant={{ variant.id }}",
+      "itemCondition": "https://schema.org/NewCondition",
+      "seller": { "@type": "Organization", "name": "NARKK" }
+    }{% unless forloop.last %},{% endunless %}
+    {% endfor %}
+  ]
+}
+</script>

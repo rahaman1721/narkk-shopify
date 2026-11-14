@@ -1,0 +1,99 @@
+<!-- 404 Error Page -->
+<div class="not-found-pg">
+  <div class="not-found-inner">
+    <div class="not-found-eyebrow">Error 404</div>
+    <h1 class="not-found-title">We lost the page.</h1>
+    <p class="not-found-desc">The page you were looking for doesn't exist, has been moved, or is temporarily unavailable. Let's get you back on track.</p>
+    
+    <div class="not-found-actions">
+      <a href="{{ routes.root_url }}" class="not-found-btn">Return Home</a>
+      <a href="{{ routes.all_products_collection_url }}" class="not-found-link">Shop all products</a>
+    </div>
+  </div>
+</div>
+
+<style>
+.not-found-pg { 
+  min-height: calc(100vh - var(--header-h)); 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  background: var(--bg); 
+  padding: 40px 20px;
+}
+
+.not-found-inner {
+  max-width: 600px;
+  width: 100%;
+  text-align: center;
+}
+
+.not-found-eyebrow {
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 500;
+  color: var(--coral);
+  margin-bottom: 24px;
+}
+
+.not-found-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: clamp(48px, 6vw, 80px);
+  font-weight: 300;
+  line-height: 1.1;
+  color: var(--slate);
+  margin: 0 0 24px;
+  letter-spacing: -0.02em;
+}
+
+.not-found-desc {
+  font-size: var(--fs-body);
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 48px;
+  font-weight: 300;
+}
+
+.not-found-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.not-found-btn {
+  display: inline-block;
+  background: var(--slate);
+  color: white;
+  padding: 16px 40px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-family: 'Outfit', sans-serif;
+  font-size: var(--fs-sm);
+  transition: background 0.3s ease;
+}
+
+.not-found-btn:hover {
+  background: var(--coral);
+}
+
+.not-found-link {
+  font-size: var(--fs-sm);
+  color: var(--slate);
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.not-found-link:hover {
+  color: var(--coral);
+}
+</style>
+
+{% schema %}
+{
+  "name": "404 Page",
+  "settings": []
+}
+{% endschema %}

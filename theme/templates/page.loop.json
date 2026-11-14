@@ -1,0 +1,149 @@
+{
+  "sections": {
+    "page-hero": {
+      "type": "page-hero",
+      "settings": {
+        "bg_color": "#F5F0EA",
+        "eyebrow_text": "Our Community",
+        "eyebrow_color": "#C16B45",
+        "title": "Loop.",
+        "title_color": "#334155",
+        "description": "A space for people who don't just buy things, but ask why, how, and what next. Stories, ideas, and conversations built around intentional living and the things that stay.",
+        "desc_color": "#64748B",
+        "hero_image": "",
+        "fallback_image_url": "https://narkk-india.myshopify.com/cdn/shop/files/narkk-loop-img-banner.webp?v=1780576830&width=1400"
+      }
+    },
+    "main-loop": {
+      "type": "main-loop",
+      "settings": {
+        "blog_top": "",
+        "blog_bottom": ""
+      },
+      "blocks": {
+        "lc1": {
+          "type": "loop_card",
+          "settings": {
+            "fallback_image": "loop-article-1-intentional-living.jpg",
+            "tag": "Intentional Living",
+            "time": "6 min read",
+            "title": "Move beyond trends. Design a space that outlives the season.",
+            "excerpt": "The homes that age well aren't the ones that chased the moment. They started with one question — what do I actually need?",
+            "author_initial": "NL",
+            "author_name": "narkk Loop",
+            "link": "#"
+          }
+        },
+        "lc2": {
+          "type": "loop_card",
+          "settings": {
+            "fallback_image": "loop-article-2-declutter.jpg",
+            "tag": "Declutter & Organise",
+            "time": "4 min read",
+            "title": "The one rule that makes decluttering actually stick.",
+            "excerpt": "It's not about getting rid of things. It's about understanding why you kept them.",
+            "author_initial": "NL",
+            "author_name": "narkk Loop",
+            "link": "#"
+          }
+        },
+        "lc3": {
+          "type": "loop_card",
+          "settings": {
+            "fallback_image": "loop-article-3-craft-material.jpg",
+            "tag": "Craft & Material",
+            "time": "5 min read",
+            "title": "Why birch plywood outlasts MDF by a decade.",
+            "excerpt": "The material decision is made before the product is designed.",
+            "author_initial": "N",
+            "author_name": "Niranjan",
+            "link": "#"
+          }
+        },
+        "lc4": {
+          "type": "loop_card",
+          "settings": {
+            "fallback_image": "loop-article-4-stories-stayed.jpg",
+            "tag": "Stories That Stayed",
+            "time": "3 min read",
+            "title": "My grandfather's chair is still in our living room.",
+            "excerpt": "A piece of furniture from 1971. Still standing.",
+            "author_initial": "PK",
+            "author_name": "Community",
+            "link": "#"
+          }
+        },
+        "lc5": {
+          "type": "loop_card",
+          "settings": {
+            "fallback_image": "loop-article-5-in-use.jpg",
+            "tag": "In Use",
+            "time": "2 min read",
+            "title": "How a 550mm board changed our entryway.",
+            "excerpt": "Keys, bag, jacket — and somehow everything else.",
+            "author_initial": "SR",
+            "author_name": "Community",
+            "link": "#"
+          }
+        },
+        "lc6": {
+          "type": "loop_card",
+          "settings": {
+            "fallback_image": "loop-article-6-il-question.jpg",
+            "tag": "Intentional Living",
+            "time": "7 min read",
+            "title": "The question to ask before buying anything for your home.",
+            "excerpt": "Not \"do I like it?\" — but \"where will this be in five years?\"",
+            "author_initial": "NL",
+            "author_name": "narkk Loop",
+            "link": "#"
+          }
+        },
+        "nc1": {
+          "type": "narkk_card",
+          "settings": {
+            "fallback_image": "loop-narkk-1-studios.jpg",
+            "tag": "In Use",
+            "time": "3 min read",
+            "title": "How creative studios are using Tulai setups.",
+            "excerpt": "We visited three different studios in Bangalore to see how they adapted our pegboards.",
+            "author_initial": "NL",
+            "author_name": "narkk Loop",
+            "link": "#"
+          }
+        },
+        "nc2": {
+          "type": "narkk_card",
+          "settings": {
+            "fallback_image": "loop-narkk-2-stories.jpg",
+            "tag": "Stories That Stayed",
+            "time": "2 min read",
+            "title": "Building a modular system from scratch.",
+            "excerpt": "A behind-the-scenes look at how Tulai was prototyped.",
+            "author_initial": "NL",
+            "author_name": "narkk Loop",
+            "link": "#"
+          }
+        },
+        "nc3": {
+          "type": "narkk_card",
+          "settings": {
+            "fallback_image": "loop-narkk-3-pets.jpg",
+            "tag": "In Use",
+            "time": "2 min read",
+            "title": "Designing for the non-human members of the family.",
+            "excerpt": "From a dog stepper to a bird house — spaces that work for everyone.",
+            "author_initial": "NL",
+            "author_name": "narkk Loop",
+            "link": "#"
+          }
+        }
+      },
+      "block_order": ["lc1","lc2","lc3","lc4","lc5","lc6","nc1","nc2","nc3"]
+    }
+  },
+  "order": [
+    "page-hero",
+    "main-loop"
+  ]
+}

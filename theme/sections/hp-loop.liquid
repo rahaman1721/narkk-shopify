@@ -1,0 +1,134 @@
+<style>
+/* ── hp-loop: From the Loop — homepage section ── */
+
+/* section header */
+.lp-sec-head { padding:48px 56px 32px; display:flex; align-items:flex-end; justify-content:space-between; background:var(--cream); }
+.lp-sec-ey { display:flex; align-items:center; gap:10px; font-size:var(--fs-lbl); font-weight:300; letter-spacing:2.5px; text-transform:uppercase; color:var(--teal); margin-bottom:8px; }
+.lp-sec-ey-line { width:24px; height:1px; background:var(--teal); flex-shrink:0; }
+.lp-sec-title { font-size:var(--fs-h2); font-weight:200; letter-spacing:-0.5px; color:var(--slate); }
+.lp-sec-link { font-size:var(--fs-lbl); font-weight:300; letter-spacing:1.5px; text-transform:uppercase; color:var(--teal); text-decoration:none; border-bottom:1px solid rgba(74,155,142,0.3); padding-bottom:1px; white-space:nowrap; }
+@media(max-width:768px) { .lp-sec-head { padding:32px 20px; flex-direction:column; align-items:flex-start; gap:12px; } }
+
+/* article grid — full-bleed, hairline borders, no gap */
+.lp-masonry-wrap { background:var(--cream); border-bottom:1px solid var(--border); overflow:hidden; margin:0 !important; padding:0 !important; }
+.lp-masonry { display:grid; grid-template-columns:repeat(3,1fr); gap:0 !important; border-top:1px solid var(--border); margin:0 !important; margin-right:-1px !important; padding:0 !important; }
+.lp-m-card { background:var(--cream); border-right:1px solid var(--border); border-bottom:1px solid var(--border); margin:0 !important; overflow:hidden; cursor:pointer; transition:background 0.15s; display:flex; flex-direction:column; text-decoration:none; color:inherit; }
+.lp-m-card:hover { background:var(--cream-d); }
+.lp-m-img { width:100%; overflow:hidden; background:var(--cream-d); position:relative; }
+.lp-m-card .lp-m-img { aspect-ratio:4/3; }
+.lp-m-img img { width:100%; height:100%; display:block; object-fit:cover; transition:transform 0.4s; }
+.lp-m-card:hover .lp-m-img img { transform:scale(1.03); }
+.lp-m-tag { display:none; }
+.lp-m-body { padding:18px 20px 20px; display:flex; flex-direction:column; flex:1; }
+.lp-m-meta { display:flex; align-items:center; gap:7px; margin-bottom:8px; }
+.lp-m-meta-tag { font-size:var(--fs-micro); font-weight:300; letter-spacing:1.5px; text-transform:uppercase; color:var(--teal); }
+.lp-m-dot { width:3px; height:3px; border-radius:50%; background:var(--border-m); flex-shrink:0; }
+.lp-m-time { font-size:var(--fs-lbl); font-weight:300; color:var(--sage); }
+.lp-m-title { font-size:var(--fs-body); font-weight:300; color:var(--slate); line-height:1.45; margin-bottom:8px; }
+.lp-m-card.hero .lp-m-title { font-size:var(--fs-h3); }
+.lp-m-excerpt { font-size:var(--fs-sm); font-weight:300; color:var(--slate-l); line-height:1.65; margin-bottom:14px; }
+.lp-m-footer { display:flex; align-items:center; justify-content:space-between; padding-top:12px; margin-top:auto; border-top:1px solid var(--border); }
+.lp-m-author { display:flex; align-items:center; gap:7px; }
+.lp-avatar { width:22px; height:22px; border-radius:50%; background:var(--cream-d); display:flex; align-items:center; justify-content:center; font-size:8px; font-weight:400; color:var(--slate-l); flex-shrink:0; }
+.lp-m-author span { font-size:var(--fs-meta); font-weight:300; color:var(--slate-l); }
+.lp-m-read { font-size:var(--fs-micro); font-weight:300; letter-spacing:1.5px; text-transform:uppercase; color:var(--teal); border-bottom:1px solid rgba(74,155,142,0.3); padding-bottom:1px; }
+.lp-see-more { padding:24px 56px; background:var(--cream); border-bottom:1px solid var(--border); display:flex; justify-content:center; }
+.lp-see-more-btn { font-size:var(--fs-lbl); font-weight:300; letter-spacing:2px; text-transform:uppercase; color:var(--teal); text-decoration:none; border:1px solid rgba(74,155,142,0.35); padding:12px 28px; border-radius:3px; transition:background 0.15s; }
+.lp-see-more-btn:hover { background:rgba(74,155,142,0.06); }
+@media(max-width:900px) { .lp-masonry { grid-template-columns:repeat(2,1fr) !important; } }
+@media(max-width:560px) { .lp-masonry { grid-template-columns:1fr !important; } }
+</style>
+
+<!-- FROM THE LOOP — split-center section wrapper carrying the architectural spine -->
+<div class="hp-loop-wrap narkk-spine">
+<div class="lp-sec-head">
+  <div>
+    <div class="lp-sec-ey"><span class="lp-sec-ey-line"></span>Living with Intentions</div>
+    <div class="lp-sec-title">From the Loop</div>
+  </div>
+  <a href="/pages/loop" class="lp-sec-link">See all articles &rarr;</a>
+</div>
+
+<!-- ARTICLE GRID -->
+<div class="lp-masonry-wrap">
+  <div class="lp-masonry" id="lp-article-grid">
+
+    {%- assign loop_blog = blogs['living-with-intention'] -%}
+    {%- if loop_blog and loop_blog.articles.size > 0 -%}
+      {%- for article in loop_blog.articles limit: 3 -%}
+        {%- assign tag_lower = article.tags.first | downcase -%}
+        {%- case tag_lower -%}
+          {%- when 'intentional living' -%}{%- assign tag_slug = 'il' -%}
+          {%- when 'declutter & organise' or 'declutter and organise' -%}{%- assign tag_slug = 'do' -%}
+          {%- when 'craft & material' or 'craft and material' -%}{%- assign tag_slug = 'cm' -%}
+          {%- when 'stories that stayed' -%}{%- assign tag_slug = 'ss' -%}
+          {%- when 'in use' -%}{%- assign tag_slug = 'iu' -%}
+          {%- else -%}{%- assign tag_slug = 'il' -%}
+        {%- endcase -%}
+        <a href="{{ article.url }}" class="lp-m-card {% if forloop.first %}hero{% endif %}" data-tag="{{ tag_slug }}">
+          <div class="lp-m-img">
+            {%- if article.image -%}
+              <img src="{{ article.image | image_url: width: 900 }}" alt="{{ article.image.alt | default: article.title | escape }}" loading="lazy">
+            {%- else -%}
+              <div style="width:100%;height:100%;background:var(--cream-d);"></div>
+            {%- endif -%}
+          </div>
+          <div class="lp-m-body">
+            <div class="lp-m-meta"><span class="lp-m-meta-tag">{{ article.tags.first | default: 'Article' }}</span><span class="lp-m-dot"></span><span class="lp-m-time">{{ article.content | strip_html | split: ' ' | size }} min read</span></div>
+            <div class="lp-m-title">{{ article.title }}</div>
+            <div class="lp-m-excerpt">{{ article.excerpt_or_content | strip_html | truncatewords: 20 }}</div>
+            <div class="lp-m-footer">
+              <div class="lp-m-author"><div class="lp-avatar">{{ article.author | slice: 0, 1 | upcase | default: 'N' }}</div><span>{{ article.author | default: 'narkk Loop' }}</span></div>
+              <span class="lp-m-read">Read &rarr;</span>
+            </div>
+          </div>
+        </a>
+      {%- endfor -%}
+    {%- else -%}
+      <!-- Placeholder cards shown until blog articles are published -->
+      <a href="/pages/loop" class="lp-m-card hero">
+        <div class="lp-m-img"><img src="{{ 'loop-article-1-intentional-living.jpg' | asset_url }}" alt="Intentional Living" loading="lazy"></div>
+        <div class="lp-m-body">
+          <div class="lp-m-meta"><span class="lp-m-meta-tag">Intentional Living</span><span class="lp-m-dot"></span><span class="lp-m-time">6 min read</span></div>
+          <div class="lp-m-title">Move beyond trends. Design a space that outlives the season.</div>
+          <div class="lp-m-excerpt">The homes that age well aren't the ones that chased the moment.</div>
+          <div class="lp-m-footer"><div class="lp-m-author"><div class="lp-avatar">NL</div><span>narkk Loop</span></div><span class="lp-m-read">Read &rarr;</span></div>
+        </div>
+      </a>
+      <a href="/pages/loop" class="lp-m-card">
+        <div class="lp-m-img"><img src="{{ 'loop-article-2-declutter.jpg' | asset_url }}" alt="Declutter &amp; Organise" loading="lazy"></div>
+        <div class="lp-m-body">
+          <div class="lp-m-meta"><span class="lp-m-meta-tag">Declutter &amp; Organise</span><span class="lp-m-dot"></span><span class="lp-m-time">4 min read</span></div>
+          <div class="lp-m-title">The one rule that makes decluttering actually stick.</div>
+          <div class="lp-m-excerpt">It's not about getting rid of things. It's about understanding why you kept them.</div>
+          <div class="lp-m-footer"><div class="lp-m-author"><div class="lp-avatar">NL</div><span>narkk Loop</span></div><span class="lp-m-read">Read &rarr;</span></div>
+        </div>
+      </a>
+      <a href="/pages/loop" class="lp-m-card">
+        <div class="lp-m-img"><img src="{{ 'loop-article-3-craft-material.jpg' | asset_url }}" alt="Craft &amp; Material" loading="lazy"></div>
+        <div class="lp-m-body">
+          <div class="lp-m-meta"><span class="lp-m-meta-tag">Craft &amp; Material</span><span class="lp-m-dot"></span><span class="lp-m-time">5 min read</span></div>
+          <div class="lp-m-title">Why birch plywood outlasts MDF by a decade.</div>
+          <div class="lp-m-excerpt">The material decision is made before the product is designed.</div>
+          <div class="lp-m-footer"><div class="lp-m-author"><div class="lp-avatar">N</div><span>Niranjan</span></div><span class="lp-m-read">Read &rarr;</span></div>
+        </div>
+      </a>
+    {%- endif -%}
+
+  </div>
+</div>
+
+<div class="lp-see-more"><a href="/pages/loop" class="lp-see-more-btn">See all articles &rarr;</a></div>
+</div><!-- /.hp-loop-wrap -->
+
+{% schema %}
+{
+  "name": "Loop Articles",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Loop Articles"
+    }
+  ]
+}
+{% endschema %}

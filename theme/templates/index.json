@@ -1,0 +1,48 @@
+{
+  "name": "Default",
+  "sections": {
+    "hero": {
+      "type": "hero-split",
+      "settings": {
+        "eyebrow": "Introducing &mdash; Tulai Collection",
+        "title_line1": "Storage system",
+        "title_line2": "built to last.",
+        "description": "A pegboard system with all kinds of accessories to suit every space. Start with a board, build your wall over time.",
+        "cta_text": "Explore Tulai Collection"
+      }
+    },
+    "split": {
+      "type": "hp-split",
+      "settings": {}
+    },
+    "starter": {
+      "type": "hp-starter",
+      "settings": {}
+    },
+    "manifesto": {
+      "type": "manifesto",
+      "settings": {}
+    },
+    "upcoming": {
+      "type": "upcoming-collections",
+      "settings": {}
+    },
+    "loop": {
+      "type": "hp-loop",
+      "settings": {}
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {}
+    }
+  },
+  "order": [
+    "hero",
+    "split",
+    "starter",
+    "manifesto",
+    "loop",
+    "upcoming",
+    "newsletter"
+  ]
+}

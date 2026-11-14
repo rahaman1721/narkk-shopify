@@ -1,0 +1,46 @@
+{
+  "name": "Variant Detail Product",
+  "sections": {
+    "main": {
+      "type": "main-product-variant-detail",
+      "settings": {},
+      "blocks": {
+        "title": {
+          "type": "title",
+          "settings": {}
+        },
+        "pack_info": {
+          "type": "pack_info",
+          "settings": {}
+        },
+        "description": {
+          "type": "description",
+          "settings": {}
+        },
+        "price": {
+          "type": "price",
+          "settings": {}
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "title",
+        "pack_info",
+        "description",
+        "price",
+        "buy_buttons"
+      ]
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {}
+    }
+  },
+  "order": [
+    "main",
+    "newsletter"
+  ]
+}

@@ -1,0 +1,222 @@
+<style>
+.pg-hero{background:var(--cream);border-bottom:1px solid var(--border);}
+.pg-hero-top{padding:72px 56px 64px;display:grid;grid-template-columns:1fr 1fr;min-height:280px;align-items:start;}
+.pg-hero-left{padding-right:40px;}
+.pg-eyebrow{display:flex;align-items:center;gap:10px;font-size:var(--fs-lbl);font-weight:300;letter-spacing:2.5px;text-transform:uppercase;margin-bottom:20px;}
+.pg-eyebrow.sage{color:var(--sage);}
+.pg-eyebrow-line{width:24px;height:1px;background:var(--sage);flex-shrink:0;}
+.pg-hero-title{font-size:var(--fs-disp);font-weight:200;letter-spacing:-2px;line-height:1;color:var(--slate);}
+.pg-hero-desc{font-size:var(--fs-body);font-weight:300;color:var(--text-secondary);line-height:1.85;max-width:380px;margin-top:40px;}
+.ct-split{display:grid;grid-template-columns:1.2fr 1fr;border-bottom:1px solid var(--border);}
+.ct-form{padding:56px 44px;border-right:1px solid var(--border);display:flex;flex-direction:column;gap:18px;}
+.ct-info{padding:56px 44px;display:flex;flex-direction:column;gap:32px;}
+.ct-info-item{display:flex;flex-direction:column;gap:6px;}
+.ct-info-k{font-size:var(--fs-lbl);font-weight:400;letter-spacing:2px;text-transform:uppercase;color:var(--sage);}
+.ct-info-v{font-size:var(--fs-body);font-weight:300;color:var(--slate);line-height:1.7;}
+.ct-info-v a{color:var(--slate);text-decoration:underline;text-underline-offset:3px;}
+.fld{display:flex;flex-direction:column;gap:6px;}
+.fld label{font-size:var(--fs-lbl);font-weight:400;letter-spacing:2px;text-transform:uppercase;color:var(--slate);}
+.fld input,.fld select,.fld textarea{font-family:'Outfit',sans-serif;font-size:var(--fs-body);font-weight:300;color:var(--slate);background:var(--cream-d);border:1px solid var(--border-m);border-radius:3px;padding:12px 14px;outline:none;transition:border-color 0.15s;width:100%;}
+.fld input:focus,.fld select:focus,.fld textarea:focus{border-color:var(--burnt-clay);}
+.fld textarea{min-height:120px;resize:vertical;}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.submitbtn{width:100%;height:48px;background:var(--burnt-clay);color:white;border:none;border-radius:3px;font-family:'Outfit',sans-serif;font-size:var(--fs-lbl);font-weight:400;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:background 0.15s;}
+.submitbtn:hover{background:var(--slate);}
+.faq{border-bottom:1px solid var(--border);background:var(--cream);}
+.sec-hdr{padding:48px 44px 32px;border-bottom:1px solid var(--border);}
+.sec-ey{display:flex;align-items:center;gap:10px;font-size:var(--fs-lbl);font-weight:300;letter-spacing:2.5px;text-transform:uppercase;color:var(--sage);margin-bottom:10px;}
+.sec-ey-line{width:20px;height:1px;background:var(--sage);flex-shrink:0;}
+.sec-title{font-size:var(--fs-h1);font-weight:200;letter-spacing:-0.5px;color:var(--slate);}
+.faq-list{}
+.faq-item{border-bottom:1px solid var(--border);}
+.faq-q{display:flex;align-items:center;justify-content:space-between;padding:24px 44px;cursor:pointer;font-size:var(--fs-h3);font-weight:300;color:var(--slate);transition:color 0.15s;}
+.faq-q:hover{color:var(--burnt-clay);}
+.faq-q svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.5;flex-shrink:0;transition:transform 0.2s;}
+.faq-item.open .faq-q svg{transform:rotate(45deg);}
+.faq-a{display:none;padding:0 44px 24px;font-size:var(--fs-body);font-weight:300;color:var(--text-secondary);line-height:1.85;max-width:640px;}
+.faq-item.open .faq-a{display:block;}
+@media(max-width:900px){.pg-hero-top{grid-template-columns:1fr;padding:48px 20px;}.pg-hero-desc{margin-top:20px;max-width:none;}.ct-split{grid-template-columns:1fr;}.ct-form{border-right:none;border-bottom:1px solid var(--border);padding:36px 20px;}.ct-info{padding:36px 20px;}.faq-q{padding:20px;}.faq-a{padding:0 20px 20px;}.sec-hdr{padding:36px 20px 24px;}.frow{grid-template-columns:1fr;}}
+</style>
+
+<div class="pg-hero">
+  <div class="pg-hero-top">
+    <div class="pg-hero-left">
+      <div class="pg-eyebrow sage">
+        <div class="pg-eyebrow-line"></div>
+        We'd like to hear from you
+      </div>
+      <h1 class="pg-hero-title">Get in touch.</h1>
+    </div>
+    <div class="pg-hero-right">
+      <p class="pg-hero-desc">Questions about an order, a repair, a collaboration, or just curious what we're building next &mdash; write to us. A person reads every message.</p>
+    </div>
+  </div>
+
+  <div class="ct-split">
+    <div class="ct-form">
+      {%- form 'contact', id: 'ContactForm' -%}
+        {%- if form.posted_successfully? -%}
+          <div class="form-success">
+            <p style="color: var(--teal); margin-bottom: 16px;">Thanks for contacting us. We'll get back to you as soon as possible.</p>
+          </div>
+        {%- endif -%}
+        
+        {%- if form.errors -%}
+          <div class="form-error">
+            <p style="color: var(--burnt-clay); margin-bottom: 16px;">{{ form.errors | default_errors }}</p>
+          </div>
+        {%- endif -%}
+        
+        <div class="frow">
+          <div class="fld">
+            <label for="ContactFormName">Name</label>
+            <input type="text" id="ContactFormName" name="contact[name]" required>
+          </div>
+          <div class="fld">
+            <label for="ContactFormEmail">Email</label>
+            <input type="email" id="ContactFormEmail" name="contact[email]" required>
+          </div>
+        </div>
+
+        <div class="fld">
+          <label for="ContactFormSubject">Subject</label>
+          <select id="ContactFormSubject" name="contact[subject]">
+            <option value="Order enquiry">Order enquiry</option>
+            <option value="Repair & care">Repair & care</option>
+            <option value="Collaboration">Collaboration</option>
+            <option value="Something else">Something else</option>
+          </select>
+        </div>
+
+        <div class="fld">
+          <label for="ContactFormMessage">Message</label>
+          <textarea id="ContactFormMessage" name="contact[body]" required></textarea>
+        </div>
+
+        <button type="submit" class="submitbtn">Send message</button>
+      {%- endform -%}
+    </div>
+
+    <div class="ct-info">
+      <div class="ct-info-item">
+        <span class="ct-info-k">Email</span>
+        <span class="ct-info-v"><a href="mailto:hello@narkk.com">hello@narkk.com</a></span>
+      </div>
+      <div class="ct-info-item">
+        <span class="ct-info-k">Studio</span>
+        <span class="ct-info-v">Chennai, Tamil Nadu, India</span>
+      </div>
+      <div class="ct-info-item">
+        <span class="ct-info-k">Response time</span>
+        <span class="ct-info-v">One to two working days, always from a person on our team.</span>
+      </div>
+      <div class="ct-info-item">
+        <span class="ct-info-k">Loop</span>
+        <span class="ct-info-v">Prefer to talk with other mindful makers first? Join Loop, our community of collaborators.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="faq">
+  <div class="sec-hdr">
+    <div class="sec-ey">
+      <div class="sec-ey-line"></div>
+      Before you write in
+    </div>
+    <h2 class="sec-title">A few quick answers.</h2>
+  </div>
+  
+  <div class="faq-list">
+    <div class="faq-item">
+      <div class="faq-q">
+        How do I start a repair?
+        <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></svg>
+      </div>
+      <div class="faq-a">Write to us with your order number and a photo of what needs fixing.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">
+        Can I return a used piece?
+        <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></svg>
+      </div>
+      <div class="faq-a">Yes. Our 360-day return covers pieces in use, not just unopened boxes.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">
+        Do you ship outside India?
+        <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></svg>
+      </div>
+      <div class="faq-a">Not yet. We currently ship across India only.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">
+        How long does delivery take?
+        <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></svg>
+      </div>
+      <div class="faq-a">3-7 working days across India. Express options available at checkout.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">
+        Can I track my order?
+        <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></svg>
+      </div>
+      <div class="faq-a">Yes &mdash; a tracking link is sent to your email once your order ships.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">
+        What is the RE-promise?
+        <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></svg>
+      </div>
+      <div class="faq-a">Every narkk product comes with a commitment: we'll help repair it, not just replace it.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">
+        Do you offer bulk or trade pricing?
+        <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></svg>
+      </div>
+      <div class="faq-a">Yes. Apply for our trade program through the Shop page.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.faq-q').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var item = this.closest('.faq-item');
+        var isOpen = item.classList.contains('open');
+        
+        if (isOpen) {
+          item.classList.remove('open');
+        } else {
+          item.classList.add('open');
+        }
+      });
+    });
+  });
+</script>
+
+<!-- ContactPage JSON-LD -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ContactPage",
+  "name": "Contact NARKK",
+  "description": "Get in touch with NARKK for orders, repairs, trade enquiries, or general questions.",
+  "url": "{{ canonical_url }}",
+  "publisher": { "@id": "{{ shop.url }}/#organization" }
+}
+</script>
+
+{% schema %}
+{
+  "name": "Contact",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Contact Section"
+    }
+  ]
+}
+{% endschema %}

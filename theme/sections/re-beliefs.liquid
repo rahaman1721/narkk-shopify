@@ -1,0 +1,238 @@
+{% comment %}
+  ------------------------------------------------------------------------------------------------------------------------------------
+  NARKK &mdash; What We Believe (Beliefs List)
+  Layout matches the video:
+    LEFT  36%  &rarr;  sticky heading "WHAT WE BELIEVE"
+    RIGHT 64%  &rarr;  scrolling list of beliefs (Number + Title + Body)
+  Background: #E8E3DB (Sand)
+  ------------------------------------------------------------------------------------------------------------------------------------
+{% endcomment %}
+
+<style>
+/* ------------------------------------------------------------------------------------
+   WRAPPER &mdash; two-column grid
+------------------------------------------------------------------------------------ */
+.rb-section {
+  background: {{ section.settings.bg_color | default: '#E8E3DB' }};
+  display: grid;
+  grid-template-columns: 36fr 64fr;
+  align-items: start;
+  position: relative;
+  padding: 120px 0;
+}
+
+/* ------------------------------------------------------------------------------------
+   LEFT PANE &mdash; sticky heading
+------------------------------------------------------------------------------------ */
+.rb-left {
+  position: sticky;
+  top: 120px;
+  padding: 0 6vw;
+  box-sizing: border-box;
+}
+
+.rb-heading {
+  font-family: 'Outfit', system-ui, sans-serif;
+  font-size: clamp(28px, 3.2vw, 42px);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  color: {{ section.settings.heading_color | default: '#1a2535' }};
+  margin: 0;
+}
+
+/* ------------------------------------------------------------------------------------
+   RIGHT PANE &mdash; scrolling list
+------------------------------------------------------------------------------------ */
+.rb-right {
+  display: flex;
+  flex-direction: column;
+  padding-right: 6vw;
+  padding-left: 2vw;
+}
+
+/* ---- Single belief item ---- */
+.rb-item {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 40px;
+  margin-bottom: 80px;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.22,1,0.36,1);
+}
+.rb-item:last-child {
+  margin-bottom: 0;
+}
+.rb-item.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Number */
+.rb-item-num {
+  font-family: 'Outfit', system-ui, sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  color: {{ section.settings.accent_color | default: '#C85C3A' }};
+  margin-top: 4px;
+}
+
+/* Text Content */
+.rb-item-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.rb-item-title {
+  font-family: 'Outfit', system-ui, sans-serif;
+  font-size: clamp(18px, 1.8vw, 22px);
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  color: {{ section.settings.heading_color | default: '#1a2535' }};
+  margin: 0 0 20px 0;
+}
+
+.rb-item-body {
+  font-family: 'Outfit', system-ui, sans-serif;
+  font-size: clamp(14px, 1.2vw, 15px);
+  font-weight: 300;
+  line-height: 1.8;
+  color: rgba(26,37,53,0.55);
+  max-width: 540px;
+  margin: 0;
+}
+
+/* ------------------------------------------------------------------------------------
+   MOBILE
+------------------------------------------------------------------------------------ */
+@media (max-width: 768px) {
+  .rb-section {
+    grid-template-columns: 1fr;
+    padding: 80px 24px;
+  }
+  .rb-left {
+    position: relative;
+    top: 0;
+    padding: 0;
+    margin-bottom: 60px;
+  }
+  .rb-right {
+    padding: 0;
+  }
+  .rb-item {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-bottom: 60px;
+  }
+  .rb-item-num {
+    margin-top: 0;
+  }
+  .rb-item.in-view {
+    /* Reset anims for mobile or keep them if desired */
+  }
+}
+@media (min-width: 769px) and (max-width: 1100px) {
+  .rb-section { grid-template-columns: 40fr 60fr; }
+  .rb-item { grid-template-columns: 60px 1fr; gap: 20px; }
+}
+</style>
+
+<div class="rb-section" id="rb-{{ section.id }}">
+  
+  <div class="rb-left">
+    <h2 class="rb-heading">{{ section.settings.heading | default: 'WHAT WE BELIEVE' }}</h2>
+  </div>
+
+  <div class="rb-right">
+    {%- for block in section.blocks -%}
+      {%- assign num = forloop.index | prepend: '00' | slice: -3, 3 -%}
+      <div class="rb-item" {{ block.shopify_attributes }}>
+        <div class="rb-item-num">{{ num }}</div>
+        <div class="rb-item-content">
+          <h3 class="rb-item-title">{{ block.settings.title }}</h3>
+          <p class="rb-item-body">{{ block.settings.body }}</p>
+        </div>
+      </div>
+    {%- endfor -%}
+  </div>
+
+</div>
+
+<script>
+(function(){
+  'use strict';
+  var sec = document.getElementById('rb-{{ section.id }}');
+  if (!sec) return;
+  
+  var items = sec.querySelectorAll('.rb-item');
+  if (!items.length) return;
+
+  var observer = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        e.target.classList.add('in-view');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.2, rootMargin: '0px 0px -10% 0px' });
+
+  items.forEach(function(item){
+    observer.observe(item);
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "RE Beliefs",
+  "class": "section-re-beliefs",
+  "settings": [
+    { "type": "text",  "id": "heading",       "label": "Section Heading", "default": "WHAT WE BELIEVE" },
+    { "type": "color", "id": "bg_color",      "label": "Background",      "default": "#E8E3DB" },
+    { "type": "color", "id": "accent_color",  "label": "Accent Color",    "default": "#C85C3A" },
+    { "type": "color", "id": "heading_color", "label": "Heading Color",   "default": "#1a2535" }
+  ],
+  "blocks": [
+    {
+      "type": "belief",
+      "name": "Belief Item",
+      "settings": [
+        { "type": "text",     "id": "title", "label": "Title", "default": "AGAINST PLANNED OBSOLESCENCE" },
+        { "type": "textarea", "id": "body",  "label": "Body",  "default": "We build for the long haul. When a product reaches the end of its life, that decision belongs to the owner &mdash; not the manufacturer." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "RE Beliefs",
+      "blocks": [
+        {
+          "type": "belief",
+          "settings": {
+            "title": "AGAINST PLANNED OBSOLESCENCE",
+            "body": "We build for the long haul. When a product reaches the end of its life, that decision belongs to the owner &mdash; not the manufacturer."
+          }
+        },
+        {
+          "type": "belief",
+          "settings": {
+            "title": "MODULARITY AS A RESPONSIBILITY",
+            "body": "Every part that can be replaced should be. Modular design isn't a feature &mdash; it's an obligation to reduce waste and extend the life of everything we make."
+          }
+        },
+        {
+          "type": "belief",
+          "settings": {
+            "title": "TRANSPARENCY IN MATERIALS",
+            "body": "We source honestly and speak clearly about what goes into our products, because knowing what you're bringing into your home matters."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

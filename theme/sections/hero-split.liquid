@@ -1,0 +1,205 @@
+<!-- HOMEPAGE &mdash; Hero section only -->
+<style>
+/* Exact Reference Site CSS for Top Section */
+/* grid-template-columns falls back to the shared --col-split ratio until the
+   header script measures the exact "LOOP" boundary and overrides it inline
+   with a precise pixel value (see header.liquid), so the divide always lands
+   between the two O's regardless of font/zoom/viewport width. */
+/* Full-bleed breakout: guarantees this element is EXACTLY viewport-width and
+   flush with the left edge, regardless of any parent padding/centering or
+   vw-vs-% scrollbar discrepancy. This is what makes the live spine
+   measurement in header.liquid trustworthy — it can assume rect.left is
+   always 0 for this element instead of having to measure and subtract it. */
+.hp-hero { width:100vw; margin-left:calc(50% - 50vw); margin-right:calc(50% - 50vw); display:grid; grid-template-columns:var(--col-split); align-items:stretch; box-sizing:border-box; border-bottom:1px solid rgba(143,168,168,0.22); position: relative; min-height:640px; }
+.hp-hero-img { position:relative; overflow:hidden; background:#EDE7DE; aspect-ratio:4/3; height:100%; }
+.hp-hero-img img { width:100%; height:100%; object-fit:contain; object-position:center center; display:block; transition:transform 0.8s; }
+.hp-hero-img video { width:100%; height:100%; object-fit:contain; object-position:center center; display:block; }
+/* Shopify video_tag override — ensures 4:5 portrait video scales correctly */
+.hp-hero-vid { width:100% !important; height:100% !important; object-fit:contain !important; object-position:center center !important; display:block !important; backface-visibility:hidden; -webkit-backface-visibility:hidden; transform:translateZ(0); }
+/* Zoom-on-hover kept for static images only — applying it to <video> caused the
+   frame to blur and jitter ("shaky") whenever the mouse moved over the hero
+   while the video was decoding a new frame. */
+.hp-hero-img:hover img { transform:scale(1.03); }
+/* Desktop: the media column used to force object-fit:cover anchored to the
+   top, which cropped off the bottom of the video/photo whenever the box's
+   aspect ratio (driven by the grid row height) didn't match the actual
+   footage. Switched to object-fit:contain (never crops) and the column now
+   sizes itself to the video's real portrait aspect ratio (4:5) instead of
+   being stretched/squeezed to match the text column's height — the section
+   grows taller to fit the whole video instead of cutting it off. */
+@media(min-width:901px) {
+  .hp-hero-img { overflow:hidden; aspect-ratio:4/5; height:auto; }
+  .hp-hero-img img, .hp-hero-img video, .hp-hero-vid {
+    position:relative !important; top:auto; left:auto;
+    width:100% !important; height:100% !important;
+    object-fit:contain !important;
+    object-position:center center !important;
+    z-index:2;
+  }
+}
+.hp-hero-content { display:flex; flex-direction:column; justify-content:space-between; padding:56px 52px 52px; box-sizing:border-box; height:100%; overflow:hidden; background:#F5F0EA; border-left:1px solid rgba(143,168,168,0.22); }
+.hp-hero-eyebrow { display:flex; align-items:center; gap:10px; font-family: 'Outfit', sans-serif; font-size:10px !important; font-weight:300; letter-spacing:2.5px; text-transform:uppercase; color:#D85A30; }
+.hp-eyebrow-line { width:24px; height:1px; background:#D85A30; flex-shrink:0; }
+.hp-hero-title { font-family: 'Outfit', sans-serif; font-size:52px !important; font-weight:200; letter-spacing:-2px; line-height:1.1; color:#334155; margin-top:36px; flex:1; display:flex; align-items:flex-end; }
+.hp-hero-title-inner { display:block; }
+.hp-coral { color:#C16B45; }
+.hp-hero-body { margin-top:40px; }
+.hp-hero-desc { font-family: 'Outfit', sans-serif; font-size:14px !important; font-weight:300; color:#64748B; line-height:1.85; max-width:340px; margin-bottom:28px; }
+.hp-hero-cta { display:inline-flex; align-items:center; gap:8px; font-family: 'Outfit', sans-serif; font-size:10px !important; font-weight:300; letter-spacing:1.8px; text-transform:uppercase; color:#C16B45; text-decoration:none; border-bottom:1px solid #C16B45; padding-bottom:2px; transition:opacity 0.2s; }
+.hp-hero-cta:hover { opacity:0.65; }
+.hp-hero-cta svg { width:13px; height:13px; stroke:#C16B45; fill:none; stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round; }
+
+/* Clip reveal for text */
+.hp-clip { overflow: hidden; display: block; }
+.hp-clip-inner { display: inline-block; opacity: 0; animation: textReveal 1.2s cubic-bezier(0.16,1,0.3,1) forwards; }
+@keyframes textReveal {
+  0% { transform: translateY(110%); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+.hd1 { animation-delay: 0.1s; }
+.hd2 { animation-delay: 0.2s; }
+.hd3 { animation-delay: 0.3s; }
+.hd4 { animation-delay: 0.45s; }
+
+/* Scroll down indicator */
+.hp-hero-scroll { 
+  position: absolute; bottom: 0; right: 50%; transform: translateX(50%);
+  display: flex; flex-direction: column; align-items: center; gap: 12px; z-index: 10; pointer-events: none; opacity: 0; animation: fadeIn 1s ease 0.8s forwards;
+}
+@keyframes fadeIn { to { opacity: 1; } }
+.hp-hs-line { width: 1px; height: 60px; background: rgba(26,37,53,0.1); position: relative; overflow: hidden; }
+.hp-hs-line::after { content:''; position: absolute; top: 0; left: 0; width: 100%; height: 50%; background: #C16B45; animation: hpScroll 2s cubic-bezier(0.77,0,0.175,1) infinite; }
+.hp-hs-text { font-family: 'Outfit', sans-serif; font-size: 9px; font-weight: 300; letter-spacing: 0.3em; color: rgba(26,37,53,0.4); writing-mode: vertical-rl; margin-bottom: 24px; }
+@keyframes hpScroll { 0% { transform: translateY(-100%); } 100% { transform: translateY(200%); } }
+
+@media(max-width:900px) { 
+  .hp-hero { grid-template-columns:1fr; height:auto; min-height:0; } 
+  .hp-hero-img { aspect-ratio:4/5; } 
+  .hp-hero-img img, .hp-hero-img video, .hp-hero-vid { object-fit:cover !important; }
+  .hp-hero-content { border-left:none; border-top:1px solid rgba(143,168,168,0.22); padding:32px 20px; height:auto; overflow:visible; } 
+  .hp-hero-title { flex:none; align-items:flex-start; font-size: clamp(44px,14vw,64px) !important; } 
+  .hp-hero-body { margin-top:24px; } 
+  /* Mobile body-copy fix: standardize to the site's mobile body font size (var(--fs-body)),
+     matching Shop/Loop/Philosophy page descriptions. Desktop size is untouched. */
+  .hp-hero-desc { font-size: var(--fs-body) !important; }
+  /* Align eyebrow/CTA to the shared --fs-lbl scale on mobile (desktop untouched at 10px) */
+  .hp-hero-eyebrow { font-size: var(--fs-lbl) !important; }
+  .hp-hero-cta { font-size: var(--fs-lbl) !important; }
+  .hp-hero-scroll { display: none; }
+}
+</style>
+
+<section class="hp-hero" id="hp-hero-sec">
+  <div class="hp-hero-img">
+    {% comment %}
+      Change #2 (Xiamen updation): the hero must never show an embedded YouTube
+      player, branding, or external controls. Only directly-uploaded/hosted
+      media (Shopify video, image, or the local mp4 fallback) is used here.
+    {% endcomment %}
+    {% if section.settings.hero_video != blank %}
+      {{ section.settings.hero_video | video_tag: autoplay: true, loop: true, muted: true, controls: false, playsinline: true, class: 'hp-hero-vid' }}
+    {% elsif section.settings.hero_image != blank %}
+      <img src="{{ section.settings.hero_image | image_url: width: 1200 }}" alt="Storage system built to last" width="1200" height="800" loading="eager" style="width: 100%; height: 100%; object-fit: contain; display: block;">
+    {% else %}
+      <!-- Cycle between both portrait videos -->
+      <video id="hp-hero-video" autoplay muted playsinline class="hp-hero-vid">
+        <source src="{{ 'hero-video.mp4' | asset_url }}" type="video/mp4">
+      </video>
+      <script>
+      (function(){
+        var videos = [
+          {{ 'hero-video.mp4'   | asset_url | json }},
+          {{ 'hero-video-2.mp4' | asset_url | json }}
+        ];
+        var idx = 0;
+        var v = document.getElementById('hp-hero-video');
+        if (v) {
+          v.addEventListener('ended', function() {
+            idx = (idx + 1) % videos.length;
+            v.src = videos[idx];
+            v.play();
+          });
+        }
+      })();
+      </script>
+    {% endif %}
+  </div>
+  
+  <div class="hp-hero-content">
+    <div class="hp-hero-eyebrow hp-clip">
+      <span class="hp-clip-inner hd1">
+        <span class="hp-eyebrow-line"></span>{{ section.settings.eyebrow | default: 'Introducing &mdash; Tulai Collection' }}
+      </span>
+    </div>
+    
+    <div class="hp-hero-title">
+      <div class="hp-hero-title-inner">
+        <span class="hp-clip" style="display: block;"><span class="hp-clip-inner hd2">{{ section.settings.title_line1 | default: 'Storage system' }}</span></span>
+        <span class="hp-clip" style="display: block;"><span class="hp-clip-inner hd3"><span class="hp-coral">{{ section.settings.title_line2 | default: 'built to last.' }}</span></span></span>
+      </div>
+    </div>
+    
+    <div class="hp-hero-body hp-clip">
+      <div class="hp-clip-inner hd4">
+        <div class="hp-hero-desc">{{ section.settings.description | default: 'A pegboard system with all kinds of accessories to suit every space. Start with a board, build your wall over time.' }}</div>
+        <a href="/collections/tulai" class="hp-hero-cta">{{ section.settings.cta_text | default: 'Explore Tulai Collection' }} <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scroll Indicator -->
+  <div class="hp-hero-scroll">
+    <div class="hp-hs-line"></div>
+    <div class="hp-hs-text">SCROLL</div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Hero Split",
+  "settings": [
+    {
+      "type": "video",
+      "id": "hero_video",
+      "label": "Hero Video (Shopify Hosted)",
+      "info": "Autoplays inline. Overrides image."
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Hero Image"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow Text",
+      "default": "Introducing - Tulai Collection"
+    },
+    {
+      "type": "text",
+      "id": "title_line1",
+      "label": "Title Line 1",
+      "default": "Storage system"
+    },
+    {
+      "type": "text",
+      "id": "title_line2",
+      "label": "Title Line 2 (Highlighted)",
+      "default": "built to last."
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "A pegboard system with all kinds of accessories to suit every space. Start with a board, build your wall over time."
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "Button Text",
+      "default": "Explore Tulai Collection"
+    }
+  ],
+  "presets": [{ "name": "Hero Split" }]
+}
+{% endschema %}

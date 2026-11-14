@@ -1,0 +1,127 @@
+<!-- HP-SPLIT &mdash; Movement / Loop community -->
+<style>
+/* Exact Reference Site CSS for Split Section */
+/* fallback ratio; header.liquid's script overrides this inline with the exact
+   measured "LOOP" boundary so the divide matches the hero and nav exactly. */
+/* Full-bleed breakout — see hero-split.liquid for why. */
+.hp-split { width:100vw; margin-left:calc(50% - 50vw); margin-right:calc(50% - 50vw); display:grid; grid-template-columns:var(--col-split); align-items:stretch; border-bottom:1px solid rgba(143,168,168,0.22); }
+.hp-split-left { background:var(--coral, #C16B45); padding:72px 56px 80px; display:flex; flex-direction:column; justify-content:center; box-sizing:border-box; height:100%; }
+.hp-split-right { background:#4A9B8E; padding:72px 56px 80px; display:flex; flex-direction:column; justify-content:center; box-sizing:border-box; height:100%; }
+
+.hp-split-eyebrow { display:flex; align-items:center; gap:10px; font-family: 'Outfit', sans-serif; font-size:10px !important; font-weight:300; letter-spacing:2.5px; text-transform:uppercase; color:rgba(245,240,234,0.65); margin-bottom:0; }
+.hp-split-eyebrow-line { width:24px; height:1px; background:rgba(245,240,234,0.4); flex-shrink:0; }
+.hp-split-title { font-family: 'Outfit', sans-serif; font-size:32px !important; font-weight:200; letter-spacing:-0.5px; line-height:1.2; color:#ffffff; margin-top:20px; margin-bottom:24px; }
+.hp-split-loop-title { font-family: 'Outfit', sans-serif; font-size:52px !important; font-weight:200; letter-spacing:-2px; line-height:1; color:#ffffff; margin-top:16px; margin-bottom:24px; }
+.hp-split-movement { color:#ffffff; opacity:0.75; font-style:normal; }
+.hp-split-body { font-family: 'Outfit', sans-serif; font-size:14px !important; font-weight:300; color:rgba(245,240,234,0.8); line-height:1.85; margin-bottom:32px; flex:1; max-width:480px; }
+.hp-split-link { display:inline-flex; align-items:center; gap:8px; font-family: 'Outfit', sans-serif; font-size:10px !important; font-weight:300; letter-spacing:1.8px; text-transform:uppercase; color:rgba(245,240,234,0.85); text-decoration:none; border-bottom:1px solid rgba(245,240,234,0.35); padding-bottom:2px; width:fit-content; transition:opacity 0.15s; }
+.hp-split-link:hover { opacity:0.65; }
+.hp-split-link svg { width:11px; height:11px; stroke:rgba(245,240,234,0.85); fill:none; stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round; }
+
+@media(max-width:768px) { 
+  .hp-split { grid-template-columns:1fr; } 
+  .hp-split-left,.hp-split-right { padding:32px 20px; } 
+  .hp-split-title { font-size:clamp(26px,7vw,32px) !important; }
+  .hp-split-loop-title { font-size:clamp(38px,10vw,52px) !important; }
+  /* Mobile body-copy fix: standardize to the site's mobile body font size (var(--fs-body)),
+     matching Shop/Loop/Philosophy page descriptions. Desktop size is untouched. */
+  .hp-split-body { font-size: var(--fs-body) !important; }
+}
+</style>
+
+<section class="hp-split">
+  <div class="hp-split-left">
+    <div class="hp-split-eyebrow"><span class="hp-split-eyebrow-line"></span>{{ section.settings.left_eyebrow }}</div>
+    <div class="hp-split-title">{{ section.settings.left_title }}<br><span class="hp-split-movement">{{ section.settings.left_highlight }}</span></div>
+    <div class="hp-split-body">{{ section.settings.left_body }}</div>
+    <a href="{{ section.settings.left_link | default: '/pages/philosophy' }}" class="hp-split-link">{{ section.settings.left_cta }} <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+  </div>
+  <div class="hp-split-right">
+    <div class="hp-split-eyebrow"><span class="hp-split-eyebrow-line"></span>{{ section.settings.right_eyebrow }}</div>
+    <div class="hp-split-loop-title">{{ section.settings.right_title }}</div>
+    <div class="hp-split-body">{{ section.settings.right_body }}</div>
+    <a href="{{ section.settings.right_link | default: '/pages/loop' }}" class="hp-split-link">{{ section.settings.right_cta }} <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Split Movement",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Left Panel - Brand"
+    },
+    {
+      "type": "text",
+      "id": "left_eyebrow",
+      "label": "Eyebrow Text",
+      "default": "Made in Chennai, India"
+    },
+    {
+      "type": "text",
+      "id": "left_title",
+      "label": "Title",
+      "default": "This is not just a brand,"
+    },
+    {
+      "type": "text",
+      "id": "left_highlight",
+      "label": "Highlighted Word",
+      "default": "it's a movement."
+    },
+    {
+      "type": "textarea",
+      "id": "left_body",
+      "label": "Body Text",
+      "default": "We design modular furniture and thoughtful products that evolve as you evolve. We are strongly against planned obsolescence &mdash; every product is returnable, repairable and recyclable, and never destined for a landfill."
+    },
+    {
+      "type": "text",
+      "id": "left_cta",
+      "label": "Button Text",
+      "default": "Read our philosophy"
+    },
+    {
+      "type": "url",
+      "id": "left_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "header",
+      "content": "Right Panel - Loop"
+    },
+    {
+      "type": "text",
+      "id": "right_eyebrow",
+      "label": "Right Eyebrow",
+      "default": "Our Community"
+    },
+    {
+      "type": "text",
+      "id": "right_title",
+      "label": "Right Title",
+      "default": "Loop."
+    },
+    {
+      "type": "textarea",
+      "id": "right_body",
+      "label": "Right Body Text",
+      "default": "A brand is possible without a community but a movement is not. The success of this brand is not defined in the sales it makes but a growing community of mindful collaborators and consumers who actively participate to build it around intentional living and mindful consumerism."
+    },
+    {
+      "type": "text",
+      "id": "right_cta",
+      "label": "Right Button Text",
+      "default": "Explore Loop"
+    },
+    {
+      "type": "url",
+      "id": "right_link",
+      "label": "Right Button Link"
+    }
+  ],
+  "presets": [{ "name": "Split Movement" }]
+}
+{% endschema %}
+

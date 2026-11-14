@@ -1,0 +1,387 @@
+<!-- Main Product Section &mdash; PDP -->
+<section class="pdp" id="product-{{ product.id }}" data-product-id="{{ product.id }}">
+
+  <!-- Breadcrumb -->
+  {%- render 'breadcrumbs' -%}
+
+  <div class="pdp-layout">
+    <!-- LEFT: Product Info + ATC -->
+    <div class="pdp-info">
+      <!-- Vendor / Collection -->
+      <div class="pdp-vendor">{{ product.vendor }}</div>
+
+      <!-- Variant Selector -->
+      {%- unless product.has_only_default_variant -%}
+        {%- for option in product.options_with_values -%}
+          <div class="pdp-option-group">
+            <div style="display:flex; justify-content:space-between; align-items:baseline;">
+              <label class="pdp-option-label">Choose your {{ option.name }}</label>
+              {%- if product.metafields.custom.dimensions != blank -%}
+                <span style="font-size:10px; color:var(--sage); letter-spacing:1px; text-transform:uppercase;">{{ product.metafields.custom.dimensions }}</span>
+              {%- endif -%}
+            </div>
+            <div class="pdp-option-btns">
+              {%- for value in option.values -%}
+                {%- assign variant_for_price = false -%}
+                {%- for variant in product.variants -%}
+                  {%- if variant.options contains value -%}
+                    {%- assign variant_for_price = variant -%}
+                    {%- break -%}
+                  {%- endif -%}
+                {%- endfor -%}
+                <button
+                  class="pdp-option-btn"
+                  data-option="{{ option.position }}"
+                  data-value="{{ value }}"
+                  aria-label="Select {{ option.name }}: {{ value }}"
+                >
+                  <span>{{ value }}</span>
+                  {%- if variant_for_price -%}
+                    <span class="pdp-option-price">{{ variant_for_price.price | money_without_trailing_zeros }}</span>
+                  {%- endif -%}
+                </button>
+              {%- endfor -%}
+            </div>
+          </div>
+        {%- endfor -%}
+      {%- endunless -%}
+
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when '@app' -%}
+            {% render block %}
+          {%- when 'title' -%}
+            <h1 class="pdp-title" {{ block.shopify_attributes }}>{{ product.title }}</h1>
+          {%- when 'description' -%}
+            {%- if product.description != blank -%}
+              <div class="pdp-desc" {{ block.shopify_attributes }}>{{ product.description | strip_html | truncate: 200 }}</div>
+            {%- endif -%}
+          {%- when 'price' -%}
+            <div class="pdp-price" id="pdpPrice" {{ block.shopify_attributes }}>
+              {%- render 'price', product: product -%}
+            </div>
+          {%- when 'buy_buttons' -%}
+            {%- form 'product', product, id: 'pdpForm', class: 'pdp-form', block: block -%}
+              <input type="hidden" name="id" id="variantId" value="{{ product.selected_or_first_available_variant.id }}">
+
+              <!-- Quantity -->
+              <div class="pdp-qty-row">
+                <label class="pdp-option-label" for="pdpQty">Quantity</label>
+                <div class="pdp-qty">
+                  <button type="button" class="pdp-qty-btn" onclick="changeQty(-1)" aria-label="Decrease quantity"></button>
+                  <input type="number" name="quantity" id="pdpQty" value="1" min="1" class="pdp-qty-input" aria-label="Quantity">
+                  <button type="button" class="pdp-qty-btn" onclick="changeQty(1)" aria-label="Increase quantity">+</button>
+                </div>
+              </div>
+
+              <!-- Submit -->
+              {%- if product.selected_or_first_available_variant.available -%}
+                <button type="submit" name="add" class="pdp-atc-btn" id="pdpATC" aria-label="Add {{ product.title }} to cart">
+                  ADD
+                </button>
+              {%- else -%}
+                <button type="button" class="pdp-atc-btn pdp-atc-soldout" disabled>SOLD OUT</button>
+              {%- endif -%}
+            {%- endform -%}
+        {%- endcase -%}
+      {%- endfor -%}
+
+      <script>
+        document.getElementById('pdpForm').addEventListener('submit', function() {
+          var btn = document.getElementById('pdpATC');
+          if (btn) {
+            btn.innerHTML = 'ADDED';
+            btn.classList.add('added');
+          }
+        });
+      </script>
+
+      <!-- ============================================================
+           ABOUT THE PIECE
+           Editable from: Shopify Admin > Products > [this product]
+           - "About the piece" metafield (custom.product-short-description),
+             already filled in for 17 products. Falls back to the standard
+             product Description field if that metafield is left blank, so
+             nothing breaks for products that haven't been set up yet.
+           ============================================================ -->
+      {%- assign pdp_about = product.metafields.custom["product-short-description"] -%}
+      {%- if pdp_about != blank or product.description != blank -%}
+        <details class="pdp-accordion" open>
+          <summary class="pdp-accordion-hdr">About the piece</summary>
+          <div class="pdp-accordion-body">
+            {%- if pdp_about != blank -%}
+              {{ pdp_about | metafield_tag }}
+            {%- else -%}
+              {{ product.description }}
+            {%- endif -%}
+          </div>
+        </details>
+      {%- endif -%}
+
+      <!-- ============================================================
+           SPECIFICATIONS
+           Editable from: Shopify Admin > Products > [this product]
+           - Collection      -> pulled directly from the product's real
+                                  Shopify Collection (no metafield needed)
+           - Material        -> custom.product_filter_materials (existing field)
+           - Finish          -> custom.finish             (single line text)
+                                  [PENDING: new field, awaiting client sign-off
+                                  — see open items]
+           - Dimensions      -> custom.dimensions         (existing field,
+                                  already filled in for 18 products)
+           - SKU             -> the product's Variant SKU field (native,
+                                  no metafield needed — already editable
+                                  under Variants in the product admin page)
+           Any row is hidden automatically if left blank, so partially
+           filled-in products still look tidy.
+           ============================================================ -->
+      <details class="pdp-accordion">
+        <summary class="pdp-accordion-hdr">Specifications</summary>
+        <div class="pdp-accordion-body">
+          <div class="pdp-meta">
+            {%- if product.collections.first.title != blank -%}
+              <div class="pdp-meta-row"><span>Collection</span><span>{{ product.collections.first.title }}</span></div>
+            {%- endif -%}
+            {%- if product.metafields.custom.product_filter_materials != blank -%}
+              <div class="pdp-meta-row"><span>Material</span><span>{{ product.metafields.custom.product_filter_materials }}</span></div>
+            {%- endif -%}
+            {%- if product.metafields.custom.finish != blank -%}
+              <div class="pdp-meta-row"><span>Finish</span><span>{{ product.metafields.custom.finish }}</span></div>
+            {%- endif -%}
+            {%- if product.metafields.custom.dimensions != blank -%}
+              <div class="pdp-meta-row"><span>Dimensions</span><span>{{ product.metafields.custom.dimensions }}</span></div>
+            {%- endif -%}
+            <div class="pdp-meta-row"><span>SKU</span><span>{{ product.selected_or_first_available_variant.sku }}</span></div>
+          </div>
+        </div>
+      </details>
+
+      <!-- ============================================================
+           IN THE BOX
+           Editable from: Shopify Admin > Products > [this product]
+           - custom.product-whats-in-the-box  (already filled in for
+             17 products). Rendered as a list if the field is a "List of
+             single line text" metafield; falls back to plain text/rich
+             text if it's a single value instead.
+           ============================================================ -->
+      {%- assign pdp_box_field = product.metafields.custom["product-whats-in-the-box"] -%}
+      {%- assign pdp_box_items = pdp_box_field.value -%}
+      {%- if pdp_box_field != blank -%}
+        <details class="pdp-accordion">
+          <summary class="pdp-accordion-hdr">In the box</summary>
+          <div class="pdp-accordion-body">
+            {%- if pdp_box_items != blank and pdp_box_items != empty -%}
+              <ul class="pdp-box-list">
+                {%- for item in pdp_box_items -%}
+                  <li>{{ item }}</li>
+                {%- endfor -%}
+              </ul>
+            {%- else -%}
+              {{ pdp_box_field | metafield_tag }}
+            {%- endif -%}
+          </div>
+        </details>
+      {%- endif -%}
+
+      <details class="pdp-accordion">
+        <summary class="pdp-accordion-hdr">Shipping & Returns</summary>
+        <div class="pdp-accordion-body">
+          <p>{{ section.settings.shipping_text | default: "Free delivery on orders above &#8377;10,000. 30-day returns on all products." }}</p>
+        </div>
+      </details>
+
+      <details class="pdp-accordion">
+        <summary class="pdp-accordion-hdr">Care Instructions</summary>
+        <div class="pdp-accordion-body">
+          <p>{{ section.settings.care_text | default: "Wipe clean with a soft dry cloth. Avoid direct sunlight and moisture." }}</p>
+        </div>
+      </details>
+
+      <!-- ============================================================
+           QUESTIONS (per-product FAQ)
+           Editable from: Shopify Admin > Content > Metaobjects > Product
+           Question, plus Products > [this product] > "Questions" metafield
+           (custom.product_faq — a "List of Product Question" metaobject
+           reference). Add as many Q&A entries as needed; each one is a
+           simple Question / Answer pair with no code involved.
+           ============================================================ -->
+      {%- assign pdp_faq = product.metafields.custom.product_faq.value -%}
+      {%- if pdp_faq != blank -%}
+        <details class="pdp-accordion">
+          <summary class="pdp-accordion-hdr">Questions</summary>
+          <div class="pdp-accordion-body">
+            <div class="pdp-faq-list">
+              {%- for entry in pdp_faq -%}
+                <div class="pdp-faq-item">
+                  <div class="pdp-faq-q">{{ entry.question.value }}</div>
+                  <div class="pdp-faq-a">{{ entry.answer.value }}</div>
+                </div>
+              {%- endfor -%}
+            </div>
+          </div>
+        </details>
+      {%- endif -%}
+    </div><!-- end pdp-info -->
+
+    <!-- RIGHT: Gallery -->
+    <div class="pdp-gallery">
+      <!-- Main Image -->
+      <div class="pdp-main-img" id="pdpMainImg">
+        {%- if product.featured_image != blank -%}
+          <img
+            id="mainProductImage"
+            src="{{ product.featured_image | image_url: width: 900 }}"
+            alt="{{ product.featured_image.alt | default: product.title }}"
+            width="900"
+            height="900"
+            loading="eager"
+          >
+        {%- else -%}
+          {{ 'product-1' | placeholder_svg_tag }}
+        {%- endif -%}
+      </div>
+
+      <!-- Thumbnails -->
+      {%- if product.images.size > 1 -%}
+        <div class="pdp-thumbs" role="list">
+          {%- for image in product.images -%}
+            <button
+              class="pdp-thumb {% if forloop.first %}active{% endif %}"
+              data-image-url="{{ image | image_url: width: 900 }}"
+              aria-label="View image {{ forloop.index }}"
+              role="listitem"
+            >
+              <img
+                src="{{ image | image_url: width: 120 }}"
+                alt="{{ image.alt | default: product.title }}"
+                width="120"
+                height="120"
+                loading="lazy"
+              >
+            </button>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div><!-- end pdp-gallery -->
+  </div><!-- end pdp-layout -->
+
+  <script>
+    (function() {
+      function initGallery() {
+        var section = document.querySelector('.pdp-layout');
+        if (!section) return;
+        var thumbs = section.querySelectorAll('.pdp-thumb');
+        var mainImg = document.getElementById('mainProductImage');
+        
+        thumbs.forEach(function(thumb) {
+          thumb.addEventListener('click', function() {
+            if (mainImg) {
+              mainImg.src = this.getAttribute('data-image-url');
+              if (mainImg.srcset) { mainImg.srcset = ''; }
+            }
+            thumbs.forEach(function(t) { t.classList.remove('active'); });
+            this.classList.add('active');
+          });
+        });
+      }
+
+      initGallery();
+      document.addEventListener('shopify:section:load', initGallery);
+
+      var pdpForm = document.getElementById('pdpForm');
+      if (pdpForm) {
+        pdpForm.addEventListener('submit', function() {
+          var btn = document.getElementById('pdpATC');
+          if (btn) {
+            btn.innerHTML = 'ADDED';
+            btn.classList.add('added');
+          }
+        });
+      }
+    })();
+  </script>
+</section>
+
+<!-- Product JSON-LD + BreadcrumbList -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "{{ shop.url }}" },
+    { "@type": "ListItem", "position": 2, "name": "Shop", "item": "{{ shop.url }}/collections/tulai" },
+    { "@type": "ListItem", "position": 3, "name": "{{ product.title | escape }}", "item": "{{ shop.url }}{{ product.url }}" }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": "{{ product.title | escape }}",
+  "description": "{{ product.description | strip_html | strip_newlines | replace: '"', '\\"' | truncate: 500 }}",
+  "url": "{{ shop.url }}{{ product.url }}",
+  "image": [{% for image in product.images %}"{{ image | image_url: width: 1200 }}"{% unless forloop.last %},{% endunless %}{% endfor %}],
+  "brand": { "@type": "Brand", "name": "NARKK" },
+  "offers": [
+    {% for variant in product.variants %}
+    {
+      "@type": "Offer",
+      "name": "{{ variant.title | escape }}",
+      "sku": "{{ variant.sku | default: variant.id }}",
+      "price": "{{ variant.price | money_without_currency | remove: ',' }}",
+      "priceCurrency": "INR",
+      "availability": "{% if variant.available %}https://schema.org/InStock{% else %}https://schema.org/OutOfStock{% endif %}",
+      "url": "{{ shop.url }}{{ product.url }}?variant={{ variant.id }}",
+      "itemCondition": "https://schema.org/NewCondition",
+      "seller": { "@type": "Organization", "name": "NARKK" }
+    }{% unless forloop.last %},{% endunless %}
+    {% endfor %}
+  ]
+}
+</script>
+
+{% schema %}
+{
+  "name": "Main Product",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "shipping_text",
+      "label": "Shipping & Returns Text",
+      "default": "Free delivery on orders above Rs.10,000. 30-day returns on all products."
+    },
+    {
+      "type": "textarea",
+      "id": "care_text",
+      "label": "Care Instructions Text",
+      "default": "Wipe clean with a soft dry cloth. Avoid direct sunlight and moisture."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "@app"
+    },
+    {
+      "type": "title",
+      "name": "Title",
+      "limit": 1
+    },
+    {
+      "type": "price",
+      "name": "Price",
+      "limit": 1
+    },
+    {
+      "type": "description",
+      "name": "Description",
+      "limit": 1
+    },
+    {
+      "type": "buy_buttons",
+      "name": "Buy Buttons",
+      "limit": 1
+    }
+  ]
+}
+{% endschema %}

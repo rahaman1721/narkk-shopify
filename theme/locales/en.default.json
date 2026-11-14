@@ -1,0 +1,66 @@
+{
+  "general": {
+    "password": "Password",
+    "all_tags": "All",
+    "pagination": {
+      "previous": "Previous",
+      "next": "Next"
+    }
+  },
+  "products": {
+    "product": {
+      "add_to_cart": "Add to Cart",
+      "sold_out": "Sold Out",
+      "unavailable": "Unavailable",
+      "quantity": "Quantity",
+      "view": "View Product"
+    }
+  },
+  "cart": {
+    "general": {
+      "title": "Your Cart",
+      "empty": "Your cart is empty.",
+      "subtotal": "Subtotal",
+      "checkout": "Proceed to Checkout",
+      "note": "Taxes and shipping calculated at checkout",
+      "remove": "Remove",
+      "view_cart": "View Full Cart"
+    }
+  },
+  "customer": {
+    "login": {
+      "title": "Sign In",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Sign In",
+      "forgot_password": "Forgot your password?",
+      "no_account": "Don't have an account?"
+    },
+    "register": {
+      "title": "Create Account",
+      "first_name": "First Name",
+      "last_name": "Last Name",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Create Account"
+    },
+    "account": {
+      "title": "My Account",
+      "orders": "Order History",
+      "addresses": "Addresses",
+      "logout": "Sign Out"
+    }
+  },
+  "sections": {
+    "header": {
+      "search": "Search",
+      "account": "Account",
+      "cart": "Cart"
+    },
+    "announcement_bar": {
+      "free_delivery": "Free delivery on orders above ₹10,000",
+      "handcrafted": "Handcrafted in Chennai",
+      "returns": "30-day returns"
+    }
+  }
+}

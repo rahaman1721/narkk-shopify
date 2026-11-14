@@ -1,0 +1,140 @@
+<!-- Product Details Accordion + Gallery — sits BELOW the existing main PDP.
+     Left: Description / Shipping & Returns / Care Instructions accordion.
+     Right: large product image with thumbnails below it.
+     Reuses the theme's existing .pdp-layout / .pdp-accordion / .pdp-gallery
+     classes (assets/base.css) so spacing, borders and responsive behavior
+     stay identical to the rest of the PDP — no new design system introduced. -->
+<section class="pd-details" id="product-details-{{ product.id }}" data-product-id="{{ product.id }}">
+  <div class="pdp-layout pd-details-layout">
+
+    <!-- LEFT: Accordion -->
+    <div class="pdp-info pd-details-info">
+      {%- if product.description != blank -%}
+        <details class="pdp-accordion" open>
+          <summary class="pdp-accordion-hdr">Description</summary>
+          <div class="pdp-accordion-body">{{ product.description }}</div>
+        </details>
+      {%- endif -%}
+
+      <details class="pdp-accordion">
+        <summary class="pdp-accordion-hdr">Shipping &amp; Returns</summary>
+        <div class="pdp-accordion-body">
+          <p>{{ section.settings.shipping_text | default: "Free delivery on orders above &#8377;10,000. 30-day returns on all products." }}</p>
+        </div>
+      </details>
+
+      <details class="pdp-accordion">
+        <summary class="pdp-accordion-hdr">Care Instructions</summary>
+        <div class="pdp-accordion-body">
+          <p>{{ section.settings.care_text | default: "Wipe clean with a soft dry cloth. Avoid direct sunlight and moisture." }}</p>
+        </div>
+      </details>
+    </div><!-- end pd-details-info -->
+
+    <!-- RIGHT: large image + thumbnail row below it -->
+    <div class="pdp-gallery pd-details-gallery">
+      {%- assign pd_featured = product.selected_or_first_available_variant.featured_image | default: product.featured_image -%}
+
+      <div class="pdp-main-img pd-details-main-img" id="pdDetailsMainImg">
+        {%- if pd_featured != blank -%}
+          <img
+            id="pdDetailsMainImage"
+            src="{{ pd_featured | image_url: width: 900 }}"
+            alt="{{ pd_featured.alt | default: product.title }}"
+            width="900"
+            height="900"
+            loading="lazy"
+          >
+        {%- else -%}
+          {{ 'product-1' | placeholder_svg_tag }}
+        {%- endif -%}
+      </div>
+
+      {%- if product.images.size > 1 -%}
+        <div class="pdp-thumbs pd-details-thumbs" role="list">
+          {%- for image in product.images -%}
+            <button
+              type="button"
+              class="pdp-thumb pd-details-thumb {% if image == pd_featured %}active{% endif %}"
+              data-image-url="{{ image | image_url: width: 900 }}"
+              aria-label="View image {{ forloop.index }}"
+              role="listitem"
+            >
+              <img
+                src="{{ image | image_url: width: 300 }}"
+                alt="{{ image.alt | default: product.title }}"
+                width="300"
+                height="300"
+                loading="lazy"
+              >
+            </button>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div><!-- end pd-details-gallery -->
+
+  </div><!-- end pd-details-layout -->
+</section>
+
+<script>
+  (function() {
+    function initPdDetailsGallery() {
+      var root = document.getElementById('product-details-{{ product.id }}');
+      if (!root) return;
+      var thumbs = root.querySelectorAll('.pd-details-thumb');
+      var mainImg = document.getElementById('pdDetailsMainImage');
+
+      thumbs.forEach(function(thumb) {
+        thumb.addEventListener('click', function() {
+          if (mainImg) {
+            mainImg.src = this.getAttribute('data-image-url');
+            if (mainImg.srcset) { mainImg.srcset = ''; }
+          }
+          thumbs.forEach(function(t) { t.classList.remove('active'); });
+          this.classList.add('active');
+        });
+      });
+    }
+
+    initPdDetailsGallery();
+    document.addEventListener('shopify:section:load', initPdDetailsGallery);
+  })();
+</script>
+
+<style>
+  /* Minor section-specific tweaks only — layout/spacing/borders come from
+     the existing .pdp-layout / .pdp-accordion / .pdp-gallery rules. */
+  .pd-details { border-bottom: 1px solid var(--border); }
+  .pd-details-layout { min-height: 0; border-bottom: none; }
+  .pd-details-info { justify-content: flex-start; gap: 0; }
+
+  /* Gallery: large image on top, thumbnails as a row of boxes below it. */
+  .pd-details-gallery { flex-direction: column; gap: 16px; }
+  .pd-details-main-img { margin: 0; }
+  .pd-details-thumbs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; width: 100%; flex-wrap: unset; }
+  .pd-details-thumbs .pdp-thumb { width: 100%; height: auto; aspect-ratio: 1 / 1; }
+
+  @media (max-width: 480px) {
+    .pd-details-thumbs { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Product Details Accordion",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "shipping_text",
+      "label": "Shipping & Returns Text",
+      "default": "Free delivery on orders above Rs.10,000. 30-day returns on all products."
+    },
+    {
+      "type": "textarea",
+      "id": "care_text",
+      "label": "Care Instructions Text",
+      "default": "Wipe clean with a soft dry cloth. Avoid direct sunlight and moisture."
+    }
+  ]
+}
+{% endschema %}

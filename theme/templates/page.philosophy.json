@@ -1,0 +1,12 @@
+{
+  "name": "Philosophy",
+  "sections": {
+    "main": {
+      "type": "page-philosophy",
+      "settings": {}
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

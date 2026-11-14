@@ -1,0 +1,226 @@
+<style>
+/* ------------------------------------------------------------------------------------------------------
+   TRADE PROGRAM &mdash; 100% match codemindful.netlify.app
+   Font sizes / backgrounds / spacing all from ref CSS
+------------------------------------------------------------------------------------------------------ */
+
+/* BREADCRUMB */
+.tr-amv-card { padding:40px 36px; border-right:1px solid var(--border); }
+.tr-amv-card:last-child { border-right:none; }
+.tr-amv-label { font-size:var(--fs-lbl,10px); font-weight:400; letter-spacing:2.5px; text-transform:uppercase; color:var(--coral,#C16B45); margin-bottom:14px; }
+.tr-amv-num { font-size:var(--fs-h1,32px); font-weight:200; color:var(--slate); margin-bottom:14px; line-height:1; }
+.tr-amv-text { font-size:var(--fs-body,14px); font-weight:300; color:var(--slate-l); line-height:1.8; }
+
+/* HERO */
+.tr-pg-hero { background:var(--cream); border-bottom:1px solid var(--border); overflow:hidden; }
+.tr-pg-hero-top { padding:72px 56px 64px; display:grid; grid-template-columns:1fr 1fr; grid-template-rows:auto 1fr; min-height:340px; align-items:start; }
+.tr-pg-hero-left { grid-column:1; grid-row:1/3; display:flex; flex-direction:column; justify-content:space-between; padding-right:40px; }
+.tr-pg-hero-right { grid-column:2; grid-row:2; align-self:end; }
+.tr-pg-eyebrow { display:flex; align-items:center; gap:10px; font-size:var(--fs-lbl,10px); font-weight:300; letter-spacing:2.5px; text-transform:uppercase; color:var(--coral,#C16B45); margin-bottom:20px; }
+.tr-pg-eyebrow-line { width:24px; height:1px; background:var(--coral,#C16B45); flex-shrink:0; }
+.tr-pg-hero-title { font-size:var(--fs-disp,52px); font-weight:200; letter-spacing:-2px; line-height:1; color:var(--slate); }
+.tr-pg-hero-desc { font-size:var(--fs-body,14px); font-weight:300; color:var(--slate-l); line-height:1.85; max-width:380px; }
+.tr-pg-hero-img { width:100%; aspect-ratio:16/5; max-height:480px; overflow:hidden; background:var(--cream-d); }
+.tr-pg-hero-img img { width:100%; height:100%; object-fit:cover; object-position:center; display:block; }
+/* SHARED SECTION HEADER */
+.tr-sec-hdr { padding:44px 44px 8px; border-bottom:1px solid var(--border); }
+.tr-sec-ey { display:flex; align-items:center; gap:10px; font-size:var(--fs-lbl,10px); font-weight:300; letter-spacing:2.5px; text-transform:uppercase; color:var(--coral,#C16B45); margin-bottom:10px; }
+.tr-sec-ey-line { width:24px; height:1px; background:var(--coral,#C16B45); flex-shrink:0; }
+/* AMV */
+.tr-amv { border-bottom:1px solid var(--border); background:var(--cream); }
+.tr-amv-grid { display:grid; grid-template-columns:repeat(3,1fr); border-top:1px solid var(--border); }
+/* STEPS - HOW IT WORKS */
+.tr-steps { border-bottom:1px solid var(--border); background:var(--cream-d,#EDE7DE); }
+.tr-steps-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--border); border-top:1px solid var(--border); }
+.tr-step { background:var(--cream-d,#EDE7DE); padding:32px 30px; }
+.tr-step-n { font-size:var(--fs-h2,22px); font-weight:200; color:var(--coral,#C16B45); margin-bottom:14px; }
+.tr-step-t { font-size:14px; font-weight:400; color:var(--slate); margin-bottom:8px; }
+.tr-step-d { font-size:var(--fs-sm,12px); font-weight:300; color:var(--slate-l); line-height:1.7; }
+
+/* APPLY */
+.tr-apply { border-bottom:1px solid var(--border); background:var(--cream); }
+.tr-apply-inner { display:grid; grid-template-columns:1fr 1.2fr; }
+.tr-apply-left { padding:56px 44px; border-right:1px solid var(--border); display:flex; flex-direction:column; justify-content:center; }
+.tr-apply-left-title { font-size:var(--fs-h1,32px); font-weight:200; letter-spacing:-0.8px; color:var(--slate); line-height:1.2; margin-bottom:16px; }
+.tr-apply-left-body { font-size:var(--fs-body,14px); font-weight:300; color:var(--slate-l); line-height:1.85; max-width:360px; }
+.tr-apply-form { padding:56px 44px; display:flex; flex-direction:column; gap:18px; }
+
+/* FORM */
+.tr-frow { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+.tr-fld { display:flex; flex-direction:column; gap:8px; }
+.tr-fld label { font-size:var(--fs-lbl,10px); font-weight:400; letter-spacing:2px; text-transform:uppercase; color:var(--slate); }
+.tr-fld input,.tr-fld select,.tr-fld textarea { font-family:'Outfit',sans-serif; font-size:var(--fs-body,14px); font-weight:300; color:var(--slate); background:var(--cream-d,#EDE7DE); border:1px solid var(--border-m,rgba(51,65,85,0.22)); border-radius:3px; padding:12px 14px; outline:none; transition:border-color 0.15s; width:100%; }
+.tr-fld input:focus,.tr-fld select:focus,.tr-fld textarea:focus { border-color:var(--coral,#C16B45); }
+.tr-fld textarea { resize:vertical; min-height:90px; }
+.tr-fld select { appearance:none; cursor:pointer; }
+.tr-submitbtn { height:48px; border:none; border-radius:3px; background:var(--coral,#C16B45); color:#fff; font-family:'Outfit',sans-serif; font-size:var(--fs-lbl,10px); font-weight:400; letter-spacing:2px; text-transform:uppercase; cursor:pointer; transition:opacity 0.15s; width:100%; }
+.tr-submitbtn:hover { opacity:0.88; }
+.tr-success { padding:24px; background:rgba(193,107,69,0.08); border:1px solid rgba(193,107,69,0.3); border-radius:3px; }
+.tr-success-t { font-size:14px; font-weight:400; color:var(--slate); margin-bottom:8px; }
+.tr-success-d { font-size:var(--fs-sm,12px); font-weight:300; color:var(--slate-l); }
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .tr-crumb { padding:10px 20px; }
+  .tr-pg-hero-top { grid-template-columns:1fr; padding:32px 20px; min-height:unset; }
+  .tr-pg-hero-left { grid-column:1; grid-row:auto; padding-right:0; }
+  .tr-pg-hero-right { grid-column:1; grid-row:auto; margin-top:24px; }
+  .tr-pg-hero-img { aspect-ratio:16/9; max-height:240px; }
+  .tr-sec-hdr { padding:32px 20px 8px; }
+  .tr-amv-grid { grid-template-columns:1fr; }
+  .tr-amv-card { border-right:none; border-bottom:1px solid var(--border); }
+  .tr-amv-card:last-child { border-bottom:none; }
+  .tr-steps-grid { grid-template-columns:1fr; }
+  .tr-apply-inner { grid-template-columns:1fr; }
+  .tr-apply-left { border-right:none; border-bottom:1px solid var(--border); padding:32px 20px; }
+  .tr-apply-form { padding:32px 20px; }
+  .tr-frow { grid-template-columns:1fr; }
+}
+</style>
+
+{%- comment -%} BREADCRUMB {%- endcomment -%}
+<div class="tr-crumb">
+  <a href="/">Home</a>
+  <span class="tr-sep">/</span>
+  <span class="tr-cur">Trade Program</span>
+</div>
+
+{%- comment -%} HERO {%- endcomment -%}
+<section class="tr-pg-hero">
+  <div class="tr-pg-hero-top">
+    <div class="tr-pg-hero-left">
+      <div class="tr-pg-eyebrow">
+        <span class="tr-pg-eyebrow-line"></span>Trade &amp; Contract
+      </div>
+      <h1 class="tr-pg-hero-title">Furniture that makes the job easier.</h1>
+    </div>
+    <div class="tr-pg-hero-right">
+      <p class="tr-pg-hero-desc">Reasonable benefits for architects, interior designers, contractors and builders who want to recommend narkk to their clients.</p>
+    </div>
+  </div>
+  <div class="tr-pg-hero-img">
+    <img src="https://narkk-india.myshopify.com/cdn/shop/files/nark-page-philosophy-1.webp?v=1779696501&width=2400" alt="narkk trade program" loading="lazy">
+  </div>
+</section>
+
+{%- comment -%} WHY JOIN {%- endcomment -%}
+<section class="tr-amv">
+  <div class="tr-sec-hdr">
+    <div class="tr-sec-ey"><span class="tr-sec-ey-line"></span>Why join</div>
+    <h2 class="tr-sec-title">Built for the people who specify.</h2>
+    <p class="tr-sec-sub">The best furniture, beautifully made and fairly priced, doesn't make the job harder &mdash; it makes the client happier.</p>
+  </div>
+  <div class="tr-amv-grid">
+    <div class="tr-amv-card">
+      <div class="tr-amv-label">Pricing</div>
+      <div class="tr-amv-num">15%</div>
+      <div class="tr-amv-text">Trade pricing on every collection, applied automatically once your account is approved.</div>
+    </div>
+    <div class="tr-amv-card">
+      <div class="tr-amv-label">Support</div>
+      <div class="tr-amv-num">1:1</div>
+      <div class="tr-amv-text">A dedicated contact for specs, lead times and bulk orders.</div>
+    </div>
+    <div class="tr-amv-card">
+      <div class="tr-amv-label">Samples</div>
+      <div class="tr-amv-num">Free</div>
+      <div class="tr-amv-text">Material and finish samples shipped to your studio before you commit a client to anything.</div>
+    </div>
+  </div>
+</section>
+
+{%- comment -%} HOW IT WORKS {%- endcomment -%}
+<section class="tr-steps">
+  <div class="tr-sec-hdr">
+    <div class="tr-sec-ey"><span class="tr-sec-ey-line"></span>How it works</div>
+    <h2 class="tr-sec-title">Three steps, no runaround.</h2>
+  </div>
+  <div class="tr-steps-grid">
+    <div class="tr-step">
+      <div class="tr-step-n">01</div>
+      <div class="tr-step-t">Apply</div>
+      <div class="tr-step-d">Tell us about your practice &mdash; what you build, and how often you specify furniture.</div>
+    </div>
+    <div class="tr-step">
+      <div class="tr-step-n">02</div>
+      <div class="tr-step-t">Get verified</div>
+      <div class="tr-step-d">We review and approve most applications within three working days.</div>
+    </div>
+    <div class="tr-step">
+      <div class="tr-step-n">03</div>
+      <div class="tr-step-t">Start specifying</div>
+      <div class="tr-step-d">Trade pricing, priority lead times and a direct line to our team.</div>
+    </div>
+  </div>
+</section>
+
+{%- comment -%} APPLICATION FORM {%- endcomment -%}
+<section class="tr-apply" id="apply">
+  <div class="tr-apply-inner">
+    <div class="tr-apply-left">
+      <div class="tr-apply-left-title">Apply for the trade program.</div>
+      <p class="tr-apply-left-body">We read every application ourselves. Expect a reply from a person within three working days.</p>
+    </div>
+    <div class="tr-apply-form">
+      {%- if contact.posted_successfully? -%}
+        <div class="tr-success">
+          <div class="tr-success-t">Application received.</div>
+          <p class="tr-success-d">Thank you &mdash; we'll be in touch within three working days.</p>
+        </div>
+      {%- else -%}
+        {%- form 'contact' -%}
+          <input type="hidden" name="contact[tags]" value="trade-application">
+          <div class="tr-frow">
+            <div class="tr-fld">
+              <label for="tr-name">Full name</label>
+              <input type="text" id="tr-name" name="contact[full_name]" required>
+            </div>
+            <div class="tr-fld">
+              <label for="tr-biz">Business name</label>
+              <input type="text" id="tr-biz" name="contact[business_name]" required>
+            </div>
+          </div>
+          <div class="tr-frow">
+            <div class="tr-fld">
+              <label for="tr-role">You are a</label>
+              <select id="tr-role" name="contact[role]" required>
+                <option>Architect</option>
+                <option>Interior Designer</option>
+                <option>Contractor</option>
+                <option>Builder</option>
+                <option>Retailer</option>
+              </select>
+            </div>
+            <div class="tr-fld">
+              <label for="tr-email">Email</label>
+              <input type="email" id="tr-email" name="contact[email]" required>
+            </div>
+          </div>
+          <div class="tr-fld">
+            <label for="tr-about">Tell us about your practice</label>
+            <textarea id="tr-about" name="contact[body]" placeholder="What you build, how often you specify furniture..."></textarea>
+          </div>
+          <button type="submit" class="tr-submitbtn">Submit application</button>
+        {%- endform -%}
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+<!-- WebPage JSON-LD -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Trade Program \u2014 narkk",
+  "url": "{{ shop.url }}{{ page.url }}"
+}
+</script>
+
+{% schema %}
+{
+  "name": "Trade Program",
+  "settings": [],
+  "presets": [{ "name": "Trade Program" }]
+}
+{% endschema %}

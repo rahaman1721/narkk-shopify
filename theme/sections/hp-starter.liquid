@@ -1,0 +1,88 @@
+<section class="hp-starter">
+  <div class="hp-starter-inner">
+    <div class="hp-starter-content">
+      <div class="hp-starter-ey"><span class="hp-starter-ey-line"></span>{{ section.settings.eyebrow | default: 'New to pegboards?' }}</div>
+      <div class="hp-starter-title" style="font-weight: 200;">{{ section.settings.title | default: 'Start here.' }}</div>
+      <div class="hp-starter-body" style="font-weight: 300;">{{ section.settings.description | default: 'Try our affordable tiny pegboard bundle &mdash; contains the tiny pegboard, hooks, a shelf and pegs. Everything ready to mount, nothing to figure out. The easiest way to begin.' }}</div>
+      
+      <div class="hp-starter-price" style="font-weight: 200;">At {{ section.settings.start_price | default: '&#8377;3,999' }}</div>
+      
+      <div style="border-bottom: 1px solid rgba(193,107,69,0.3); padding-bottom: 8px; margin-bottom: 16px; width: 100%; max-width: 420px;">
+        <a href="{{ section.settings.cta_url | default: '/products/tiny-bundle' }}" class="hp-starter-cta" style="border:none; padding:0;">{{ section.settings.cta_text | default: 'Shop the tiny bundle' }} &rarr;</a>
+      </div>
+    </div>
+    <div class="hp-starter-media">
+      {% if section.settings.starter_yt_url != blank %}
+        {% assign yt_id = section.settings.starter_yt_url | split: 'shorts/' | last | split: 'v=' | last | split: 'youtu.be/' | last | split: '?' | first | split: '&' | first %}
+        <iframe src="https://www.youtube.com/embed/{{ yt_id }}?autoplay=1&mute=1&controls=1&loop=1&playlist={{ yt_id }}&playsinline=1&rel=0&modestbranding=1" 
+                style="width: 100%; height: 100%; border: none; display: block;" 
+                allow="autoplay; encrypted-media" 
+                allowfullscreen></iframe>
+      {% elsif section.settings.starter_video != blank %}
+        {{ section.settings.starter_video | video_tag: autoplay: true, loop: true, muted: true, controls: false, image_size: '800x' }}
+      {% elsif section.settings.starter_image != blank %}
+        <img src="{{ section.settings.starter_image | image_url: width: 800 }}" alt="Tiny Pegboard bundle" width="800" height="600" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; object-position: center; display: block;">
+      {% else %}
+        <video autoplay loop muted playsinline style="width: 100%; height: 100%; object-fit: cover; object-position: center; display: block;">
+          <source src="{{ 'TulaiTiny.mp4' | asset_url }}" type="video/mp4">
+        </video>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Tiny Starter",
+  "settings": [
+    {
+      "type": "video",
+      "id": "starter_video",
+      "label": "Section Video (Shopify Hosted)",
+      "info": "Autoplays inline. Overrides image."
+    },
+    {
+      "type": "text",
+      "id": "starter_yt_url",
+      "label": "YouTube Video URL",
+      "info": "Overrides Shopify Hosted Video and Image. E.g. https://youtu.be/WfUzMHxWEz0"
+    },
+    {
+      "type": "image_picker",
+      "id": "starter_image",
+      "label": "Section Image"
+    },
+    { "type": "text", "id": "start_price", "label": "Starting Price", "default": "&#8377;3,999" },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow Text",
+      "default": "New to pegboards?"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Start here."
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Try our affordable tiny pegboard bundle - contains the tiny pegboard, hooks, a shelf and pegs. Everything ready to mount, nothing to figure out. The easiest way to begin."
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "Button Text",
+      "default": "Shop the tiny bundle"
+    },
+    {
+      "type": "url",
+      "id": "cta_url",
+      "label": "Button Link"
+    }
+  ],
+  "presets": [{ "name": "Tiny Starter" }]
+}
+{% endschema %}

@@ -1,0 +1,177 @@
+{% comment %} PAGE HERO &mdash; Shared across Shop, Loop, Philosophy pages {% endcomment %}
+<style>
+/* ---- SHARED PAGE HERO ---- */
+.pg-hero { border-bottom: 1px solid var(--border); }
+.pg-hero-top {
+  padding: 72px 56px 64px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto 1fr;
+  min-height: 340px;
+  align-items: start;
+  background: var(--cream);
+}
+.pg-hero-left {
+  grid-column: 1;
+  grid-row: 1 / 3;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 0;
+  padding-right: 40px;
+  border-right: none;
+}
+.pg-hero-right {
+  grid-column: 2;
+  grid-row: 2;
+  align-self: end;
+  padding: 0;
+}
+.pg-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: var(--fs-lbl);
+  font-weight: 300;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  margin-bottom: 0;
+}
+.pg-eyebrow-line {
+  width: 24px;
+  height: 1px;
+  flex-shrink: 0;
+}
+.pg-hero-title {
+  font-size: var(--fs-disp);
+  font-weight: 200;
+  letter-spacing: -2px;
+  line-height: 1;
+  margin-top: 24px;
+}
+.pg-hero-desc {
+  font-size: var(--fs-body);
+  font-weight: 300;
+  color: var(--slate-l);
+  line-height: 1.85;
+  max-width: 380px;
+}
+.pg-hero-img { width: 100%; aspect-ratio: 4/1; overflow: hidden; background: var(--cream-d); }
+.pg-hero-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* ---- MOBILE ---- */
+@media(max-width: 768px) {
+  .pg-hero-top {
+    grid-template-columns: 1fr;
+    padding: 48px 20px 44px;
+    min-height: unset;
+  }
+  .pg-hero-left { padding-right: 0; grid-row: auto; }
+  .pg-hero-right { grid-column: 1; grid-row: auto; margin-top: 20px; }
+  .pg-hero-title { font-size: clamp(44px, 14vw, 64px); }
+  .pg-hero-img { aspect-ratio: 2/1; }
+}
+</style>
+
+<section class="pg-hero" style="background: {{ section.settings.bg_color }}">
+  <div class="pg-hero-top" style="background: {{ section.settings.bg_color }}">
+    <div class="pg-hero-left">
+      <div class="pg-eyebrow" style="color: {{ section.settings.eyebrow_color }}">
+        <span class="pg-eyebrow-line" style="background: {{ section.settings.eyebrow_color }}"></span>
+        {{ section.settings.eyebrow_text }}
+      </div>
+      <h1 class="pg-hero-title" style="color: {{ section.settings.title_color }}">{{ section.settings.title }}</h1>
+    </div>
+    <div class="pg-hero-right">
+      <p class="pg-hero-desc" style="color: {{ section.settings.desc_color }}">{{ section.settings.description }}</p>
+    </div>
+  </div>
+  {%- if section.settings.hero_image != blank -%}
+  <div class="pg-hero-img">
+    {{ section.settings.hero_image | image_url: width: 1400 | image_tag: loading: 'eager' }}
+  </div>
+  {%- elsif section.settings.fallback_image_url != blank -%}
+  <div class="pg-hero-img">
+    <img src="{{ section.settings.fallback_image_url }}" alt="{{ section.settings.title }}" loading="eager" style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;">
+  </div>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "Page Hero",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#F5F0EA"
+    },
+    {
+      "type": "header",
+      "content": "Eyebrow"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow_text",
+      "label": "Eyebrow Text",
+      "default": "All Collections"
+    },
+    {
+      "type": "color",
+      "id": "eyebrow_color",
+      "label": "Eyebrow Color",
+      "default": "#C16B45"
+    },
+    {
+      "type": "header",
+      "content": "Title & Description"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Shop."
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title Color",
+      "default": "#334155"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Every product is designed with an intention &mdash; things built to last."
+    },
+    {
+      "type": "color",
+      "id": "desc_color",
+      "label": "Description Color",
+      "default": "#64748B"
+    },
+    {
+      "type": "header",
+      "content": "Hero Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Hero Banner Image"
+    },
+    {
+      "type": "text",
+      "id": "fallback_image_url",
+      "label": "Fallback Image URL (if no image picker set)"
+    }
+  ],
+  "presets": [
+    { "name": "Page Hero" }
+  ]
+}
+{% endschema %}

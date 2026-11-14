@@ -1,0 +1,117 @@
+<!-- Customer Account Dashboard -->
+<div class="acc-dash">
+  <div class="acc-dash-head">
+    <div class="acc-dash-eyebrow">Your Account</div>
+    <h1 class="acc-dash-title">Hello, {{ customer.first_name | default: 'there' }}.</h1>
+    <a href="{{ routes.account_logout_url }}" class="acc-dash-logout">Log out</a>
+  </div>
+
+  <div class="acc-dash-body">
+    <!-- Order History -->
+    <div class="acc-dash-main">
+      <h2 class="acc-section-title">Order History</h2>
+      
+      {%- if customer.orders.size > 0 -%}
+        <div class="acc-orders">
+          <div class="acc-order-header">
+            <div>Order</div>
+            <div>Date</div>
+            <div>Payment</div>
+            <div>Fulfillment</div>
+            <div style="text-align: right;">Total</div>
+          </div>
+          {%- for order in customer.orders -%}
+            <a href="{{ order.customer_url }}" class="acc-order-row">
+              <div class="acc-order-id">{{ order.name }}</div>
+              <div class="acc-order-date">{{ order.created_at | time_tag: format: 'date' }}</div>
+              <div><span class="acc-status-pill {% if order.financial_status_label == 'Paid' %}paid{% endif %}">{{ order.financial_status_label }}</span></div>
+              <div><span class="acc-status-pill">{{ order.fulfillment_status_label }}</span></div>
+              <div class="acc-order-total">{{ order.total_price | money }}</div>
+            </a>
+          {%- endfor -%}
+        </div>
+      {%- else -%}
+        <div class="acc-empty">
+          <p>You haven't placed any orders yet.</p>
+          <a href="{{ routes.all_products_collection_url }}" class="acc-btn">Start Shopping</a>
+        </div>
+      {%- endif -%}
+    </div>
+
+    <!-- Account Details Sidebar -->
+    <div class="acc-dash-sidebar">
+      <h2 class="acc-section-title">Account Details</h2>
+      
+      <div class="acc-sidebar-card">
+        <div class="acc-detail-name">{{ customer.name }}</div>
+        <div class="acc-detail-email">{{ customer.email }}</div>
+        
+        <div class="acc-address-block">
+          {%- if customer.default_address -%}
+            {{ customer.default_address | format_address }}
+          {%- else -%}
+            <p>No default address saved.</p>
+          {%- endif -%}
+        </div>
+        
+        <a href="{{ routes.account_addresses_url }}" class="acc-link">View Addresses ({{ customer.addresses_count }})</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.acc-dash { max-width: 1200px; margin: 0 auto; padding: 60px 20px 100px; }
+.acc-dash-head { margin-bottom: 60px; padding-bottom: 40px; border-bottom: 1px solid var(--border-m); }
+.acc-dash-eyebrow { font-size: var(--fs-xs); text-transform: uppercase; letter-spacing: 0.1em; font-weight: 500; color: var(--coral); margin-bottom: 16px; }
+.acc-dash-title { font-family: 'Outfit', sans-serif; font-size: clamp(32px, 4vw, 48px); font-weight: 300; color: var(--slate); margin-bottom: 24px; line-height: 1.1; }
+.acc-dash-logout { display: inline-block; font-size: var(--fs-sm); color: var(--text-secondary); text-decoration: underline; text-underline-offset: 4px; }
+.acc-dash-logout:hover { color: var(--coral); }
+
+.acc-dash-body { display: flex; gap: 60px; align-items: flex-start; }
+.acc-dash-main { flex: 2; }
+.acc-dash-sidebar { flex: 1; }
+
+.acc-section-title { font-family: 'Outfit', sans-serif; font-size: var(--fs-xl); font-weight: 300; color: var(--slate); margin-bottom: 24px; }
+
+/* Orders Table */
+.acc-orders { border: 1px solid var(--border-m); border-radius: 8px; overflow: hidden; background: white; }
+.acc-order-header { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr 1fr; padding: 16px 24px; background: var(--bg); border-bottom: 1px solid var(--border-m); font-size: var(--fs-xs); text-transform: uppercase; font-weight: 500; color: var(--slate); letter-spacing: 0.05em; }
+.acc-order-row { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr 1fr; padding: 24px; border-bottom: 1px solid var(--border-l); align-items: center; text-decoration: none; color: var(--text-primary); transition: background 0.2s ease; font-size: var(--fs-sm); }
+.acc-order-row:last-child { border-bottom: none; }
+.acc-order-row:hover { background: #faf9f6; }
+.acc-order-id { font-weight: 500; color: var(--slate); text-decoration: underline; text-underline-offset: 4px; }
+.acc-order-total { text-align: right; font-weight: 500; }
+.acc-status-pill { display: inline-block; padding: 4px 12px; background: #f0f0f0; border-radius: 20px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 500; color: var(--text-secondary); }
+.acc-status-pill.paid { background: #e6f4ea; color: #137333; }
+
+/* Empty state */
+.acc-empty { padding: 40px; background: white; border: 1px solid var(--border-m); border-radius: 8px; text-align: center; }
+.acc-empty p { color: var(--text-secondary); font-size: var(--fs-sm); margin-bottom: 24px; }
+.acc-btn { display: inline-block; background: var(--slate); color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; font-size: var(--fs-sm); transition: background 0.2s ease; }
+.acc-btn:hover { background: var(--coral); }
+
+/* Sidebar */
+.acc-sidebar-card { background: white; border: 1px solid var(--border-m); border-radius: 8px; padding: 32px; }
+.acc-detail-name { font-family: 'Outfit', sans-serif; font-size: var(--fs-lg); color: var(--slate); margin-bottom: 4px; }
+.acc-detail-email { color: var(--text-secondary); font-size: var(--fs-sm); margin-bottom: 24px; }
+.acc-address-block { font-size: var(--fs-sm); color: var(--text-secondary); line-height: 1.6; margin-bottom: 24px; padding-top: 24px; border-top: 1px solid var(--border-l); }
+.acc-address-block p { margin: 0; }
+.acc-link { font-size: var(--fs-sm); color: var(--slate); font-weight: 500; text-decoration: underline; text-underline-offset: 4px; }
+.acc-link:hover { color: var(--coral); }
+
+@media (max-width: 900px) {
+  .acc-dash-body { flex-direction: column; gap: 40px; }
+  .acc-dash-sidebar { width: 100%; }
+  .acc-order-header { display: none; }
+  .acc-order-row { grid-template-columns: 1fr 1fr; gap: 16px; padding: 16px; }
+  .acc-order-total { text-align: left; }
+}
+</style>
+
+{% schema %}
+{
+  "name": "Account",
+  "settings": []
+}
+{% endschema %}

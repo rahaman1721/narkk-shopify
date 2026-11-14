@@ -1,0 +1,970 @@
+{% comment %} SHOP PAGE — 100% match codemindful.netlify.app {% endcomment %}
+<style>
+/* "" RESET & BASE "" */
+*{box-sizing:border-box;margin:0;padding:0;}
+.sp{background:var(--cream);font-family:'Outfit',sans-serif;-webkit-font-smoothing:antialiased;}
+
+/* "" PAGE HERO (pg-hero Ardene layout) "" */
+.sp-hero{background:var(--cream);border-bottom:1px solid var(--border);overflow:hidden;}
+.sp-hero-top{padding:72px 56px 64px;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto 1fr;min-height:340px;align-items:start;}
+.sp-hero-left{grid-column:1;grid-row:1/3;display:flex;flex-direction:column;justify-content:space-between;padding-right:40px;}
+.sp-hero-right{grid-column:2;grid-row:2;align-self:end;}
+.sp-hero-eyebrow{display:flex;align-items:center;gap:10px;font-size:var(--fs-lbl);font-weight:300;letter-spacing:2.5px;text-transform:uppercase;color:var(--burnt-clay,#D85A30);}
+.sp-hero-eyebrow-line{width:24px;height:1px;background:var(--burnt-clay,#D85A30);flex-shrink:0;}
+.sp-hero-title{font-size:var(--fs-disp);font-weight:200;letter-spacing:-2px;line-height:1;color:var(--slate);margin-top:24px;}
+.sp-hero-desc{font-size:var(--fs-body);font-weight:300;color:var(--slate-l);line-height:1.85;max-width:380px;}
+.sp-hero-img{width:100%;aspect-ratio:4/1;overflow:hidden;background:var(--cream);}
+.sp-hero-img img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;}
+@media(max-width:768px){
+  .sp-hero-top{grid-template-columns:1fr;padding:48px 20px 44px;min-height:unset;}
+  .sp-hero-left{padding-right:0;grid-row:auto;}
+  .sp-hero-right{grid-column:1;grid-row:auto;margin-top:20px;}
+  .sp-hero-title{font-size:clamp(44px,14vw,64px);}
+  .sp-hero-img{aspect-ratio:16/9;max-height:260px;}
+}
+
+/* "" STEP HEADER "" */
+.sp-step{display:flex;align-items:center;height:52px;border-bottom:1px solid var(--border);background:var(--cream);}
+.sp-step-badge{flex-shrink:0;width:88px;height:100%;background:var(--coral,#C16B45);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:500;letter-spacing:2.5px;text-transform:uppercase;color:#fff;}
+.sp-step-title{font-size:16px;font-weight:300;color:var(--slate);margin-left:28px;letter-spacing:-0.1px;}
+.sp-step-link{margin-left:auto;margin-right:44px;font-size:10px;font-weight:400;letter-spacing:2px;text-transform:uppercase;color:var(--slate);white-space:nowrap;}
+
+/* "" PRODUCT DETAIL (Board) "" */
+.sp-pd{display:grid;grid-template-columns:1.15fr 1fr;border-bottom:1px solid var(--border);}
+.sp-pd-media{border-right:1px solid var(--border);padding:44px;}
+.sp-gallery{display:flex;flex-direction:column;gap:14px;}
+.sp-thumbs{display:flex;flex-direction:row;flex-wrap:wrap;gap:10px;width:100%;}
+.sp-thumb{width:calc(25% - 8px);aspect-ratio:1/1;height:auto;border:1px solid var(--border);overflow:hidden;cursor:pointer;background:var(--cream-d);transition:border-color .15s;padding:0;}
+.sp-thumb img{width:100%;height:100%;object-fit:contain;display:block;transition:opacity .15s;}
+.sp-thumb:hover img{opacity:.85;}
+.sp-thumb.on{border-color:var(--coral);}
+.sp-main-img{width:100%;aspect-ratio:1/1;border:1px solid var(--border);overflow:hidden;background:var(--cream-d);}
+.sp-main-img img{width:100%;height:100%;object-fit:contain;display:block;}
+
+/* "" BUY BOX "" */
+.sp-buy{padding:56px 56px 48px;display:flex;flex-direction:column;}
+.sp-buy-ey{display:flex;align-items:center;gap:10px;font-size:10px;font-weight:300;letter-spacing:2.5px;text-transform:uppercase;color:var(--coral);margin-bottom:18px;}
+.sp-buy-ey-line{width:24px;height:1px;background:var(--coral);flex-shrink:0;}
+.sp-buy-title{font-size:clamp(28px,3.5vw,48px);font-weight:200;letter-spacing:-2px;line-height:1;color:var(--slate);margin-bottom:16px;}
+.sp-buy-lede{font-size:13px;font-weight:300;color:var(--text-secondary,#94a3b8);line-height:1.85;max-width:420px;margin-bottom:26px;}
+.sp-price-row{display:flex;align-items:baseline;gap:12px;padding-bottom:24px;border-bottom:1px solid var(--border);margin-bottom:26px;flex-wrap:wrap;}
+.sp-price{font-size:30px;font-weight:200;letter-spacing:-1px;color:var(--slate);white-space:nowrap;flex-shrink:0;}
+.sp-price-note{font-size:14px;font-weight:400;color:var(--slate);}
+.sp-field-lbl{display:flex;align-items:center;justify-content:space-between;font-size:10px;font-weight:400;letter-spacing:2px;text-transform:uppercase;color:var(--slate);margin-bottom:12px;}
+.sp-field-meta{font-size:14px;font-weight:400;letter-spacing:1.5px;color:var(--slate);}
+/* Pt19: Mobile-optimised size grid - 2 cols on mobile for easier tap */
+.sp-sizes{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:28px;}
+@media(max-width:600px){.sp-sizes{grid-template-columns:repeat(2,1fr);gap:10px;}}
+.sp-sizeopt{border:1px solid var(--border-m);background:transparent;border-radius:3px;padding:14px 8px;cursor:pointer;text-align:center;transition:border-color .15s,background .15s;font-family:'Outfit',sans-serif;min-height:60px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;}
+.sp-sizeopt:hover{background:var(--cream-d);}
+.sp-sizeopt-name{display:block;font-size:12px;font-weight:300;color:var(--slate);}
+.sp-sizeopt-price{display:block;font-size:10px;font-weight:300;color:var(--sage);margin-top:3px;white-space:nowrap;}
+.sp-sizeopt.on{border-color:var(--coral);background:rgba(193,107,69,0.06);}
+.sp-sizeopt.on .sp-sizeopt-price{color:var(--coral);}
+.sp-qty-row{display:flex;align-items:center;gap:16px;margin-bottom:14px;flex-wrap:wrap;}
+.sp-stepper{display:flex;align-items:center;border:1px solid var(--border-m);border-radius:3px;overflow:hidden;}
+.sp-stepper button{width:42px;height:46px;border:none;background:transparent;font-size:18px;font-weight:300;color:var(--slate);cursor:pointer;font-family:'Outfit',sans-serif;transition:background .12s;}
+.sp-stepper button:hover{background:var(--cream-d);}
+.sp-stepper .sp-q{width:44px;text-align:center;font-size:14px;font-weight:400;color:var(--slate);}
+.sp-buybtn{min-width:0;}
+.sp-buybtn{flex:1;height:48px;border:none;border-radius:3px;background:var(--coral,#C16B45);color:#fff;font-family:'Outfit',sans-serif;font-size:10px;font-weight:400;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:opacity .15s;}
+.sp-buybtn:hover{opacity:.88;}
+
+/* "" ACCESSORIES GRID "" */
+.sp-acc-sec{border-bottom:1px solid var(--border);background:var(--cream);}
+.sp-acc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;background:var(--cream);}
+.sp-acc{background:var(--cream);display:flex;flex-direction:column;transition:background .15s;}
+.sp-acc:hover{background:var(--cream-d);}
+.sp-acc.on{background:var(--cream-d);}
+.sp-acc-img{aspect-ratio:1/1;overflow:hidden;background:transparent;display:flex;align-items:center;justify-content:center;}
+.sp-acc-img img{width:100%;height:100%;object-fit:contain;object-position:center;display:block;transition:transform .4s ease;}
+.sp-acc:hover .sp-acc-img img{transform:scale(1.04);}
+.sp-acc-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:300;letter-spacing:1.5px;text-transform:uppercase;color:var(--sage);}
+.sp-acc-body{padding:16px 18px 18px;display:flex;flex-direction:column;flex:1;color:inherit;}
+.sp-acc-name{font-size:14px;font-weight:300;color:var(--slate);margin-bottom:3px;}
+.sp-acc-sub{font-size:11px;font-weight:300;color:var(--sage);margin-bottom:14px;flex:1;}
+.sp-acc-foot{display:flex;align-items:center;justify-content:space-between;}
+.sp-acc-price{font-size:14px;font-weight:300;color:var(--slate);white-space:nowrap;}
+  .sp-acc-btn {
+    appearance: none;
+    background: transparent;
+    color: var(--coral,#C16B45);
+    border: none;
+    border-bottom: 1px solid rgba(193,107,69,0.4);
+    padding: 0 0 2px 0;
+    font-size: 10px;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 300;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+  .sp-acc-btn:hover { opacity: 0.7; }
+  }
+  .sp-acc-btn:hover { background: #B05A36; }
+  .sp-acc-btn.on { background: var(--sage,#8FA8A8); color: white; }
+
+/* -- FLOATING CART BAR: slim glassmorphism pill -- */
+.sp-cart-bar {
+  display: none;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 20px;
+  padding: 0 32px;
+  height: 52px;
+  background: rgba(245,240,234,0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-top: 1px solid rgba(143,168,168,0.22);
+  border-bottom: 1px solid rgba(143,168,168,0.22);
+  box-shadow: 0 -4px 24px rgba(51,65,85,0.07);
+}
+.sp-cart-bar.is-docked { display:flex; }
+.sp-cart-bar.is-floating {
+  display: flex;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 99;
+}
+.sp-cart-info { display:flex; align-items:center; gap:16px; min-width:0; }
+.sp-cart-bar-title { font-size:9px; font-weight:400; letter-spacing:2px; text-transform:uppercase; color:var(--sage); white-space:nowrap; }
+.sp-cart-bar-total { font-size:18px; font-weight:300; letter-spacing:-0.5px; color:var(--slate); white-space:nowrap; }
+.sp-cart-bar-btn { height:34px; padding:0 24px; background:var(--coral); color:#fff; border:none; border-radius:2px; font-family:'Outfit',sans-serif; font-size:9px; font-weight:400; letter-spacing:2px; text-transform:uppercase; cursor:pointer; transition:background 0.15s; white-space:nowrap; flex-shrink:0; }
+.sp-cart-bar-btn:hover { background:#B05A36; }
+@media(max-width:768px) { .sp-cart-bar { padding:0 20px; gap:14px; } }
+@media(max-width:400px) { .sp-cart-bar { padding:0 14px; gap:10px; } .sp-cart-bar-title { display:none; } .sp-cart-bar-btn { padding:0 16px; } }
+
+/* "" RESPONSIVE "" */
+@media(max-width:900px){
+  .sp-pd{grid-template-columns:1fr;}
+  .sp-pd-media{border-right:none;padding:24px 20px;}
+  .sp-buy{padding:32px 20px;}
+  .sp-acc-grid{grid-template-columns:repeat(2,1fr);}
+  .sp-step-link{margin-right:20px;}
+  /* Align buy panel + accessory card text to the shared --fs-* scale on mobile (desktop untouched) */
+  .sp-buy-lede{font-size:var(--fs-sm);}
+  .sp-acc-name{font-size:var(--fs-sm);}
+  .sp-acc-sub{font-size:var(--fs-meta);}
+  .sp-acc-price{font-size:var(--fs-sm);}
+  .sp-sizeopt-name{font-size:var(--fs-meta);}
+  /* Mobile-only: fill the square box without cropping the actual photo.
+     A blurred, zoomed copy of the same image sits behind it as a soft
+     backdrop (covers the box, may crop) while the real photo on top stays
+     fully visible via object-fit:contain (never crops). No dead empty
+     space, and nothing important gets cut off. Desktop is untouched. */
+  .sp-main-img{position:relative;overflow:hidden;}
+  .sp-main-img::before{
+    content:'';
+    position:absolute; inset:-10%;
+    background-image:var(--sp-main-bg);
+    background-size:cover;
+    background-position:center;
+    filter:blur(18px) brightness(0.96);
+    transform:scale(1.1);
+    z-index:0;
+  }
+  .sp-main-img img{position:relative;width:100%;height:100%;object-fit:contain;object-position:center;display:block;z-index:1;}
+}
+/* Collection header — Tulai */
+.sp-collection-hdr { padding:52px 56px 36px; border-bottom:1px solid var(--border); background:var(--cream); }
+.sp-collection-ey { display:flex; align-items:center; gap:10px; font-size:var(--fs-lbl); font-weight:300; letter-spacing:2.5px; text-transform:uppercase; color:var(--coral); margin-bottom:14px; }
+.sp-collection-ey-line { width:24px; height:1px; background:var(--coral); flex-shrink:0; }
+.sp-collection-title { font-size:var(--fs-h1); font-weight:200; letter-spacing:-0.5px; color:var(--slate); }
+@media(max-width:768px) { .sp-collection-hdr { padding:36px 20px 24px; } }
+
+@media(max-width:560px){
+  .sp-acc-grid{grid-template-columns:repeat(2,1fr); column-gap: 0;}
+  .sp-step{height:auto;padding:10px 0;flex-wrap:wrap;gap:4px;}
+  .sp-step-badge{height:36px;width:72px;flex-shrink:0;}
+  .sp-step-title{margin-left:12px;font-size:14px;}
+  .sp-step-link{margin-right:16px;font-size:9px;}
+}
+</style>
+
+{% comment %} Assign gallery images from section settings {% endcomment %}
+{% assign gallery_1 = section.settings.gallery_image_1 | image_url: width: 1000 %}
+{% assign gallery_2 = section.settings.gallery_image_2 | image_url: width: 1000 %}
+{% assign gallery_3 = section.settings.gallery_image_3 | image_url: width: 1000 %}
+{% assign gallery_4 = section.settings.gallery_image_4 | image_url: width: 1000 %}
+
+{% comment %} Dynamically load pegboard product {% endcomment %}
+{% assign pegboard_product = all_products[section.settings.product_handle] %}
+
+<div class="sp" id="sp-root">
+
+  <!-- SHOP HERO — Ardene pg-hero layout, beige background -->
+  <section class="sp-hero">
+    <div class="sp-hero-top">
+      <div class="sp-hero-left">
+        <div class="sp-hero-eyebrow"><span class="sp-hero-eyebrow-line"></span>All Collections</div>
+        <h1 class="sp-hero-title">Shop.</h1>
+      </div>
+      <div class="sp-hero-right">
+        <p class="sp-hero-desc">{{ section.settings.hero_desc }}</p>
+      </div>
+    </div>
+    <div class="sp-hero-img">
+      {% if section.settings.hero_image != blank %}
+        <img src="{{ section.settings.hero_image | image_url: width: 2000 }}" alt="{{ section.settings.hero_image.alt | default: 'Shop Collection' }}" loading="eager">
+      {% else %}
+        <img src="{{ 'shop-hero.jpg' | asset_url }}" alt="Shop Collection" loading="eager">
+      {% endif %}
+    </div>
+  </section>
+
+  <!-- COLLECTION HEADER -->
+  <div class="sp-collection-hdr">
+    <div class="sp-collection-ey"><span class="sp-collection-ey-line"></span>{{ section.settings.collection_eyebrow }}</div>
+    <div class="sp-collection-title">Tulai Collection</div>
+  </div>
+
+  <!-- STEP 01 HEADER -->
+  <div class="sp-step">
+    <div class="sp-step-badge">{{ section.settings.step1_badge }}</div>
+    <span class="sp-step-title">{{ section.settings.step1_title }}</span>
+  </div>
+
+
+  <div class="sp-board-pick" style="padding: 40px 56px; border-bottom: 1px solid var(--border);">
+    <div class="sp-field-lbl" style="justify-content: flex-start; margin-bottom: 20px;">
+      <span class="sp-field-meta" id="sp-board-dims" style="text-transform: uppercase;">550 &times; 1100 &times; 16 mm &middot; 253 slots</span>
+    </div>
+    <div class="sp-sizes" style="margin-bottom: 0;">
+      {% assign size_dims = 'Tiny:550 × 150 × 16 mm · 33 slots,Small:550 × 550 × 16 mm · 121 slots,Standard:550 × 1100 × 16 mm · 253 slots' | split: ',' %}
+      {% if pegboard_product and pegboard_product.variants.size > 0 %}
+        {% for variant in pegboard_product.variants %}
+          {% unless variant.title == 'Large' %}
+            {% assign is_default = false %}
+            {% if variant.title == 'Standard' %}{% assign is_default = true %}{% endif %}
+            {% assign dims_val = '' %}
+            {% for dim_entry in size_dims %}
+              {% assign dim_parts = dim_entry | split: ':' %}
+              {% if dim_parts[0] == variant.title %}{% assign dims_val = dim_parts[1] %}{% endif %}
+            {% endfor %}
+            <button class="sp-sizeopt{% if is_default %} on{% endif %}"
+              data-name="{{ variant.title }}"
+              data-price="&#8377; {{ variant.price | money_without_currency }}"
+              data-dims="{{ dims_val }}"
+              data-variant-id="{{ variant.id }}"
+              data-img="{% if variant.image %}{{ variant.image | image_url: width: 900 }}{% else %}{{ pegboard_product.featured_image | image_url: width: 900 }}{% endif %}"
+              onclick="spSize(this)">
+              <span class="sp-sizeopt-name">{{ variant.title }}</span>
+              <span class="sp-sizeopt-price">&#8377; {{ variant.price | money_without_currency }}</span>
+            </button>
+          {% endunless %}
+        {% endfor %}
+      {% else %}
+        <button class="sp-sizeopt" data-name="Tiny" data-price="&#8377; 2,999" data-dims="550 × 150 × 16 mm · 33 slots" data-variant-id="" onclick="spSize(this)">
+          <span class="sp-sizeopt-name">Tiny</span><span class="sp-sizeopt-price">&#8377; 2,999</span>
+        </button>
+        <button class="sp-sizeopt" data-name="Small" data-price="&#8377; 4,199" data-dims="550 × 550 × 16 mm · 121 slots" data-variant-id="" onclick="spSize(this)">
+          <span class="sp-sizeopt-name">Small</span><span class="sp-sizeopt-price">&#8377; 4,199</span>
+        </button>
+        <button class="sp-sizeopt on" data-name="Standard" data-price="&#8377; 6,999" data-dims="550 × 1100 × 16 mm · 253 slots" data-variant-id="" onclick="spSize(this)">
+          <span class="sp-sizeopt-name">Standard</span><span class="sp-sizeopt-price">&#8377; 6,999</span>
+        </button>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- PRODUCT DETAIL — Board -->
+  <div class="sp-pd sp-pd-board">
+    <div class="sp-pd-media">
+      <div class="sp-gallery">
+        {%- comment -%}
+          Auto-pull gallery images from the linked product's own uploaded
+          images. Match each image to a variant using, in priority order:
+          1) Shopify's native variant-image association (variant.image) —
+             wins if the admin has a "Variant image" assigned.
+          2) The FIRST WORD of the image's alt text, compared to the variant
+             title (case-insensitive, exact word match — not a substring).
+             This is the tagging convention actually in use here: alt text
+             like "Tiny pegboard - A hand holds..." — first word "Tiny"
+             identifies the variant.
+          Images matching neither are treated as shared and shown regardless
+          of which size is selected. Falls back to the manual
+          gallery_image_1-4 settings if no product is linked yet, or that
+          product doesn't have any images uploaded.
+
+          This list has to be computed once, up front, before either the
+          main image or the thumbnails markup reads from it — it was
+          previously assigned only inside the thumbnails block below,
+          which meant the main image (rendered above the thumbnails)
+          always saw an empty value and silently fell back to the static
+          gallery_1 setting instead of the product's real first image.
+
+          The main image also needs to show the DEFAULT selected size's own
+          photo (Standard), not just whichever image happens to be first in
+          the product's upload order.
+        {%- endcomment -%}
+        {%- assign sp_gallery_images = '' -%}
+        {%- if pegboard_product and pegboard_product.images.size > 0 -%}
+          {%- assign sp_gallery_images = pegboard_product.images -%}
+        {%- endif -%}
+        {%- assign sp_default_variant_title = 'Standard' -%}
+        {%- assign sp_default_main_image = '' -%}
+        {%- if sp_gallery_images != '' -%}
+          {%- for image in sp_gallery_images -%}
+            {%- assign sp_matched_variant = '' -%}
+            {%- if image.attached_to_variant? -%}
+              {%- for v in pegboard_product.variants -%}
+                {%- if v.image.id == image.id -%}
+                  {%- assign sp_matched_variant = v.title -%}
+                {%- endif -%}
+              {%- endfor -%}
+            {%- endif -%}
+            {%- if sp_matched_variant == '' -%}
+              {%- assign sp_alt_first_word = image.alt | strip | split: ' ' | first | downcase | strip_newlines -%}
+              {%- assign sp_alt_first_word = sp_alt_first_word | remove: ',' | remove: '.' | remove: ':' | remove: '-' -%}
+              {%- for v in pegboard_product.variants -%}
+                {%- assign sp_v_dc = v.title | strip | downcase -%}
+                {%- if sp_matched_variant == '' and sp_alt_first_word == sp_v_dc -%}
+                  {%- assign sp_matched_variant = v.title -%}
+                {%- endif -%}
+              {%- endfor -%}
+            {%- endif -%}
+            {%- if sp_matched_variant == sp_default_variant_title and sp_default_main_image == '' -%}
+              {%- assign sp_default_main_image = image -%}
+            {%- endif -%}
+          {%- endfor -%}
+          {%- if sp_default_main_image == '' -%}
+            {%- assign sp_default_main_image = sp_gallery_images.first -%}
+          {%- endif -%}
+        {%- endif -%}
+        <div class="sp-main-img" id="sp-main-img" style="--sp-main-bg:url('{% if sp_gallery_images != '' %}{{ sp_default_main_image | image_url: width: 1000 }}{% else %}{{ gallery_1 }}{% endif %}');">
+          {%- if sp_gallery_images != '' -%}
+            <img src="{{ sp_default_main_image | image_url: width: 1000 }}" alt="{{ pegboard_product.title | escape }}" id="sp-main-img-el" loading="eager">
+          {%- else -%}
+            <img src="{{ gallery_1 }}" alt="Standard Pegboard" id="sp-main-img-el" loading="eager">
+          {%- endif -%}
+        </div>
+        <div class="sp-thumbs">
+          {%- if sp_gallery_images != '' -%}
+            {%- for image in sp_gallery_images -%}
+              {%- assign sp_matched_variant = '' -%}
+              {%- if image.attached_to_variant? -%}
+                {%- for v in pegboard_product.variants -%}
+                  {%- if v.image.id == image.id -%}
+                    {%- assign sp_matched_variant = v.title -%}
+                  {%- endif -%}
+                {%- endfor -%}
+              {%- endif -%}
+              {%- if sp_matched_variant == '' -%}
+                {%- assign sp_alt_first_word = image.alt | strip | split: ' ' | first | downcase | strip_newlines -%}
+                {%- assign sp_alt_first_word = sp_alt_first_word | remove: ',' | remove: '.' | remove: ':' | remove: '-' -%}
+                {%- for v in pegboard_product.variants -%}
+                  {%- assign sp_v_dc = v.title | strip | downcase -%}
+                  {%- if sp_matched_variant == '' and sp_alt_first_word == sp_v_dc -%}
+                    {%- assign sp_matched_variant = v.title -%}
+                  {%- endif -%}
+                {%- endfor -%}
+              {%- endif -%}
+              <button class="sp-thumb{% if image.id == sp_default_main_image.id %} on{% endif %}" data-variant="{{ sp_matched_variant }}" data-src="{{ image | image_url: width: 1000 }}" onclick="spThumb(this)">
+                <img src="{{ image | image_url: width: 300 }}" alt="{{ image.alt | default: pegboard_product.title | escape }}" loading="{% if forloop.first %}eager{% else %}lazy{% endif %}">
+              </button>
+            {%- endfor -%}
+          {%- else -%}
+            <button class="sp-thumb on" data-src="{{ gallery_1 }}" onclick="spThumb(this)">
+              <img src="{{ gallery_1 }}" alt="Tulai Standard Pegboard" loading="eager">
+            </button>
+            <button class="sp-thumb" data-src="{{ gallery_2 }}" onclick="spThumb(this)">
+              <img src="{{ gallery_2 }}" alt="Tulai Collection" loading="lazy">
+            </button>
+            <button class="sp-thumb" data-src="{{ gallery_3 }}" onclick="spThumb(this)">
+              <img src="{{ gallery_3 }}" alt="Product collage" loading="lazy">
+            </button>
+            <button class="sp-thumb" data-src="{{ gallery_4 }}" onclick="spThumb(this)">
+              <img src="{{ gallery_4 }}" alt="Product collage 2" loading="lazy">
+            </button>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+
+    <div class="sp-buy">
+      <div class="sp-buy-ey"><span class="sp-buy-ey-line"></span>{{ section.settings.buybox_eyebrow }}</div>
+      <div class="sp-buy-title" id="sp-board-name">{{ section.settings.buybox_default_title }}</div>
+      <div class="sp-buy-lede" id="sp-board-lede">{{ section.settings.buybox_default_desc }}</div>
+
+      <div class="sp-price-row" style="border-bottom: none; margin-bottom: 40px; padding-bottom: 0;">
+        <div class="sp-price" id="sp-board-price">{{ section.settings.buybox_default_price }}</div>
+        <div class="sp-price-note"><span id="sp-board-dims-note">{{ section.settings.buybox_default_dims }}</span> &middot; Incl. of all taxes &middot; accessories sold separately</div>
+      </div>
+
+      <div class="sp-field-lbl"><span>Quantity</span></div>
+      <div class="sp-qty-row">
+        <div class="sp-stepper">
+          <button onclick="spQty(-1)" aria-label="Decrease">&#8722;</button>
+          <span class="sp-q" id="sp-qty">1</span>
+          <button onclick="spQty(1)" aria-label="Increase">+</button>
+        </div>
+        <button class="sp-buybtn" id="sp-board-btn" onclick="spAddBoard()">Add to Cart</button>
+      </div>
+
+      <div class="re-row">
+        <div class="re-item">
+          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          365-day return
+        </div>
+        <div class="re-item">
+          <svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+          5-year repair warranty
+        </div>
+        <div class="re-item">
+          <svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+          Recycled at end of life
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 02 HEADER -->
+  <div class="sp-step">
+    <div class="sp-step-badge">{{ section.settings.step2_badge }}</div>
+    <span class="sp-step-title">{{ section.settings.step2_title }}</span>
+  </div>
+
+  <!-- ACCESSORIES GRID — Dynamic from Shopify Collection -->
+  <div class="sp-acc-sec">
+    <div class="sp-acc-grid" id="sp-acc-grid">
+
+      {% assign acc_collection_handle = section.settings.accessories_collection | default: 'tulai-collection' %}
+      {% assign acc_collection = collections[acc_collection_handle] %}
+
+      {% if acc_collection and acc_collection.products.size > 0 %}
+        {% for product in acc_collection.products %}
+          {%- comment -%}Pt16: Skip boards & bundles — accessories only{%- endcomment -%}
+          {% assign is_board = false %}{% assign is_bundle = false %}
+          {% if product.type == 'Board' or product.type == 'Declutter' %}{% assign is_board = true %}{% endif %}
+          {% if product.type contains 'Bundle' %}{% assign is_bundle = true %}{% endif %}
+          {% for tag in product.tags %}{% if tag contains 'bundle' %}{% assign is_bundle = true %}{% endif %}{% endfor %}
+          {% unless is_board or is_bundle %}
+            {% assign first_variant = product.variants.first %}
+            {% assign product_image = product.featured_image %}
+            {% assign img_url_big = product_image | image_url: width: 900 %}
+            <div class="sp-acc" data-id="{{ product.handle }}" data-variant-id="{{ first_variant.id }}">
+              {%- comment -%}Pt20: Image click → lightbox{%- endcomment -%}
+              <div class="sp-acc-img" onclick="spLightbox('{{ img_url_big | escape }}','{{ product.title | escape }}')" style="cursor:zoom-in;">
+                {% if product_image %}
+                  <img src="{{ product_image | image_url: width: 400 }}" alt="{{ product.title | escape }}" loading="lazy" width="400">
+                {% else %}
+                  <div class="sp-acc-ph">{{ product.type | default: 'Accessory' }}</div>
+                {% endif %}
+              </div>
+              {%- comment -%}Pt20: Body text → PDP link{%- endcomment -%}
+              <a href="{{ product.url }}" class="sp-acc-body" style="text-decoration:none;">
+                <div class="sp-acc-ey" style="font-size:9px;font-weight:300;letter-spacing:2px;text-transform:uppercase;color:var(--coral);margin-bottom:6px;">Tulai &middot; {{ product.type | default: 'Shelf' }}</div>
+                <div class="sp-acc-name">{{ product.title | remove: 'Tulai — ' | remove: 'Tulai - ' }}</div>
+                <div class="sp-acc-sub">{{ product.vendor }}{% if product.metafields.custom.product_filter_materials %} · {{ product.metafields.custom.product_filter_materials }}{% endif %}</div>
+                <div class="sp-acc-foot">
+                  <span class="sp-acc-price">&#8377; {{ first_variant.price | money_without_currency }}</span>
+                  <button class="sp-acc-btn" onclick="event.preventDefault(); spToggleAcc(this.closest('.sp-acc'))">Add &rarr;</button>
+                </div>
+              </a>
+            </div>
+          {% endunless %}
+        {% endfor %}
+      {% else %}
+        <div style="grid-column:1/-1;text-align:center;padding:3rem;color:#999;font-size:.9rem;">
+          Add products to your "Tulai Collection" in Shopify to display accessories here.
+        </div>
+      {% endif %}
+
+    </div>
+    
+    <!-- FLOATING CART BAR -->
+    <div class="sp-cart-bar" id="sp-cart-bar">
+      <div class="sp-cart-info">
+        <span class="sp-cart-bar-title">Accessory Total</span>
+        <span class="sp-cart-bar-total" id="sp-cart-bar-total">&#8377; 0</span>
+      </div>
+      <button class="sp-cart-bar-btn" id="sp-cart-bar-btn" onclick="spAddBundle()">Add to Cart</button>
+    </div>
+  </div>
+
+  {%- comment -%}Pt20: Image Lightbox Overlay{%- endcomment -%}
+  <div id="sp-lightbox" onclick="if(event.target===this)this.style.display='none'" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.9);align-items:center;justify-content:center;flex-direction:column;">
+    <button onclick="document.getElementById('sp-lightbox').style.display='none'" style="position:absolute;top:16px;right:20px;background:none;border:none;color:white;font-size:32px;cursor:pointer;line-height:1;z-index:1;">&times;</button>
+    <img id="sp-lightbox-img" src="" alt="" style="max-width:92vw;max-height:86vh;object-fit:contain;border-radius:4px;">
+    <p id="sp-lightbox-cap" style="margin-top:14px;font-size:13px;color:rgba(255,255,255,0.6);font-family:'Outfit',sans-serif;font-weight:300;letter-spacing:1px;"></p>
+  </div>
+
+</div>
+
+<script>
+(function(){
+  let qty = 1;
+  let boardPrice = 6999;
+  let accSelected = {};
+
+  window.spFilterThumbsByVariant = function(variantName){
+    var allThumbs = document.querySelectorAll('.sp-thumb');
+    if (!allThumbs.length) return;
+    var matchCount = 0;
+    allThumbs.forEach(function(t){ if (t.dataset.variant === variantName) matchCount++; });
+    var noMatches = matchCount === 0;
+    var firstMatch = null;
+    var shownCount = 0;
+    var MAX_THUMBS = 4;
+    allThumbs.forEach(function(t){
+      t.classList.remove('on');
+      var isOwnVariantImage = t.dataset.variant === variantName;
+      var isSharedImage = t.dataset.variant === '';
+      if ((noMatches || isOwnVariantImage || isSharedImage) && shownCount < MAX_THUMBS) {
+        t.style.display = '';
+        if (!firstMatch || (isOwnVariantImage && firstMatch.dataset.variant !== variantName)) firstMatch = t;
+        shownCount++;
+      } else {
+        t.style.display = 'none';
+      }
+    });
+    if (firstMatch) {
+      firstMatch.classList.add('on');
+      var mainImgEl = document.getElementById('sp-main-img-el');
+      if (mainImgEl) mainImgEl.src = firstMatch.dataset.src;
+      var mainImgBox = document.getElementById('sp-main-img');
+      if (mainImgBox) mainImgBox.style.setProperty('--sp-main-bg', "url('" + firstMatch.dataset.src + "')");
+    }
+  };
+
+  window.spThumb = function(btn){
+    document.querySelectorAll('.sp-thumb').forEach(t => t.classList.remove('on'));
+    btn.classList.add('on');
+    document.getElementById('sp-main-img-el').src = btn.dataset.src;
+    var mainImgBox = document.getElementById('sp-main-img');
+    if (mainImgBox) mainImgBox.style.setProperty('--sp-main-bg', "url('" + btn.dataset.src + "')");
+  };
+
+  window.spSize = function(btn){
+    document.querySelectorAll('.sp-sizeopt').forEach(b => b.classList.remove('on'));
+    btn.classList.add('on');
+    document.getElementById('sp-board-name').textContent = btn.dataset.name + ' Pegboard';
+    document.getElementById('sp-board-price').innerHTML = btn.dataset.price;
+    document.getElementById('sp-board-dims').innerHTML = btn.dataset.dims;
+    document.getElementById('sp-board-dims-note').innerHTML = 'Dimensions: ' + btn.dataset.dims;
+    boardPrice = Math.round(parseFloat(btn.dataset.price.replace(/[₹\u20B9\s,]/g,'')) || 0);
+    window._selectedBoardVariantId = btn.dataset.variantId;
+
+    // Filter the gallery thumbnails to this size's own images (matched via
+    // Shopify's native variant-image assignment) plus any shared/unassigned
+    // images, instead of leaving every size's photos mixed together.
+    window.spFilterThumbsByVariant(btn.dataset.name);
+    updateCartBar();
+  };
+
+  window.spQty = function(d){
+    qty = Math.max(1, qty + d);
+    document.getElementById('sp-qty').textContent = qty;
+  };
+
+  window.spToggleAcc = function(card){
+    const id = card.dataset.id;
+    const btn = card.querySelector('.sp-acc-btn');
+    const priceText = card.querySelector('.sp-acc-price').textContent;
+    const price = Math.round(parseFloat(priceText.replace(/[₹\u20B9\s,]/g,'')) || 0);
+    if(accSelected[id]){
+      delete accSelected[id];
+      delete accSelected[id + '_variant'];
+      card.classList.remove('on');
+      btn.classList.remove('on');
+      btn.textContent = 'Add \u2192';
+    } else {
+      accSelected[id] = price;
+      accSelected[id + '_variant'] = card.dataset.variantId;
+      card.classList.add('on');
+      btn.classList.add('on');
+      btn.textContent = '\u2713 Added';
+    }
+    updateCartBar();
+  };
+
+  function updateCartBar() {
+    let accTotal = Object.keys(accSelected).reduce((sum, key) => {
+      if(!key.includes('_variant')) return sum + accSelected[key];
+      return sum;
+    }, 0);
+    
+    document.getElementById('sp-cart-bar-total').innerHTML = '&#8377; ' + accTotal.toLocaleString('en-IN');
+  }
+
+  // Scroll: show cart bar only AFTER first row of accessories scrolls out of view
+  document.addEventListener('DOMContentLoaded', function(){
+    // Filter thumbnails to whichever size is selected by default (or via
+    // ?size= URL param below) so the gallery doesn't start out showing
+    // every size's photos mixed together.
+    var initialSizeBtn = document.querySelector('.sp-sizeopt.on') || document.querySelector('.sp-sizeopt');
+    if (initialSizeBtn && typeof window.spFilterThumbsByVariant === 'function') {
+      window.spFilterThumbsByVariant(initialSizeBtn.dataset.name);
+    }
+
+    // Pre-select size from URL if present (e.g. ?size=Tiny) AND scroll the size-picker into view,
+    // so a "Shop the tiny bundle" style link doesn't just land the user at the top of the Shop page.
+    const urlParams = new URLSearchParams(window.location.search);
+    const sizeParam = urlParams.get('size');
+    if(sizeParam) {
+      const sizeBtns = document.querySelectorAll('.sp-sizeopt');
+      sizeBtns.forEach(btn => {
+        if(btn.dataset.name.toLowerCase() === sizeParam.toLowerCase()) {
+          btn.click();
+        }
+      });
+      const boardPick = document.querySelector('.sp-board-pick');
+      if (boardPick) {
+        // Slight delay so layout (fonts/images) has settled before measuring scroll position.
+        setTimeout(function() {
+          boardPick.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 150);
+      }
+    }
+
+    var grid = document.querySelector('.sp-acc-grid');
+    var cartBar = document.getElementById('sp-cart-bar');
+    if(grid && cartBar) {
+      function checkCartBar() {
+        var rect = grid.getBoundingClientRect();
+        // Estimate first-row height: first card or ~320px
+        var firstCard = grid.querySelector('.sp-acc');
+        var firstRowH = firstCard ? firstCard.offsetHeight : 320;
+        // Only show after user has scrolled past the first row
+        var pastFirstRow = rect.top < (window.innerHeight - firstRowH);
+        if (!pastFirstRow || rect.top > window.innerHeight) {
+          cartBar.className = 'sp-cart-bar'; // hidden
+        } else if (rect.bottom > window.innerHeight) {
+          cartBar.className = 'sp-cart-bar is-floating'; // fixed slim bar
+        } else {
+          cartBar.className = 'sp-cart-bar is-docked'; // docked after grid
+        }
+      }
+      window.addEventListener('scroll', checkCartBar, {passive: true});
+      window.addEventListener('resize', checkCartBar, {passive: true});
+      setTimeout(checkCartBar, 200);
+    }
+  });
+
+  // Pt20: Lightbox
+  window.spLightbox = function(src, caption){
+    var lb = document.getElementById('sp-lightbox');
+    document.getElementById('sp-lightbox-img').src = src;
+    document.getElementById('sp-lightbox-cap').textContent = caption;
+    lb.style.display = 'flex';
+  };
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape') document.getElementById('sp-lightbox').style.display='none'; });
+
+  // SHOPIFY AJAX CART API
+  function shopifyAddItems(items, onSuccess, onError) {
+    fetch('/cart/add.js', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({ items: items })
+    })
+    .then(res => res.json())
+    .then(data => { if(data.status){ onError(data.description||'Error'); } else { onSuccess(data); } })
+    .catch(() => onError('Could not connect.'));
+  }
+
+  // Pt14: Add board ONLY — AJAX, no redirect, update cart count badge
+  window.spAddBoard = function(){
+    const btn = document.getElementById('sp-board-btn');
+    const sizeBtn = document.querySelector('.sp-sizeopt.on');
+    const variantId = sizeBtn ? sizeBtn.dataset.variantId : null;
+
+    if (!variantId || variantId === '' || variantId.includes('VARIANT_ID')) {
+      btn.textContent = 'Set up in Shopify!';
+      btn.style.background = '#C16B45';
+      setTimeout(()=>{ btn.textContent = 'Add to Cart'; btn.style.background = ''; }, 3000);
+      return;
+    }
+
+    btn.textContent = 'Adding...';
+    btn.disabled = true;
+    shopifyAddItems(
+      [{ id: parseInt(variantId), quantity: qty }],
+      function() {
+        btn.textContent = '✓ Added!';
+        btn.style.background = 'var(--sage,#8FA8A8)';
+        // Update cart count without redirect
+        if(typeof window.refreshCart === 'function') {
+          window.refreshCart().then(() => {
+            if(typeof window.openCart === 'function') window.openCart();
+          });
+        } else {
+          fetch('/cart.js').then(r=>r.json()).then(cart=>{
+            document.querySelectorAll('[data-cart-count],[aria-label="Cart"]').forEach(el=>{
+              const badge = el.querySelector('.cart-badge') || el;
+              if(badge) badge.textContent = cart.item_count;
+            });
+            document.querySelectorAll('.cart-badge').forEach(b=>{ b.textContent=cart.item_count; if(cart.item_count>0)b.removeAttribute('hidden'); });
+          });
+        }
+        setTimeout(()=>{ btn.textContent = 'Add to Cart'; btn.style.background = ''; btn.disabled = false; }, 2500);
+      },
+      function(err) {
+        btn.textContent = 'Error – Try again';
+        btn.style.background = '#e53e3e';
+        btn.disabled = false;
+        setTimeout(()=>{ btn.textContent = 'Add to Cart'; btn.style.background = ''; }, 3000);
+      }
+    );
+  };
+
+  window.spAddBundle = function(){
+    const btn = document.getElementById('sp-cart-bar-btn');
+    let items = [];
+    
+    // Add selected accessories
+    Object.keys(accSelected).forEach(key => {
+      if(key.includes('_variant')) {
+        items.push({ id: parseInt(accSelected[key]), quantity: 1 });
+      }
+    });
+
+    if (items.length === 0) {
+      alert("Please select at least one accessory first.");
+      return;
+    }
+
+    btn.textContent = 'Adding...';
+    btn.disabled = true;
+    shopifyAddItems(
+      items,
+      function() {
+        btn.textContent = '✓ Added!';
+        btn.style.background = 'var(--sage,#8FA8A8)';
+        if(typeof window.refreshCart === 'function') {
+          window.refreshCart().then(() => {
+            if(typeof window.openCart === 'function') window.openCart();
+          });
+        } else {
+          fetch('/cart.js').then(r=>r.json()).then(cart=>{
+            document.querySelectorAll('[data-cart-count],[aria-label="Cart"]').forEach(el=>{
+              const badge = el.querySelector('.cart-badge') || el;
+              if(badge) badge.textContent = cart.item_count;
+            });
+            document.querySelectorAll('.cart-badge').forEach(b=>{ b.textContent=cart.item_count; if(cart.item_count>0)b.removeAttribute('hidden'); });
+          });
+        }
+        
+        // Reset accessories
+        accSelected = {};
+        document.querySelectorAll('.sp-acc.on').forEach(card => {
+          card.classList.remove('on');
+          const abtn = card.querySelector('.sp-acc-btn');
+          if (abtn) {
+            abtn.classList.remove('on');
+            abtn.textContent = 'Add \u2192';
+          }
+        });
+        if (typeof updateCartBar === 'function') updateCartBar();
+
+        setTimeout(()=>{ btn.textContent = 'ADD TO CART'; btn.style.background = ''; btn.disabled = false; }, 2500);
+      },
+      function(err) {
+        btn.textContent = 'Error';
+        btn.style.background = '#e53e3e';
+        btn.disabled = false;
+        setTimeout(()=>{ btn.textContent = 'Add to Cart'; btn.style.background = ''; }, 3000);
+      }
+    );
+  };
+
+  document.addEventListener('DOMContentLoaded', function(){
+    var defaultBtn = document.querySelector('.sp-sizeopt.on');
+    if(defaultBtn){
+      boardPrice = Math.round(parseFloat(defaultBtn.dataset.price.replace(/[₹\u20B9\s,]/g,'')) || 0);
+      window._selectedBoardVariantId = defaultBtn.dataset.variantId;
+    }
+    updateCartBar();
+  });
+})();
+</script>
+
+
+<!-- CollectionPage JSON-LD + BreadcrumbList -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "{{ shop.url }}" },
+    { "@type": "ListItem", "position": 2, "name": "Tulai Collection", "item": "{{ shop.url }}/collections/tulai" }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Tulai Pegboard System",
+  "description": "Modular pegboard system with accessories. Made from FSC-certified birch plywood in Chennai, India. Every board, every accessory, built to last.",
+  "url": "{{ canonical_url }}",
+  "publisher": { "@id": "{{ shop.url }}/#organization" }
+}
+</script>
+
+{% schema %}
+{
+  "name": "Shop Page",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Hero Section"
+    },
+    {
+      "type": "text",
+      "id": "hero_eyebrow",
+      "label": "Hero Eyebrow",
+      "default": "Pegboard System"
+    },
+    {
+      "type": "text",
+      "id": "hero_title",
+      "label": "Hero Title",
+      "default": "Tulai Collection."
+    },
+    {
+      "type": "textarea",
+      "id": "hero_desc",
+      "label": "Hero Description",
+      "default": "Every product is designed with an intention — things built to last. Each piece is designed to evolve with your space, repaired and restored but never replaced, and never destined for a landfill."
+    },
+    {
+      "type": "header",
+      "content": "Collection Headers"
+    },
+    {
+      "type": "text",
+      "id": "collection_eyebrow",
+      "label": "Collection Eyebrow",
+      "default": "Pegboard System"
+    },
+    {
+      "type": "text",
+      "id": "sp_collection_title",
+      "label": "Collection Title",
+      "default": "Tulai Collection"
+    },
+    {
+      "type": "text",
+      "id": "step1_badge",
+      "label": "Step 01 Badge",
+      "default": "Step 01"
+    },
+    {
+      "type": "text",
+      "id": "step1_title",
+      "label": "Step 01 Title",
+      "default": "Choose your board."
+    },
+    {
+      "type": "text",
+      "id": "step2_badge",
+      "label": "Step 02 Badge",
+      "default": "Step 02"
+    },
+    {
+      "type": "text",
+      "id": "step2_title",
+      "label": "Step 02 Title",
+      "default": "Add accessories."
+    },
+    {
+      "type": "text",
+      "id": "step3_badge",
+      "label": "Step 03 Badge",
+      "default": "Step 03"
+    },
+    {
+      "type": "text",
+      "id": "step3_title",
+      "label": "Step 03 Title",
+      "default": "Done. You're set."
+    },
+    {
+      "type": "header",
+      "content": "Buy Box Defaults"
+    },
+    {
+      "type": "text",
+      "id": "buybox_eyebrow",
+      "label": "Buy Box Eyebrow",
+      "default": "Tulai · Pegboard System"
+    },
+    {
+      "type": "text",
+      "id": "buybox_default_title",
+      "label": "Default Title",
+      "default": "Standard Pegboard"
+    },
+    {
+      "type": "textarea",
+      "id": "buybox_default_desc",
+      "label": "Default Description",
+      "default": "Solid birch plywood, CNC-drilled and hand-sealed. Mount it once, then rearrange it for years — every Tulai accessory fits every board."
+    },
+    {
+      "type": "text",
+      "id": "buybox_default_price",
+      "label": "Default Price HTML",
+      "default": "&#8377; 6,999"
+    },
+    {
+      "type": "text",
+      "id": "buybox_default_dims",
+      "label": "Default Dimensions",
+      "default": "Dimensions: 550 x 1100 x 16 mm · 253 slots"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Hero Background Image"
+    },
+    {
+      "type": "header",
+      "content": "Product Details"
+    },
+    {
+      "type": "text",
+      "id": "product_handle",
+      "label": "Pegboard Product Handle",
+      "default": "tulai-pegboard",
+      "info": "Copy from Shopify product URL slug"
+    },
+    {
+      "type": "header",
+      "content": "Gallery Images"
+    },
+    {
+      "type": "image_picker",
+      "id": "gallery_image_1",
+      "label": "Main Product Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "gallery_image_2",
+      "label": "Gallery Image 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "gallery_image_3",
+      "label": "Gallery Image 3"
+    },
+    {
+      "type": "image_picker",
+      "id": "gallery_image_4",
+      "label": "Gallery Image 4"
+    },
+    {
+      "type": "collection",
+      "id": "accessories_collection",
+      "label": "Accessories Collection",
+      "info": "Select the collection containing all Tulai accessories"
+    }
+  ],
+  "presets": [
+    { "name": "Shop Page" }
+  ]
+}
+{% endschema %}

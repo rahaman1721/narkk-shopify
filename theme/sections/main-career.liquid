@@ -1,0 +1,74 @@
+<style>
+.career-hero {
+  background: var(--cream);
+  padding: 100px 40px 80px;
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+}
+.career-eyebrow {
+  font-family: 'Outfit', sans-serif;
+  font-size: var(--fs-lbl);
+  font-weight: 300;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--coral);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+.career-eyebrow::before {
+  content: '';
+  display: block;
+  width: 24px;
+  height: 1px;
+  background: var(--coral);
+}
+.career-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: var(--fs-disp);
+  font-weight: 200;
+  letter-spacing: -2px;
+  color: var(--slate);
+  margin-bottom: 24px;
+}
+.career-desc {
+  font-family: 'Outfit', sans-serif;
+  font-size: var(--fs-body);
+  font-weight: 300;
+  color: var(--slate-l);
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.8;
+}
+.career-jobs {
+  padding: 100px 40px;
+  background: var(--cream);
+  min-height: 40vh;
+  text-align: center;
+}
+.career-jobs-empty {
+  font-family: 'Outfit', sans-serif;
+  font-size: var(--fs-body);
+  color: var(--slate-l);
+  font-weight: 300;
+}
+</style>
+
+<section class="career-hero">
+  <div class="career-eyebrow">Join Us</div>
+  <h1 class="career-title">{{ page.title }}</h1>
+  <p class="career-desc">We're building furniture that lasts, and a team that cares about how things are made. If you believe in intentional living and challenging the fast furniture industry, we want to hear from you.</p>
+</section>
+
+<section class="career-jobs">
+  <p class="career-jobs-empty">There are currently no open positions. Check back later or send your resume to hello@narkk.com.</p>
+</section>
+
+{% schema %}
+{
+  "name": "Career Page",
+  "settings": []
+}
+{% endschema %}

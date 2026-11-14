@@ -1,0 +1,240 @@
+<style>
+/* curated bundles — exact standalone match */
+.sp-setups-coral { background:var(--burnt-clay); border-bottom:1px solid rgba(255,255,255,0.15); padding:44px; }
+.sp-setups-coral-head { display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:28px; gap:24px; }
+.sp-setups-coral-ey { display:flex; align-items:center; gap:10px; font-size:var(--fs-lbl); font-weight:300; letter-spacing:2.5px; text-transform:uppercase; color:rgba(245,240,234,0.7); margin-bottom:8px; }
+.sp-setups-coral-ey-line { width:24px; height:1px; background:rgba(245,240,234,0.4); flex-shrink:0; }
+.sp-setups-coral-title { font-size:var(--fs-h2); font-weight:200; letter-spacing:-0.5px; color:white; margin-bottom:3px; }
+.sp-setups-coral-sub { font-size:var(--fs-sm); font-weight:300; color:rgba(245,240,234,0.7); }
+.sp-setups-coral-link { display:none; }
+.sp-setups-coral-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+.sp-setups-coral-grid.count-4 { grid-template-columns:repeat(4,1fr); }
+.sp-setups-coral-grid.count-2 { grid-template-columns:repeat(2,1fr); }
+.sp-setups-coral-grid.count-1 { grid-template-columns:1fr; }
+.sp-setup-coral-card { background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.2); border-radius:4px; overflow:hidden; cursor:pointer; transition:background 0.15s; text-decoration:none; display:block; }
+.sp-setup-coral-card:hover { background:rgba(255,255,255,0.18); }
+.sp-setup-coral-img { aspect-ratio:4/3; overflow:hidden; background:rgba(255,255,255,0.08); display:flex; align-items:center; justify-content:center; }
+.sp-setup-coral-img img, .sp-setup-coral-img video { width:100%; height:100%; object-fit:contain; display:block; transition:transform 0.4s; }
+.sp-setup-coral-card:hover .sp-setup-coral-img img, .sp-setup-coral-card:hover .sp-setup-coral-img video { transform:scale(1.04); }
+.sp-setup-coral-body { padding:14px 16px 18px; }
+.sp-setup-coral-tag { font-size:var(--fs-micro); font-weight:300; letter-spacing:2px; text-transform:uppercase; color:rgba(245,240,234,0.65); margin-bottom:5px; }
+.sp-setup-coral-name { font-size:var(--fs-h3); font-weight:300; color:white; margin-bottom:4px; }
+.sp-setup-coral-meta { font-size:var(--fs-meta); font-weight:300; color:rgba(245,240,234,0.65); margin-bottom:10px; line-height:1.5; }
+.sp-setup-coral-footer { display:flex; align-items:center; justify-content:space-between; }
+.sp-setup-coral-price { font-size:var(--fs-body); font-weight:300; color:white; white-space:nowrap; }
+.sp-setup-coral-cta { font-size:var(--fs-micro); font-weight:300; letter-spacing:1.5px; text-transform:uppercase; color:rgba(245,240,234,0.9); border-bottom:1px solid rgba(245,240,234,0.4); padding-bottom:1px; }
+@media(max-width:900px) { .sp-setups-coral-grid { grid-template-columns:repeat(2,1fr); } .sp-setups-coral { padding:32px 20px; } .sp-setups-coral-head { flex-direction:column; align-items:flex-start; gap:12px; } .sp-setups-coral-link { align-self:flex-start; } }
+@media(max-width:600px) { 
+  .sp-setups-coral-grid { grid-template-columns:repeat(2, 1fr); gap:8px; }
+  .sp-setup-coral-body { padding: 10px 10px 12px; }
+  .sp-setup-coral-tag { font-size: 8px; margin-bottom: 3px; }
+  .sp-setup-coral-name { font-size: 14px; margin-bottom: 2px; }
+  .sp-setup-coral-meta { font-size: 10px; margin-bottom: 6px; }
+  .sp-setup-coral-price { font-size: 13px; }
+  .sp-setup-coral-cta { font-size: 8px; }
+}
+</style>
+
+<div class="sp-setups-coral" id="curated-combinations">
+  <div class="sp-setups-coral-head">
+    <div>
+      <div class="sp-setups-coral-ey"><span class="sp-setups-coral-ey-line"></span>{{ section.settings.eyebrow | default: 'Curated Combinations' }}</div>
+      <div class="sp-setups-coral-title">{{ section.settings.title | default: 'Not sure where to start?' }}</div>
+      <div class="sp-setups-coral-sub">{{ section.settings.subtitle | default: "We've curated it for you. Each setup contains board, accessories and mount kit &mdash; ready to go." }}</div>
+    </div>
+  </div>
+  {% comment %} Change #5 (Xiamen updation): grid width now matches the actual card count — no reserved empty slot — and the "View all setups" link has been removed. {% endcomment %}
+  {% assign card_count = section.blocks.size | default: 3 %}
+  {% if card_count == 0 %}{% assign card_count = 3 %}{% endif %}
+  <div class="sp-setups-coral-grid count-{{ card_count }}">
+    {% if section.blocks.size > 0 %}
+      {% for block in section.blocks %}
+        {%- comment -%} Resolve a specific variant by title (e.g. "Tiny") when one product is shared across cards {%- endcomment -%}
+        {%- assign matched_variant = blank -%}
+        {%- if block.settings.product != blank and block.settings.variant_title != blank -%}
+          {%- assign search_title = block.settings.variant_title | downcase | strip -%}
+          {%- for v in block.settings.product.variants -%}
+            {%- assign v_title = v.title | downcase | strip -%}
+            {%- if v_title == search_title or v_title contains search_title -%}
+              {%- assign matched_variant = v -%}
+              {%- break -%}
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endif -%}
+        {%- assign resolved_variant = matched_variant | default: block.settings.product.selected_or_first_available_variant | default: block.settings.product.variants.first -%}
+        {%- assign block_url = block.settings.link -%}
+        {%- if block_url == blank -%}
+          {%- case block.settings.tag -%}
+            {%- when 'Entryway' -%}{%- assign block_url = '/collections/tulai?size=Tiny' -%}
+            {%- when 'Kitchen' -%}{%- assign block_url = '/collections/tulai?size=Small' -%}
+            {%- when 'Workspace' -%}{%- assign block_url = '/collections/tulai?size=Standard' -%}
+            {%- else -%}{%- assign block_url = '/collections/tulai' -%}
+          {%- endcase -%}
+        {%- endif -%}
+        {%- if block.settings.product != blank -%}
+          {%- assign block_url = block.settings.product.url -%}
+          {%- if resolved_variant != blank -%}
+            {%- assign block_url = block_url | append: '?variant=' | append: resolved_variant.id -%}
+          {%- endif -%}
+        {%- endif -%}
+        <div class="sp-setup-coral-card" {{ block.shopify_attributes }}>
+          <a href="{{ block_url }}" class="sp-setup-coral-img" style="display:block; text-decoration:none;">
+            {% if block.settings.video != blank %}
+              {{ block.settings.video | video_tag: autoplay: true, loop: true, muted: true, controls: false, image_size: '600x' }}
+            {% elsif block.settings.image != blank %}
+              <img src="{{ block.settings.image | image_url: width: 600 }}" alt="{{ block.settings.title | escape }}" loading="lazy">
+            {% elsif resolved_variant != blank and resolved_variant.featured_image != blank %}
+              <img src="{{ resolved_variant.featured_image | image_url: width: 600 }}" alt="{{ block.settings.title | escape }}" loading="lazy">
+            {% elsif block.settings.product != blank and block.settings.product.featured_image != blank %}
+              <img src="{{ block.settings.product.featured_image | image_url: width: 600 }}" alt="{{ block.settings.title | escape }}" loading="lazy">
+            {% else %}
+              <div class="sp-setup-coral-img-ph">{{ block.settings.tag | default: 'Setup' }}</div>
+            {% endif %}
+          </a>
+          <div class="sp-setup-coral-body">
+            <div class="sp-setup-coral-tag">{{ block.settings.tag }}</div>
+            <a href="{{ block_url }}" style="text-decoration:none;"><div class="sp-setup-coral-name">{{ block.settings.title }}</div></a>
+            <div class="sp-setup-coral-meta">{{ block.settings.meta }}</div>
+            <div class="sp-setup-coral-footer">
+              <span class="sp-setup-coral-price">{{ block.settings.price }}</span>
+              {% if block.settings.product != blank and resolved_variant != blank %}
+                <button type="button" class="sp-setup-coral-cta"
+                  data-variant-id="{{ resolved_variant.id }}"
+                  data-product-url="{{ block_url }}"
+                  onclick="addCuratedToCart(event)"
+                  style="background:none;border:none;padding:0;cursor:pointer;font:inherit;border-bottom:1px solid rgba(245,240,234,0.4);color:rgba(245,240,234,0.9);">{{ block.settings.cta }}</button>
+              {% else %}
+                <a href="{{ block_url }}" class="sp-setup-coral-cta" style="text-decoration:none;">{{ block.settings.cta }}</a>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <!-- Fallback static cards if no blocks added -->
+      <a href="/collections/tulai?size=Tiny" class="sp-setup-coral-card">
+        <div class="sp-setup-coral-img">
+          <video autoplay loop muted playsinline>
+            <source src="{{ 'TulaiTiny.mp4' | asset_url }}" type="video/mp4">
+          </video>
+        </div>
+        <div class="sp-setup-coral-body">
+          <div class="sp-setup-coral-tag">Entryway</div>
+          <div class="sp-setup-coral-name">Tiny Entryway</div>
+          <div class="sp-setup-coral-meta">Tiny board &middot; 4 hooks &middot; 1 shelf &middot; Pegs</div>
+          <div class="sp-setup-coral-footer"><span class="sp-setup-coral-price">&#8377;3,999</span><span class="sp-setup-coral-cta">Shop &rarr;</span></div>
+        </div>
+      </a>
+      <a href="/collections/tulai?size=Standard" class="sp-setup-coral-card">
+        <div class="sp-setup-coral-img">
+          <img src="{{ 'desk-setup.jpg' | asset_url }}" alt="Workspace" loading="lazy" onerror="this.style.display='none'">
+        </div>
+        <div class="sp-setup-coral-body">
+          <div class="sp-setup-coral-tag">Workspace</div>
+          <div class="sp-setup-coral-name">Desk Standard</div>
+          <div class="sp-setup-coral-meta">Standard board &middot; Accessories &middot; Mount kit</div>
+          <div class="sp-setup-coral-footer"><span class="sp-setup-coral-price">&#8377;13,999</span><span class="sp-setup-coral-cta">Shop &rarr;</span></div>
+        </div>
+      </a>
+      <a href="/collections/tulai?size=Small" class="sp-setup-coral-card">
+        <div class="sp-setup-coral-img">
+          <img src="{{ 'kitchen-setup.jpg' | asset_url }}" alt="Kitchen" loading="lazy" onerror="this.style.display='none'">
+        </div>
+        <div class="sp-setup-coral-body">
+          <div class="sp-setup-coral-tag">Kitchen</div>
+          <div class="sp-setup-coral-name">Kitchen Small</div>
+          <div class="sp-setup-coral-meta">Small board &middot; Hooks &middot; Shelf &middot; Pegs</div>
+          <div class="sp-setup-coral-footer"><span class="sp-setup-coral-price">&#8377;5,299</span><span class="sp-setup-coral-cta">Shop &rarr;</span></div>
+        </div>
+      </a>
+    {% endif %}
+  </div>
+</div>
+
+<script>
+function addCuratedToCart(e) {
+  e.preventDefault();
+  e.stopPropagation();
+  const btn = e.currentTarget;
+  const variantId = btn.getAttribute('data-variant-id');
+  const productUrl = btn.getAttribute('data-product-url');
+  const originalText = btn.innerHTML;
+
+  // If no variant ID found, go to product page
+  if (!variantId || variantId === '' || variantId === 'nil') {
+    if (productUrl) window.location.href = productUrl;
+    return;
+  }
+
+  btn.innerHTML = 'Adding...';
+  btn.disabled = true;
+
+  fetch('/cart/add.js', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+    body: JSON.stringify({ items: [{ id: parseInt(variantId), quantity: 1 }] })
+  })
+  .then(function(res) {
+    if (!res.ok) {
+      // Non-2xx response (e.g. sold out, wrong variant)
+      return res.json().then(function(err) { throw new Error(err.description || 'Cart error'); });
+    }
+    return res.json();
+  })
+  .then(function(data) {
+    btn.innerHTML = 'Added ✓';
+    btn.disabled = false;
+    // Update cart count badge
+    fetch('/cart.js').then(r => r.json()).then(function(cart) {
+      document.querySelectorAll('.cart-count-bubble, [data-cart-count], #cart-icon-bubble span').forEach(function(el) {
+        el.textContent = cart.item_count;
+      });
+      // Try to open cart drawer if available
+      var event = new CustomEvent('cart:refresh', { bubbles: true });
+      document.dispatchEvent(event);
+    });
+    setTimeout(function() { btn.innerHTML = originalText; }, 2500);
+  })
+  .catch(function(err) {
+    console.error('Cart add error:', err);
+    btn.innerHTML = 'Failed - try again';
+    btn.disabled = false;
+    setTimeout(function() { btn.innerHTML = originalText; }, 3000);
+  });
+}
+</script>
+
+{% schema %}
+{
+  "name": "Curated Setups",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Curated Combinations" },
+    { "type": "text", "id": "title", "label": "Title", "default": "Not sure where to start?" },
+    { "type": "textarea", "id": "subtitle", "label": "Subtitle", "default": "We've curated it for you. Each setup contains board, accessories and mount kit &mdash; ready to go." },
+    { "type": "url", "id": "link_url", "label": "Link URL" },
+    { "type": "text", "id": "link_text", "label": "Link Text", "default": "View all setups &rarr;" }
+  ],
+  "blocks": [
+    {
+      "type": "setup_card",
+      "name": "Setup Card",
+      "limit": 4,
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "video", "id": "video", "label": "Video (Optional)", "info": "If provided, video will autoplay instead of showing image." },
+        { "type": "product", "id": "product", "label": "Product", "info": "Select a product to enable 'Add to Cart'" },
+        { "type": "text", "id": "variant_title", "label": "Variant Title", "info": "Only needed if one product (e.g. 'board') has multiple sizes. Type the exact variant name, e.g. Tiny, Small or Standard. Leave blank to use the first available variant." },
+        { "type": "url", "id": "link", "label": "Link (Fallback)", "info": "Used if no product is selected" },
+        { "type": "text", "id": "tag", "label": "Tag", "default": "Entryway" },
+        { "type": "text", "id": "title", "label": "Title", "default": "Tiny Entryway" },
+        { "type": "text", "id": "meta", "label": "Details", "default": "Tiny board &middot; 4 hooks &middot; 1 shelf &middot; Pegs" },
+        { "type": "text", "id": "price", "label": "Price", "default": "&#8377;3,999" },
+        { "type": "text", "id": "cta", "label": "CTA Text", "default": "Shop &rarr;" }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "Curated Setups" }
+  ]
+}
+{% endschema %}

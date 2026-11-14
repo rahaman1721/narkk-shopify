@@ -1,0 +1,754 @@
+<style>
+html { scroll-behavior: smooth; }
+/* ── Legal page ── */
+.lg-hero {
+  padding: 80px 40px 60px;
+  background: var(--cream, #F5F0EA);
+  border-bottom: 1px solid var(--border, #E0D5C1);
+}
+.lg-ey {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--sage, #8A9E8A);
+  margin-bottom: 16px;
+}
+.lg-ey-line {
+  display: inline-block;
+  width: 28px;
+  height: 1px;
+  background: var(--sage, #8A9E8A);
+}
+.lg-title {
+  font-size: clamp(2.4rem, 5vw, 4rem);
+  font-weight: 200;
+  color: var(--slate, #2A3B4C);
+  margin: 0 0 20px;
+  line-height: 1.1;
+}
+.lg-sub {
+  font-size: 13px;
+  color: var(--slate-l, #5A6B7C);
+  line-height: 1.7;
+  max-width: 680px;
+}
+
+/* ── Legal Page Layout ── */
+.lg-layout {
+  display: flex;
+  height: calc(100vh - 70px); /* Fill viewport minus header */
+  background: var(--cream, #F5F0EA);
+}
+
+.lg-sidebar {
+  width: 280px;
+  flex-shrink: 0;
+  height: 100%;
+  overflow-y: auto;
+  border-right: 1px solid var(--border, #E0D5C1);
+  padding: 40px 0;
+  background: var(--cream, #F5F0EA);
+}
+
+.lg-sidebar-link {
+  display: block;
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--slate-l, #5A6B7C);
+  text-decoration: none;
+  padding: 12px 40px;
+  border-left: 3px solid transparent;
+  transition: all 0.2s;
+}
+
+.lg-sidebar-link:hover {
+  background: rgba(237, 231, 222, 0.5);
+  color: var(--slate, #2A3B4C);
+}
+
+.lg-sidebar-link.active {
+  color: var(--coral, #E05A3A);
+  font-weight: 400;
+  border-left-color: var(--coral, #E05A3A);
+  background: var(--cream-d, #EDE7DE);
+}
+
+.lg-main {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  overflow-y: auto; /* Right side scrolls internally */
+  scroll-behavior: smooth; /* Smooth scroll within container */
+}
+
+/* ── Document body ── */
+.lg-doc {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 40px 120px;
+}
+
+/* ── Section ── */
+.lg-sec {
+  padding-bottom: 80px;
+  margin-bottom: 80px;
+  border-bottom: 1px solid var(--border, #E0D5C1);
+  scroll-margin-top: 120px;
+}
+.lg-sec:last-child {
+  border-bottom: none;
+}
+.lg-sec-num {
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--sage, #8A9E8A);
+  margin-bottom: 10px;
+}
+.lg-sec-title {
+  font-size: clamp(1.5rem, 3vw, 2.2rem);
+  font-weight: 200;
+  color: var(--slate, #2A3B4C);
+  margin-bottom: 10px;
+  line-height: 1.2;
+}
+.lg-dates {
+  font-size: 11px;
+  color: var(--slate-l, #5A6B7C);
+  letter-spacing: 0.5px;
+  margin-bottom: 28px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border, #E0D5C1);
+}
+.lg-h3 {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--slate, #2A3B4C);
+  margin: 32px 0 12px;
+}
+.lg-p {
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--slate-l, #5A6B7C);
+  line-height: 1.9;
+  margin-bottom: 16px;
+}
+.lg-list {
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--slate-l, #5A6B7C);
+  line-height: 1.9;
+  margin: 0 0 16px 20px;
+  padding: 0;
+}
+.lg-list li {
+  margin-bottom: 8px;
+}
+
+/* ── Contact table ── */
+.lg-contact {
+  background: var(--cream-d, #EDE7DE);
+  border: 1px solid var(--border, #E0D5C1);
+  padding: 24px 28px;
+  margin-top: 20px;
+}
+.lg-contact-row {
+  display: flex;
+  gap: 24px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border, #E0D5C1);
+  font-size: 13px;
+}
+.lg-contact-row:last-child {
+  border-bottom: none;
+}
+.lg-contact-k {
+  min-width: 160px;
+  font-weight: 500;
+  color: var(--slate, #2A3B4C);
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+.lg-contact-row span:last-child {
+  color: var(--slate-l, #5A6B7C);
+}
+.lg-contact a {
+  color: var(--coral, #E05A3A);
+  text-decoration: none;
+}
+.lg-contact a:hover {
+  text-decoration: underline;
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .lg-hero { padding: 60px 20px 40px; }
+  .lg-layout {
+    flex-direction: column;
+    height: auto !important;
+    overflow: visible !important;
+  }
+  .lg-main {
+    height: auto !important;
+    overflow: visible !important;
+  }
+  .lg-sidebar {
+    width: 100%;
+    height: auto;
+    position: sticky;
+    top: 70px; /* Assuming 70px header height */
+    z-index: 10;
+    border-right: none;
+    border-bottom: 1px solid var(--border, #E0D5C1);
+    padding: 20px 0 0;
+    display: flex;
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+    background: var(--cream, #F5F0EA);
+  }
+  .lg-sidebar-link {
+    display: inline-block;
+    border-left: none;
+    border-bottom: 2px solid transparent;
+    padding: 12px 20px;
+  }
+  .lg-sidebar-link.active {
+    border-left: none;
+    border-bottom-color: var(--coral, #E05A3A);
+  }
+  .lg-doc { padding: 40px 20px 80px; }
+  /* Mobile: hide all sections by default, show only active */
+  .lg-sec { display: none; }
+  .lg-sec.mob-active { display: block; padding-bottom: 60px; }
+  .lg-contact-row { flex-direction: column; gap: 4px; }
+  .lg-contact-k { min-width: unset; }
+}
+</style>
+
+<section class="lg-hero">
+  <div class="lg-ey"><span class="lg-ey-line"></span>Legal</div>
+  <h1 class="lg-title">Legal pages.</h1>
+  <div class="lg-sub">Privacy Policy · Terms &amp; Conditions · Shipping Policy · Returns &amp; Refunds · Repair &amp; Warranty · Cancellation Policy · Grievance Redressal · Cookie Policy</div>
+</section>
+
+<div class="lg-layout">
+  <aside class="lg-sidebar">
+    <a href="#privacy" class="lg-sidebar-link active">Privacy Policy</a>
+    <a href="#terms" class="lg-sidebar-link">Terms of Use</a>
+    <a href="#shipping" class="lg-sidebar-link">Shipping Policy</a>
+    <a href="#returns" class="lg-sidebar-link">Returns Policy</a>
+    <a href="#warranty" class="lg-sidebar-link">Repair &amp; Warranty</a>
+    <a href="#cancellation" class="lg-sidebar-link">Cancellation Policy</a>
+    <a href="#grievance" class="lg-sidebar-link">Grievance Redressal</a>
+    <a href="#cookies" class="lg-sidebar-link">Cookie Policy</a>
+  </aside>
+
+  <main class="lg-main">
+    
+
+    <div class="lg-doc">
+
+  <section class="lg-sec" id="privacy">
+    <div class="lg-sec-num">01</div>
+    <div class="lg-sec-title">Privacy Policy</div>
+    <div class="lg-dates">Effective date: 16 July 2026 &nbsp;·&nbsp; Last updated: 16 July 2026</div>
+    <p class="lg-p">This Privacy Policy explains how narkk ("narkk", "we", "us", "our") collects, uses, discloses, and protects information relating to visitors and customers ("you", "your") of www.narkk.com (the "Site") and any related purchase, account, or communication activity. By using the Site or placing an order, you agree to the practices described in this Policy. This Policy is framed in accordance with the Information Technology Act, 2000, the Information Technology (Reasonable Security Practices and Procedures and Sensitive Personal Data or Information) Rules, 2011, and the Digital Personal Data Protection Act, 2023, to the extent applicable to narkk as a data fiduciary.</p>
+
+    <div class="lg-h3">1.1 Information We Collect</div>
+    <p class="lg-p">We collect the following categories of information:</p>
+    <ul class="lg-list">
+      <li><strong>Identity and contact data</strong> — name, email address, phone number, shipping and billing address, collected at account creation or checkout.</li>
+      <li><strong>Order and transaction data</strong> — products purchased, order value, order history, payment status (payment card and UPI details are processed directly by our payment gateway, Razorpay, and are never stored on narkk's own servers).</li>
+      <li><strong>Technical data</strong> — IP address, browser type, device identifiers, and pages visited, collected automatically via cookies and similar technologies (see our Cookie Policy).</li>
+      <li><strong>Marketing data</strong> — your preferences for receiving marketing communications, and your interactions with such communications.</li>
+      <li><strong>Communications</strong> — correspondence you send us via the Contact page, email, or customer support channels.</li>
+    </ul>
+
+    <div class="lg-h3">1.2 How We Use Your Information</div>
+    <p class="lg-p">We use the information collected for the following purposes:</p>
+    <ul class="lg-list">
+      <li>To process, fulfil, and deliver your orders, including sharing necessary details with our logistics and courier partners.</li>
+      <li>To process payments securely through our payment gateway partner.</li>
+      <li>To communicate with you regarding orders, account activity, and customer support requests.</li>
+      <li>To send marketing communications, only where you have opted in, and always with an option to unsubscribe.</li>
+      <li>To improve the Site, our products, and the overall customer experience, including through analytics and advertising tools such as Meta Pixel (see our Cookie Policy).</li>
+      <li>To detect, prevent, and address fraud, abuse, security incidents, or violations of our Terms &amp; Conditions.</li>
+      <li>To comply with applicable law, regulation, legal process, or governmental request.</li>
+    </ul>
+
+    <div class="lg-h3">1.3 Sharing of Information</div>
+    <p class="lg-p">We do not sell your personal information. We share information only with the following categories of recipients, and only to the extent necessary for them to perform their function:</p>
+    <ul class="lg-list">
+      <li><strong>Payment processors</strong> (e.g. Razorpay) to process transactions securely.</li>
+      <li><strong>Logistics and courier partners</strong> to deliver your order to the address you provide.</li>
+      <li><strong>Technology and analytics providers</strong> (e.g. Shopify as our commerce platform, Meta for pixel-based analytics and advertising) strictly for site operation, analytics, and marketing measurement.</li>
+      <li><strong>Regulatory or law enforcement authorities</strong>, where required under applicable law.</li>
+    </ul>
+
+    <div class="lg-h3">1.4 Data Security</div>
+    <p class="lg-p">We implement reasonable security practices and procedures, including SSL encryption on the Site and reliance on PCI-DSS compliant payment processing, to protect your information against unauthorised access, alteration, disclosure, or destruction. No method of transmission or storage is completely secure, and while we strive to protect your information, we cannot guarantee absolute security.</p>
+
+    <div class="lg-h3">1.5 Data Retention</div>
+    <p class="lg-p">We retain personal information for as long as necessary to fulfil the purposes described in this Policy, including to satisfy legal, accounting, or reporting requirements (including GST record-keeping obligations), and thereafter delete or anonymise it in accordance with applicable law.</p>
+
+    <div class="lg-h3">1.6 Your Rights</div>
+    <p class="lg-p">You may request access to, correction of, or deletion of your personal information, and you may withdraw consent to marketing communications at any time, by writing to support@narkk.com. We will respond to verified requests within a reasonable time and in accordance with applicable law.</p>
+
+    <div class="lg-h3">1.7 Children's Privacy</div>
+    <p class="lg-p">The Site is not directed at individuals under the age of 18. We do not knowingly collect personal information from minors. If we become aware that we have inadvertently collected such information, we will take steps to delete it.</p>
+
+    <div class="lg-h3">1.8 Changes to This Policy</div>
+    <p class="lg-p">We may update this Privacy Policy from time to time to reflect changes in our practices or applicable law. The "Last updated" date at the top of this page indicates when this Policy was last revised. Continued use of the Site after changes take effect constitutes acceptance of the revised Policy.</p>
+
+    <div class="lg-h3">1.9 Contact</div>
+    <p class="lg-p">For any privacy-related questions or requests, contact us at:</p>
+    <div class="lg-contact">
+      <div class="lg-contact-row"><span class="lg-contact-k">Business name</span><span>narkk</span></div>
+      <div class="lg-contact-row"><span class="lg-contact-k">Legal structure</span><span>Sole Proprietorship</span></div>
+      <div class="lg-contact-row"><span class="lg-contact-k">Proprietor</span><span>Niranjan</span></div>
+      <div class="lg-contact-row"><span class="lg-contact-k">Registered address</span><span>No: 228/6, Pallavaram Road, Kolappakam, Chennai 600128</span></div>
+      <div class="lg-contact-row"><span class="lg-contact-k">GSTIN</span><span>33AYCPN4460F1ZO</span></div>
+      <div class="lg-contact-row"><span class="lg-contact-k">Website</span><span>www.narkk.com</span></div>
+      <div class="lg-contact-row"><span class="lg-contact-k">Support email</span><span><a href="mailto:support@narkk.com">support@narkk.com</a></span></div>
+    </div>
+  </section>
+
+  <section class="lg-sec" id="terms">
+    <div class="lg-sec-num">02</div>
+    <div class="lg-sec-title">Terms &amp; Conditions</div>
+    <div class="lg-dates">Effective date: 16 July 2026 &nbsp;·&nbsp; Last updated: 16 July 2026</div>
+    <p class="lg-p">These Terms &amp; Conditions ("Terms") govern your access to and use of www.narkk.com and any purchase made through it. By accessing the Site or placing an order, you agree to be bound by these Terms. If you do not agree, please do not use the Site.</p>
+
+    <div class="lg-h3">2.1 Eligibility</div>
+    <p class="lg-p">You must be at least 18 years of age and capable of entering into a legally binding contract under the Indian Contract Act, 1872, to place an order on the Site. By placing an order, you represent that you meet this requirement.</p>
+
+    <div class="lg-h3">2.2 Account</div>
+    <p class="lg-p">If you create an account, you are responsible for maintaining the confidentiality of your login credentials and for all activity that occurs under your account. Notify us immediately at support@narkk.com of any unauthorised use of your account.</p>
+
+    <div class="lg-h3">2.3 Products, Pricing, and Availability</div>
+    <ul class="lg-list">
+      <li>All prices displayed on the Site are in Indian Rupees (INR) and are inclusive of applicable GST, unless stated otherwise.</li>
+      <li>Product images are for illustrative purposes; minor variation in colour or finish may occur due to the natural material (e.g. birch plywood grain) or display settings, and does not constitute a defect.</li>
+      <li>narkk reserves the right to modify prices, product specifications, or discontinue any product at any time without prior notice, and without liability to you for such changes, except in respect of orders already confirmed.</li>
+      <li>Products are subject to availability. In the event a product becomes unavailable after you place an order, narkk will notify you and offer a full refund or a suitable alternative.</li>
+    </ul>
+
+    <div class="lg-h3">2.4 Order Acceptance</div>
+    <p class="lg-p">Your order constitutes an offer to purchase. A contract of sale is formed only when narkk confirms your order, whether by order confirmation email or by dispatch of the product, whichever is earlier. narkk reserves the right, at its sole discretion, to refuse, cancel, or limit any order for reasons including but not limited to: suspected fraud, pricing or listing errors, non-availability of stock, delivery restrictions, or violation of these Terms. Where narkk cancels a confirmed order, any amount already paid will be refunded in full.</p>
+
+    <div class="lg-h3">2.5 Payment</div>
+    <p class="lg-p">Payments are processed through our third-party payment gateway partner, Razorpay. narkk also accepts Cash on Delivery (COD) on eligible orders and pin codes, subject to any COD charges or order-value limits displayed at checkout. narkk does not store your payment card or banking credentials. By making a payment, you also agree to the applicable terms of our payment gateway provider.</p>
+
+    <div class="lg-h3">2.6 Intellectual Property</div>
+    <p class="lg-p">All content on the Site, including but not limited to the narkk name, logo, product designs, photography, text, and graphics, is the property of narkk or its licensors and is protected under applicable Indian intellectual property law. You may not reproduce, distribute, or create derivative works from any content on the Site without narkk's prior written consent.</p>
+
+    <div class="lg-h3">2.7 User Conduct</div>
+    <p class="lg-p">You agree not to:</p>
+    <ul class="lg-list">
+      <li>Use the Site for any unlawful purpose or in violation of these Terms.</li>
+      <li>Attempt to gain unauthorised access to the Site, its systems, or other users' accounts.</li>
+      <li>Post or transmit any content that is defamatory, obscene, or infringes on any third party's rights.</li>
+      <li>Interfere with or disrupt the Site's operation, including through the introduction of malicious code.</li>
+    </ul>
+
+    <div class="lg-h3">2.8 Limitation of Liability</div>
+    <p class="lg-p">To the maximum extent permitted by applicable law, narkk's total liability arising out of or in connection with any order or your use of the Site, whether in contract, tort, or otherwise, shall not exceed the amount actually paid by you for the product giving rise to the claim. narkk shall not be liable for any indirect, incidental, special, or consequential damages, including loss of profits, loss of data, or loss of goodwill, arising out of or in connection with your use of the Site or any product purchased through it, except where such exclusion is not permitted under applicable law (including the Consumer Protection Act, 2019).</p>
+
+    <div class="lg-h3">2.9 Indemnification</div>
+    <p class="lg-p">You agree to indemnify and hold narkk, its proprietor, and its representatives harmless from any claim, demand, loss, or damage, including reasonable legal fees, arising out of your breach of these Terms or your misuse of the Site.</p>
+
+    <div class="lg-h3">2.10 Force Majeure</div>
+    <p class="lg-p">narkk shall not be liable for any delay or failure to perform its obligations under these Terms where such delay or failure results from causes beyond its reasonable control, including natural disaster, strike, transport disruption, government action, or other events of force majeure.</p>
+
+    <div class="lg-h3">2.11 Governing Law and Jurisdiction</div>
+    <p class="lg-p">These Terms are governed by the laws of India. Subject to the dispute resolution mechanisms available to you under the Consumer Protection Act, 2019 (including your local District Consumer Disputes Redressal Commission), any dispute arising out of or in connection with these Terms shall be subject to the exclusive jurisdiction of the courts at Chennai, Tamil Nadu.</p>
+
+    <div class="lg-h3">2.12 Severability and Amendment</div>
+    <p class="lg-p">If any provision of these Terms is found to be invalid or unenforceable, the remaining provisions shall continue in full force and effect. narkk may revise these Terms at any time by posting an updated version on the Site; continued use of the Site after such changes constitutes acceptance.</p>
+
+    <div class="lg-h3">2.13 Contact</div>
+    <div class="lg-contact">
+      <div class="lg-contact-row"><span class="lg-contact-k">Business name</span><span>narkk</span></div>
+      <div class="lg-contact-row"><span class="lg-contact-k">Legal structure</span><span>Sole Proprietorship</span></div>
+      <div class="lg-contact-row"><span class="lg-contact-k">Proprietor</span><span>Niranjan</span></div>
+      <div class="lg-contact-row"><span class="lg-contact-k">Registered address</span><span>No: 228/6, Pallavaram Road, Kolappakam, Chennai 600128</span></div>
+      <div class="lg-contact-row"><span class="lg-contact-k">GSTIN</span><span>33AYCPN4460F1ZO</span></div>
+      <div class="lg-contact-row"><span class="lg-contact-k">Website</span><span>www.narkk.com</span></div>
+      <div class="lg-contact-row"><span class="lg-contact-k">Support email</span><span><a href="mailto:support@narkk.com">support@narkk.com</a></span></div>
+    </div>
+  </section>
+
+  <section class="lg-sec" id="shipping">
+    <div class="lg-sec-num">03</div>
+    <div class="lg-sec-title">Shipping Policy</div>
+    <div class="lg-dates">Effective date: 16 July 2026 &nbsp;·&nbsp; Last updated: 16 July 2026</div>
+    <p class="lg-p">This Shipping Policy describes how narkk ships orders placed on www.narkk.com within India.</p>
+
+    <div class="lg-h3">3.1 Shipping Coverage</div>
+    <p class="lg-p">We currently ship across India, subject to serviceability by our logistics partners. If your pin code is not serviceable, this will be indicated at checkout before payment is collected.</p>
+
+    <div class="lg-h3">3.2 Processing Time</div>
+    <p class="lg-p">Orders are processed and dispatched from our Chennai facility within 3 to 7 business days of order confirmation, for in-stock items. Processing times may be longer during sale periods or for items with limited stock; any such delay will be communicated to you.</p>
+
+    <div class="lg-h3">3.3 Delivery Timelines</div>
+    <p class="lg-p">Estimated delivery timelines depend on your location and the courier partner assigned to your order, and are typically communicated at checkout and in your order confirmation. Delivery timelines are estimates and not guaranteed; narkk is not liable for delays caused by the courier partner, incorrect address information provided by you, or events beyond narkk's reasonable control (including but not limited to weather, strikes, or regional disruptions).</p>
+
+    <div class="lg-h3">3.4 Shipping Charges</div>
+    <p class="lg-p">Shipping charges, if any, are displayed at checkout prior to payment and depend on the destination and order value. Any promotional free-shipping offer will be clearly indicated on the Site.</p>
+
+    <div class="lg-h3">3.5 Order Tracking</div>
+    <p class="lg-p">Once your order is dispatched, you will receive a tracking link via email and/or SMS. You may also view order status through your narkk account.</p>
+
+    <div class="lg-h3">3.6 Delivery Address</div>
+    <p class="lg-p">You are responsible for providing a complete and accurate delivery address at checkout. narkk is not liable for non-delivery or delay resulting from an incorrect or incomplete address provided by you. Where a shipment is returned to narkk due to an incorrect address, repeat shipping charges (if any) will be borne by you.</p>
+
+    <div class="lg-h3">3.7 Damaged or Lost Shipments</div>
+    <p class="lg-p">If your order arrives visibly damaged, please refer to our Returns &amp; Refunds Policy for the process to report and resolve the issue. If a shipment is confirmed lost in transit by our courier partner, narkk will offer a replacement or a full refund, at your choice.</p>
+
+    <div class="lg-h3">3.8 Contact</div>
+    <div class="lg-contact">
+      <div class="lg-contact-row"><span class="lg-contact-k">Business name</span><span>narkk</span></div>
+      <div class="lg-contact-row"><span class="lg-contact-k">Legal structure</span><span>Sole Proprietorship</span></div>
+      <div class="lg-contact-row"><span class="lg-contact-k">Proprietor</span><span>Niranjan</span></div>
+      <div class="lg-contact-row"><span class="lg-contact-k">Registered address</span><span>No: 228/6, Pallavaram Road, Kolappakam, Chennai 600128</span></div>
+      <div class="lg-contact-row"><span class="lg-contact-k">GSTIN</span><span>33AYCPN4460F1ZO</span></div>
+      <div class="lg-contact-row"><span class="lg-contact-k">Website</span><span>www.narkk.com</span></div>
+      <div class="lg-contact-row"><span class="lg-contact-k">Support email</span><span><a href="mailto:support@narkk.com">support@narkk.com</a></span></div>
+    </div>
+  </section>
+
+  <section class="lg-sec" id="returns">
+    <div class="lg-sec-num">04</div>
+    <div class="lg-sec-title">Returns &amp; Refunds Policy</div>
+    <div class="lg-dates">Effective date: 16 July 2026 &nbsp;·&nbsp; Last updated: 15 August 2026</div>
+    <p class="lg-p">narkk wants you to be satisfied with your purchase. This Policy sets out the terms under which returns and refunds are accepted, and is framed in accordance with the Consumer Protection (E-Commerce) Rules, 2020.</p>
+
+    <div class="lg-h3">4.1 Return Window</div>
+    <p class="lg-p">You may request a return within 365 days of the date of delivery.</p>
+
+    <div class="lg-h3">4.2 Healthy-Condition Returns (product not defective)</div>
+    <ul class="lg-list">
+      <li>Day 0–30 from delivery: full refund to your original payment method.</li>
+      <li>Day 31–365 from delivery: store credit only, issued for the value of the returned product. Store credit does not expire.</li>
+    </ul>
+
+    <div class="lg-h3">4.3 Faulty or Defective Returns</div>
+    <p class="lg-p">If the product is defective or materially different from its description, you must report it within 30 days of the date of delivery to be eligible for a full refund or replacement with no deduction. Defects reported after 30 days are handled as healthy-condition returns under 4.2, subject to narkk's inspection under 4.4.</p>
+
+    <div class="lg-h3">4.4 Return Eligibility (healthy-condition returns)</div>
+    <p class="lg-p">To be eligible for a healthy-condition return, the product must be:</p>
+    <ul class="lg-list">
+      <li>Unused, unassembled or, if assembled for inspection, capable of being disassembled without damage.</li>
+      <li>In its original packaging, with all accessories, hardware, and documentation included.</li>
+      <li>Free from damage not caused by narkk or the courier partner (i.e. not damaged through misuse).</li>
+    </ul>
+    <p class="lg-p">narkk reserves the right to inspect the returned product on receipt and to refuse a return or refund where the above conditions are not met, in which case the product will be shipped back to you at your cost. This eligibility check does not apply to faulty or defective returns under 4.3.</p>
+
+    <div class="lg-h3">4.5 Non-Returnable Items</div>
+    <p class="lg-p">The following are not eligible for a healthy-condition return under 4.2, except where defective or damaged in transit (see 4.3 and 4.8):</p>
+    <ul class="lg-list">
+      <li>Products explicitly marked as "final sale" or "non-returnable" on the product page at the time of purchase.</li>
+      <li>Products that have been installed, wall-mounted, or used beyond inspection.</li>
+    </ul>
+    <p class="lg-p">This exclusion applies to healthy-condition returns only. A genuine defect — including one that only becomes apparent after necessary installation, such as a mounting-hardware fault — is not barred by having been installed, and remains covered under 4.3.</p>
+
+    <div class="lg-h3">4.6 How to Initiate a Return</div>
+    <p class="lg-p">To initiate a return, write to support@narkk.com within the return window with your order number and reason for return, along with photographs if the return relates to damage or a defect. We will acknowledge your request within 48 hours and arrange for pickup or provide return shipping instructions.</p>
+
+    <div class="lg-h3">4.7 Refunds</div>
+    <p class="lg-p">Once the returned product is received and inspected, narkk will process your refund within 7 to 10 business days:</p>
+    <ul class="lg-list">
+      <li>Healthy-condition, Day 0–30: to your original payment method.</li>
+      <li>Healthy-condition, Day 31–365: as store credit.</li>
+      <li>Faulty/defective, reported within 30 days: full refund to your original payment method, no deduction. Where the original payment method cannot be credited (e.g. Cash on Delivery orders), refunds are made via bank transfer to an account you provide.</li>
+    </ul>
+    <p class="lg-p">Shipping charges originally paid by you are non-refundable on healthy-condition returns, except where the return is due to a defect or narkk's error, in which case original shipping charges are refunded in full.</p>
+    <p class="lg-p">For healthy-condition returns made Day 31–365, return shipping (the cost of sending the product back to narkk) is borne by you. For healthy-condition returns made Day 0–30, and for all faulty/defective returns under 4.3, return shipping is arranged and covered by narkk.</p>
+
+    <div class="lg-h3">4.8 Damaged or Defective Products</div>
+    <p class="lg-p">If you receive a product damaged in transit or defective on arrival, report it to support@narkk.com within 48 hours of delivery with photographs of the damage and the packaging. narkk will, at its discretion, offer a free replacement or a full refund including original shipping charges, without requiring you to bear return shipping costs. This 48-hour path is the fast-track for damage visible on arrival; defects identified later are still covered under 4.3's 30-day window.</p>
+
+    <div class="lg-h3">4.9 Exchanges</div>
+    <p class="lg-p">narkk does not offer direct exchanges at this time. If you wish to purchase a different product, please initiate a return for a refund or store credit (as applicable under 4.2/4.3) and place a new order.</p>
+
+    <div class="lg-h3">4.10 Contact</div>
+    <div class="lg-contact">
+      <div class="lg-contact-row"><span class="lg-contact-k">Business name</span><span>narkk</span></div>
+      <div class="lg-contact-row"><span class="lg-contact-k">Legal structure</span><span>Sole Proprietorship</span></div>
+      <div class="lg-contact-row"><span class="lg-contact-k">Proprietor</span><span>Niranjan</span></div>
+      <div class="lg-contact-row"><span class="lg-contact-k">Registered address</span><span>No: 228/6, Pallavaram Road, Kolappakam, Chennai 600128</span></div>
+      <div class="lg-contact-row"><span class="lg-contact-k">GSTIN</span><span>33AYCPN4460F1ZO</span></div>
+      <div class="lg-contact-row"><span class="lg-contact-k">Website</span><span>www.narkk.com</span></div>
+      <div class="lg-contact-row"><span class="lg-contact-k">Support email</span><span><a href="mailto:support@narkk.com">support@narkk.com</a></span></div>
+    </div>
+  </section>
+
+  <section class="lg-sec" id="warranty">
+    <div class="lg-sec-num">05</div>
+    <div class="lg-sec-title">Repair &amp; Warranty Policy</div>
+    <div class="lg-dates">Effective date: 15 August 2026 &nbsp;·&nbsp; Last updated: 15 August 2026</div>
+    <p class="lg-p">narkk is built to be repaired, not replaced. This Policy sets out the warranty narkk provides against manufacturing defects, and how repairs are handled.</p>
+
+    <div class="lg-h3">5.1 What This Warranty Covers</div>
+    <p class="lg-p">This warranty covers manufacturing defects only — flaws arising from assembly or CNC manufacturing at the time the product was made. It does not cover damage arising after delivery, which is addressed under 5.4 (Exclusions).</p>
+
+    <div class="lg-h3">5.2 Warranty Period</div>
+    <p class="lg-p">The standard warranty period is 5 years from the date of delivery, covering both the board/shelf structure and hardware (hinges, connectors, S-hooks, and similar components) for the same duration. Warranty periods may differ by product; where a specific product carries a different warranty period, this will be stated on the product page at the time of purchase.</p>
+
+    <div class="lg-h3">5.3 What This Warranty Covers, In Practice</div>
+    <p class="lg-p">If a manufacturing defect covered under 5.1 arises within the applicable warranty period, narkk will repair the affected component at no charge for the repair itself. Depending on the nature of the issue, narkk will, at its discretion, either send a replacement part for self-repair or have the product sent back to our Chennai workshop for repair. You are responsible for the cost of shipping the product to narkk where a return-for-repair is required; narkk will inform you of the shipping arrangement for your specific case. Repair turnaround time varies by issue and is not fixed under this Policy.</p>
+
+    <div class="lg-h3">5.4 Exclusions</div>
+    <p class="lg-p">This warranty does not cover:</p>
+    <ul class="lg-list">
+      <li>Normal wear and tear.</li>
+      <li>Damage caused by misuse or unauthorized modification of the product.</li>
+      <li>Damage caused by water or moisture exposure.</li>
+    </ul>
+
+    <div class="lg-h3">5.5 Effect of a Repair on Warranty Coverage</div>
+    <p class="lg-p">Where a component is repaired or replaced under this warranty, that component receives a new 5-year (or applicable) warranty period starting from the date of repair. This does not extend or restart the warranty period for the rest of the product, which continues to run from the original delivery date.</p>
+
+    <div class="lg-h3">5.6 Proof of Warranty</div>
+    <p class="lg-p">Every product ships with a Care &amp; Repair card carrying a unique code specific to that unit. This code is required to raise a warranty claim. Please retain your Care &amp; Repair card; narkk cannot process a warranty claim without it.</p>
+
+    <div class="lg-h3">5.7 Relationship to Reimagine (Trade-In)</div>
+    <p class="lg-p">Warranty claims and repair history on a unit may affect its eligibility or value under narkk's Reimagine trade-in program. Full trade-in terms are set out separately.</p>
+
+    <div class="lg-h3">5.8 How to Raise a Warranty Claim</div>
+    <p class="lg-p">To raise a warranty claim, write to support@narkk.com with your order number, the Care &amp; Repair card code, a description of the issue, and photographs. We will acknowledge your request within 48 hours and advise on next steps.</p>
+
+    <div class="lg-h3">5.9 Contact</div>
+    <div class="lg-contact">
+      <div class="lg-contact-row"><span class="lg-contact-k">Business name</span><span>narkk</span></div>
+      <div class="lg-contact-row"><span class="lg-contact-k">Legal structure</span><span>Sole Proprietorship</span></div>
+      <div class="lg-contact-row"><span class="lg-contact-k">Proprietor</span><span>Niranjan</span></div>
+      <div class="lg-contact-row"><span class="lg-contact-k">Registered address</span><span>No: 228/6, Pallavaram Road, Kolappakam, Chennai 600128</span></div>
+      <div class="lg-contact-row"><span class="lg-contact-k">GSTIN</span><span>33AYCPN4460F1ZO</span></div>
+      <div class="lg-contact-row"><span class="lg-contact-k">Website</span><span>www.narkk.com</span></div>
+      <div class="lg-contact-row"><span class="lg-contact-k">Support email</span><span><a href="mailto:support@narkk.com">support@narkk.com</a></span></div>
+    </div>
+  </section>
+
+  <section class="lg-sec" id="cancellation">
+    <div class="lg-sec-num">06</div>
+    <div class="lg-sec-title">Cancellation Policy</div>
+    <div class="lg-dates">Effective date: 16 July 2026 &nbsp;·&nbsp; Last updated: 16 July 2026</div>
+    <p class="lg-p">This Policy describes when and how you may cancel an order placed on www.narkk.com.</p>
+
+    <div class="lg-h3">6.1 Cancellation Before Dispatch</div>
+    <p class="lg-p">narkk's products are manufactured to a standing production plan and held as available stock; they are not manufactured on a per-order, made-to-order basis. Accordingly, you may cancel your order any time before it has been dispatched, by writing to support@narkk.com with your order number, or via your account on the Site where this feature is available. A cancelled unit is returned to available stock for future orders.</p>
+
+    <div class="lg-h3">6.2 Cancellation After Dispatch</div>
+    <p class="lg-p">Once an order has been dispatched, it can no longer be cancelled. If you no longer want the product after it has shipped, you may decline delivery or initiate a return in accordance with our Returns &amp; Refunds Policy once the product is delivered.</p>
+
+    <div class="lg-h3">6.3 Refunds on Cancellation</div>
+    <p class="lg-p">Where an order is cancelled before dispatch, narkk will process a full refund, including any shipping charges collected, to your original payment method within 7 business days of the cancellation request being confirmed.</p>
+
+    <div class="lg-h3">6.4 Cancellation by narkk</div>
+    <p class="lg-p">narkk reserves the right to cancel an order prior to dispatch in circumstances including stock unavailability, pricing or listing errors, suspected fraudulent activity, or an undeliverable address. Where narkk cancels an order, you will be notified and any amount paid will be refunded in full.</p>
+
+    <div class="lg-h3">6.5 Contact</div>
+    <div class="lg-contact">
+      <div class="lg-contact-row"><span class="lg-contact-k">Business name</span><span>narkk</span></div>
+      <div class="lg-contact-row"><span class="lg-contact-k">Legal structure</span><span>Sole Proprietorship</span></div>
+      <div class="lg-contact-row"><span class="lg-contact-k">Proprietor</span><span>Niranjan</span></div>
+      <div class="lg-contact-row"><span class="lg-contact-k">Registered address</span><span>No: 228/6, Pallavaram Road, Kolappakam, Chennai 600128</span></div>
+      <div class="lg-contact-row"><span class="lg-contact-k">GSTIN</span><span>33AYCPN4460F1ZO</span></div>
+      <div class="lg-contact-row"><span class="lg-contact-k">Website</span><span>www.narkk.com</span></div>
+      <div class="lg-contact-row"><span class="lg-contact-k">Support email</span><span><a href="mailto:support@narkk.com">support@narkk.com</a></span></div>
+    </div>
+  </section>
+
+  <section class="lg-sec" id="grievance">
+    <div class="lg-sec-num">07</div>
+    <div class="lg-sec-title">Grievance Redressal Policy</div>
+    <div class="lg-dates">Effective date: 16 July 2026 &nbsp;·&nbsp; Last updated: 16 July 2026</div>
+    <p class="lg-p">In accordance with the Consumer Protection (E-Commerce) Rules, 2020 and the Information Technology (Intermediary Guidelines and Digital Media Ethics Code) Rules, 2021, narkk has appointed a Grievance Officer to address complaints and grievances relating to the Site and its products.</p>
+
+    <div class="lg-h3">7.1 Grievance Officer</div>
+    <div class="lg-contact">
+      <div class="lg-contact-row"><span class="lg-contact-k">Grievance Officer</span><span>Niranjan S Renugambal</span></div>
+      <div class="lg-contact-row"><span class="lg-contact-k">Email</span><span><a href="mailto:niranjan@narkk.com">niranjan@narkk.com</a></span></div>
+      <div class="lg-contact-row"><span class="lg-contact-k">Phone</span><span>+91 93613 92989</span></div>
+      <div class="lg-contact-row"><span class="lg-contact-k">Address</span><span>No: 228/6, Pallavaram Road, Kolappakam, Chennai 600128</span></div>
+    </div>
+
+    <div class="lg-h3">7.2 What You Can Raise</div>
+    <p class="lg-p">You may approach the Grievance Officer with complaints relating to, among other things:</p>
+    <ul class="lg-list">
+      <li>Order, delivery, payment, refund, or cancellation issues not resolved through regular customer support.</li>
+      <li>Product quality, safety, or misrepresentation concerns.</li>
+      <li>Privacy or data-handling concerns relating to your personal information.</li>
+      <li>Any other grievance relating to narkk's compliance with applicable consumer protection or information technology law.</li>
+    </ul>
+
+    <div class="lg-h3">7.3 Process and Timelines</div>
+    <ul class="lg-list">
+      <li>Grievances may be submitted by email to the Grievance Officer at the address above, or via support@narkk.com.</li>
+      <li>narkk will acknowledge receipt of your grievance within 48 hours.</li>
+      <li>narkk will endeavour to resolve the grievance within one (1) month from the date of receipt, in accordance with the Consumer Protection (E-Commerce) Rules, 2020.</li>
+      <li>If you are not satisfied with the resolution, you retain the right to escalate the matter to the appropriate Consumer Disputes Redressal Commission, or to any other authority available to you under applicable law.</li>
+    </ul>
+
+    <div class="lg-h3">7.4 Contact</div>
+    <div class="lg-contact">
+      <div class="lg-contact-row"><span class="lg-contact-k">Business name</span><span>narkk</span></div>
+      <div class="lg-contact-row"><span class="lg-contact-k">Legal structure</span><span>Sole Proprietorship</span></div>
+      <div class="lg-contact-row"><span class="lg-contact-k">Proprietor</span><span>Niranjan</span></div>
+      <div class="lg-contact-row"><span class="lg-contact-k">Registered address</span><span>No: 228/6, Pallavaram Road, Kolappakam, Chennai 600128</span></div>
+      <div class="lg-contact-row"><span class="lg-contact-k">GSTIN</span><span>33AYCPN4460F1ZO</span></div>
+      <div class="lg-contact-row"><span class="lg-contact-k">Website</span><span>www.narkk.com</span></div>
+      <div class="lg-contact-row"><span class="lg-contact-k">Support email</span><span><a href="mailto:support@narkk.com">support@narkk.com</a></span></div>
+    </div>
+  </section>
+
+  <section class="lg-sec" id="cookies">
+    <div class="lg-sec-num">08</div>
+    <div class="lg-sec-title">Cookie Policy</div>
+    <div class="lg-dates">Effective date: 16 July 2026 &nbsp;·&nbsp; Last updated: 16 July 2026</div>
+    <p class="lg-p">This Cookie Policy explains how narkk uses cookies and similar tracking technologies on www.narkk.com.</p>
+
+    <div class="lg-h3">8.1 What Are Cookies</div>
+    <p class="lg-p">Cookies are small text files placed on your device when you visit a website. They help the website function correctly, remember your preferences, and provide information to the site owner about how the site is used.</p>
+
+    <div class="lg-h3">8.2 Types of Cookies We Use</div>
+    <ul class="lg-list">
+      <li><strong>Essential cookies</strong> — required for core Site functionality, such as maintaining your cart and enabling checkout. These cannot be disabled without affecting Site functionality.</li>
+      <li><strong>Analytics and performance cookies</strong> — help us understand how visitors use the Site, so we can improve it.</li>
+      <li><strong>Advertising and measurement cookies</strong> — including Meta Pixel, used to measure the effectiveness of our marketing and to show you relevant narkk content on third-party platforms. Meta's use of this data is governed by Meta's own privacy policy.</li>
+      <li><strong>Platform cookies</strong> — set by Shopify, our e-commerce platform, to enable store functionality including checkout and fraud prevention.</li>
+    </ul>
+
+    <div class="lg-h3">8.3 Managing Cookies</div>
+    <p class="lg-p">You can control or disable cookies through your browser settings. Please note that disabling essential cookies may affect your ability to use certain features of the Site, including checkout.</p>
+
+    <div class="lg-h3">8.4 Third-Party Cookies</div>
+    <p class="lg-p">Some cookies on the Site are set by third parties (such as Meta and Shopify) whose services we use. narkk does not control these third-party cookies; please refer to the respective third party's cookie or privacy policy for further information.</p>
+
+    <div class="lg-h3">8.5 Changes to This Policy</div>
+    <p class="lg-p">We may update this Cookie Policy from time to time. The "Last updated" date at the top of this page reflects the most recent revision.</p>
+
+    <div class="lg-h3">8.6 Contact</div>
+    <div class="lg-contact">
+      <div class="lg-contact-row"><span class="lg-contact-k">Business name</span><span>narkk</span></div>
+      <div class="lg-contact-row"><span class="lg-contact-k">Legal structure</span><span>Sole Proprietorship</span></div>
+      <div class="lg-contact-row"><span class="lg-contact-k">Proprietor</span><span>Niranjan</span></div>
+      <div class="lg-contact-row"><span class="lg-contact-k">Registered address</span><span>No: 228/6, Pallavaram Road, Kolappakam, Chennai 600128</span></div>
+      <div class="lg-contact-row"><span class="lg-contact-k">GSTIN</span><span>33AYCPN4460F1ZO</span></div>
+      <div class="lg-contact-row"><span class="lg-contact-k">Website</span><span>www.narkk.com</span></div>
+      <div class="lg-contact-row"><span class="lg-contact-k">Support email</span><span><a href="mailto:support@narkk.com">support@narkk.com</a></span></div>
+    </div>
+  </section>
+
+    </div><!-- /.lg-doc -->
+  </main>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const links = document.querySelectorAll('.lg-sidebar-link');
+  const sections = document.querySelectorAll('.lg-sec');
+  const isMobile = () => window.innerWidth <= 900;
+  const mainContainer = document.querySelector('.lg-main');
+
+  function showSection(targetId) {
+    sections.forEach(sec => sec.classList.remove('mob-active'));
+    const target = document.getElementById(targetId);
+    if (target) target.classList.add('mob-active');
+  }
+
+  function setActiveLink(targetHref) {
+    links.forEach(link => {
+      if (link.getAttribute('href') === targetHref) {
+        link.classList.add('active');
+        link.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      } else {
+        link.classList.remove('active');
+      }
+    });
+  }
+
+  function handleHash() {
+    let hash = window.location.hash;
+    if (!hash && sections.length > 0) {
+      hash = '#' + sections[0].id;
+    }
+    
+    if (hash) {
+      const targetId = hash.replace('#', '');
+      
+      if (isMobile()) {
+        showSection(targetId);
+        setActiveLink(hash);
+        if (mainContainer) mainContainer.scrollTop = 0;
+        const sidebar = document.querySelector('.lg-sidebar');
+        if (sidebar) {
+          window.scrollTo({ top: sidebar.getBoundingClientRect().top + window.scrollY - 65, behavior: 'smooth' });
+        }
+      } else {
+        setActiveLink(hash);
+        const targetElement = document.getElementById(targetId);
+        if (targetElement && mainContainer) {
+          setTimeout(() => {
+            mainContainer.scrollTo({
+              top: targetElement.offsetTop - 40,
+              behavior: 'smooth'
+            });
+          }, 100);
+        }
+      }
+    }
+  }
+
+  links.forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const targetId = link.getAttribute('href').replace('#', '');
+      window.history.pushState(null, null, '#' + targetId);
+      handleHash();
+    });
+  });
+
+  handleHash();
+  window.addEventListener('hashchange', handleHash);
+
+  if (!isMobile()) {
+    const observerOptions = {
+      root: document.querySelector('.lg-main'),
+      rootMargin: '-20% 0px -60% 0px',
+      threshold: 0
+    };
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute('id');
+          setActiveLink('#' + id);
+        }
+      });
+    }, observerOptions);
+
+    sections.forEach(sec => observer.observe(sec));
+  }
+});
+</script>
+
+{% schema %}
+{
+  "name": "Legal",
+  "presets": [
+    {
+      "name": "Legal"
+    }
+  ]
+}
+{% endschema %}

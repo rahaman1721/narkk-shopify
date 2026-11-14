@@ -1,0 +1,99 @@
+<!-- MAIN CART &mdash; Full cart page -->
+<div class="cart-pg">
+
+  <div class="pg-hero">
+    <div class="pg-hero-top">
+      <div class="pg-hero-left">
+        <div class="pg-eyebrow coral">
+          <span class="pg-eyebrow-line"></span>Your Bag
+        </div>
+        <div class="pg-hero-title">Cart
+          {%- if cart.item_count > 0 -%}
+            <span class="cart-pg-count">({{ cart.item_count }})</span>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cart-pg-inner">
+    {%- if cart.item_count == 0 -%}
+      <!-- Empty Cart -->
+      <div class="cart-pg-empty">
+        <div class="cart-pg-empty-icon">
+          <svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        </div>
+        <div class="cart-pg-empty-title">Your cart is empty.</div>
+        <div class="cart-pg-empty-body">Add some pieces from the Tulai collection to get started.</div>
+        <a href="/collections/tulai" class="cart-pg-shop-btn">Start Shopping <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+      </div>
+
+    {%- else -%}
+      <!-- Cart Layout: items left, summary right -->
+      <div class="cart-pg-layout">
+
+        <!-- Items -->
+        <div class="cart-pg-items">
+          {%- for item in cart.items -%}
+            <div class="cart-pg-item" data-line="{{ forloop.index }}">
+              <a href="{{ item.url }}" class="cart-pg-item-img">
+                {%- if item.image -%}
+                  <img src="{{ item.image | image_url: width: 240 }}" alt="{{ item.title }}" width="120" height="120" loading="lazy">
+                {%- endif -%}
+              </a>
+              <div class="cart-pg-item-info">
+                <a href="{{ item.url }}" class="cart-pg-item-title">{{ item.title | split: ' - ' | first }}</a>
+                {%- unless item.variant.title == blank or item.variant.title == 'Default Title' -%}
+                  <div class="cart-pg-item-variant">{{ item.variant.title }}</div>
+                {%- endunless -%}
+                <div class="cart-pg-item-price">{{ item.final_price | money }}</div>
+                <div class="cart-pg-item-actions">
+                  <div class="cart-pg-qty">
+                    <button class="cart-pg-qty-btn" onclick="updateCartItem({{ forloop.index }}, {{ item.quantity | minus: 1 }})" aria-label="Decrease">&minus;</button>
+                    <span class="cart-pg-qty-val">{{ item.quantity }}</span>
+                    <button class="cart-pg-qty-btn" onclick="updateCartItem({{ forloop.index }}, {{ item.quantity | plus: 1 }})" aria-label="Increase">+</button>
+                  </div>
+                  <button class="cart-pg-remove" onclick="removeCartItem({{ forloop.index }})" aria-label="Remove {{ item.title }}">Remove</button>
+                </div>
+              </div>
+              <div class="cart-pg-item-total">{{ item.final_line_price | money }}</div>
+            </div>
+          {%- endfor -%}
+        </div>
+
+        <!-- Summary -->
+        <div class="cart-pg-summary">
+          <div class="cart-pg-sum-title">Order Summary</div>
+          <div class="cart-pg-sum-rows">
+            <div class="cart-pg-sum-row">
+              <span>Subtotal</span>
+              <span id="cartPgSubtotal">{{ cart.total_price | money }}</span>
+            </div>
+            <div class="cart-pg-sum-row">
+              <span>Shipping</span>
+              <span class="cart-pg-free">Free</span>
+            </div>
+            <div class="cart-pg-sum-row cart-pg-sum-total">
+              <span>Total</span>
+              <span>{{ cart.total_price | money }}</span>
+            </div>
+          </div>
+          <p class="cart-pg-tax-note">Taxes included. Shipping calculated at checkout.</p>
+          <form action="{{ routes.cart_url }}" method="post" id="cart-checkout-form">
+            <button type="submit" name="checkout" class="cart-pg-checkout-btn">Proceed to Checkout</button>
+          </form>
+          <a href="/collections/tulai" class="cart-pg-continue">Continue Shopping</a>
+        </div>
+
+      </div>
+    {%- endif -%}
+  </div>
+
+</div>
+
+{% schema %}
+{
+  "name": "Cart",
+  "settings": []
+}
+{% endschema %}
