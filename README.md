@@ -23,6 +23,19 @@ Engineered by **[Obaidhur Rahaman](https://rahaman1721.framer.website)** · Full
 
 Explore the live enterprise storefront: **[https://www.narkk.com/](https://www.narkk.com/)**
 
+<div align="center">
+  <br/>
+  <h3>🪵 Production Storefront Architecture & Modular Product Showcase</h3>
+  <p><sub>Bespoke Shopify OS 2.0 Theme Development with High-Resolution Architectural Collections</sub></p>
+  <br/>
+  <p align="center">
+    <img src="docs/screenshots/01-tulai-modular-wall.jpg" alt="Tulai Modular Pegboard System" width="250" style="border-radius: 12px; margin: 4px;" />
+    <img src="docs/screenshots/02-wardrobe-architecture.jpg" alt="Architectural Wardrobe Organization" width="250" style="border-radius: 12px; margin: 4px;" />
+    <img src="docs/screenshots/03-tulai-craftsmanship.jpg" alt="Precision Modular Craftsmanship" width="250" style="border-radius: 12px; margin: 4px;" />
+  </p>
+  <br/>
+</div>
+
 ---
 
 ## 1. Project Title, Badges & Vision
